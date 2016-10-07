@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PEMinutesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="EnteredPeMinute">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TeacherName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Minutes" Type="Int32" />
+    <Property Name="BadgeNumber" Type="Int32" />
+    <Property Name="School" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Grade" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Activity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Timestamp" Type="DateTime" Precision="3" />
+    <Property Name="SubstituteName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IsApproved" Type="Int32" />
+    <Property Name="ApprovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ApproveTime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="SubMinute">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TeacherName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Minutes" Type="Int32" />
+    <Property Name="BadgeNumber" Type="Int32" />
+    <Property Name="School" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Grade" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Activity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Timestamp" Type="DateTime" Precision="3" />
+    <Property Name="SubstituteName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IsApproved" Type="Int32" />
+    <Property Name="ApprovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ApproveTime" Type="DateTime" Precision="3" />
+    <Property Name="IsLongTermSub" Type="Int32" />
+  </EntityType>
+  <EntityContainer Name="PEMinutesEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="EnteredPeMinutes" EntityType="Self.EnteredPeMinute" />
+    <EntitySet Name="SubMinutes" EntityType="Self.SubMinute" />
+  </EntityContainer>
+</Schema>

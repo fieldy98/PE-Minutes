@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PEMinutesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="EnteredPeMinutes">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TeacherName" Type="varchar" MaxLength="255" />
+    <Property Name="Minutes" Type="int" />
+    <Property Name="BadgeNumber" Type="int" />
+    <Property Name="School" Type="varchar" MaxLength="255" />
+    <Property Name="Grade" Type="varchar" MaxLength="255" />
+    <Property Name="Activity" Type="varchar" MaxLength="255" />
+    <Property Name="Timestamp" Type="datetime" />
+    <Property Name="SubstituteName" Type="varchar" MaxLength="255" />
+    <Property Name="IsApproved" Type="int" />
+    <Property Name="ApprovedBy" Type="varchar" MaxLength="255" />
+    <Property Name="ApproveTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="SubMinutes">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TeacherName" Type="varchar" MaxLength="255" />
+    <Property Name="Minutes" Type="int" />
+    <Property Name="BadgeNumber" Type="int" />
+    <Property Name="School" Type="varchar" MaxLength="255" />
+    <Property Name="Grade" Type="varchar" MaxLength="255" />
+    <Property Name="Activity" Type="varchar" MaxLength="255" />
+    <Property Name="Timestamp" Type="datetime" />
+    <Property Name="SubstituteName" Type="varchar" MaxLength="255" />
+    <Property Name="IsApproved" Type="int" />
+    <Property Name="ApprovedBy" Type="varchar" MaxLength="255" />
+    <Property Name="ApproveTime" Type="datetime" />
+    <Property Name="IsLongTermSub" Type="int" />
+  </EntityType>
+  <EntityContainer Name="PEMinutesModelStoreContainer">
+    <EntitySet Name="EnteredPeMinutes" EntityType="Self.EnteredPeMinutes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SubMinutes" EntityType="Self.SubMinutes" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

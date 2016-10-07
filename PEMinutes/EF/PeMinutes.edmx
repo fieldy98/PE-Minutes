@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PEMinutesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EnteredPeMinutes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeacherName" Type="varchar" MaxLength="255" />
+          <Property Name="Minutes" Type="int" />
+          <Property Name="BadgeNumber" Type="int" />
+          <Property Name="School" Type="varchar" MaxLength="255" />
+          <Property Name="Grade" Type="varchar" MaxLength="255" />
+          <Property Name="Activity" Type="varchar" MaxLength="255" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="SubstituteName" Type="varchar" MaxLength="255" />
+          <Property Name="IsApproved" Type="int" />
+          <Property Name="ApprovedBy" Type="varchar" MaxLength="255" />
+          <Property Name="ApproveTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SubMinutes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeacherName" Type="varchar" MaxLength="255" />
+          <Property Name="Minutes" Type="int" />
+          <Property Name="BadgeNumber" Type="int" />
+          <Property Name="School" Type="varchar" MaxLength="255" />
+          <Property Name="Grade" Type="varchar" MaxLength="255" />
+          <Property Name="Activity" Type="varchar" MaxLength="255" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="SubstituteName" Type="varchar" MaxLength="255" />
+          <Property Name="IsApproved" Type="int" />
+          <Property Name="ApprovedBy" Type="varchar" MaxLength="255" />
+          <Property Name="ApproveTime" Type="datetime" />
+          <Property Name="IsLongTermSub" Type="int" />
+        </EntityType>
+        <EntityContainer Name="PEMinutesModelStoreContainer">
+          <EntitySet Name="EnteredPeMinutes" EntityType="Self.EnteredPeMinutes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubMinutes" EntityType="Self.SubMinutes" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PEMinutesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EnteredPeMinute">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Minutes" Type="Int32" />
+          <Property Name="BadgeNumber" Type="Int32" />
+          <Property Name="School" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Grade" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Activity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="SubstituteName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsApproved" Type="Int32" />
+          <Property Name="ApprovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ApproveTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SubMinute">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Minutes" Type="Int32" />
+          <Property Name="BadgeNumber" Type="Int32" />
+          <Property Name="School" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Grade" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Activity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="SubstituteName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsApproved" Type="Int32" />
+          <Property Name="ApprovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ApproveTime" Type="DateTime" Precision="3" />
+          <Property Name="IsLongTermSub" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="PEMinutesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EnteredPeMinutes" EntityType="Self.EnteredPeMinute" />
+          <EntitySet Name="SubMinutes" EntityType="Self.SubMinute" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PEMinutesModelStoreContainer" CdmEntityContainer="PEMinutesEntities">
+          <EntitySetMapping Name="EnteredPeMinutes">
+            <EntityTypeMapping TypeName="PEMinutesModel.EnteredPeMinute">
+              <MappingFragment StoreEntitySet="EnteredPeMinutes">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="Minutes" ColumnName="Minutes" />
+                <ScalarProperty Name="BadgeNumber" ColumnName="BadgeNumber" />
+                <ScalarProperty Name="School" ColumnName="School" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="SubstituteName" ColumnName="SubstituteName" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+                <ScalarProperty Name="ApproveTime" ColumnName="ApproveTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubMinutes">
+            <EntityTypeMapping TypeName="PEMinutesModel.SubMinute">
+              <MappingFragment StoreEntitySet="SubMinutes">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="Minutes" ColumnName="Minutes" />
+                <ScalarProperty Name="BadgeNumber" ColumnName="BadgeNumber" />
+                <ScalarProperty Name="School" ColumnName="School" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="SubstituteName" ColumnName="SubstituteName" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+                <ScalarProperty Name="ApproveTime" ColumnName="ApproveTime" />
+                <ScalarProperty Name="IsLongTermSub" ColumnName="IsLongTermSub" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

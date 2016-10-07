@@ -48,6 +48,14 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -88,6 +96,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -148,6 +158,47 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SubstituteController.cs" />
+    <Compile Include="Controllers\TeacherController.cs" />
+    <Compile Include="EF\EnteredPeMinute.cs">
+      <DependentUpon>PeMinutes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PeMinutes.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PeMinutes.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PeMinutes.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PeMinutes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PeMinutes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PeMinutes.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RenExtract.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RenExtract.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RenExtract.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RenExtract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RenExtract.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RenExtract.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EF\SchoolTeachersWithADLogin.cs">
+      <DependentUpon>RenExtract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\SubMinute.cs">
+      <DependentUpon>PeMinutes.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -158,6 +209,26 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="EF\PeMinutes.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PeMinutes.edmx</DependentUpon>
+      <LastGenOutput>PeMinutes.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EF\PeMinutes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PeMinutes.edmx</DependentUpon>
+      <LastGenOutput>PeMinutes.cs</LastGenOutput>
+    </Content>
+    <Content Include="EF\RenExtract.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>RenExtract.edmx</DependentUpon>
+      <LastGenOutput>RenExtract.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EF\RenExtract.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>RenExtract.edmx</DependentUpon>
+      <LastGenOutput>RenExtract.cs</LastGenOutput>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -175,6 +246,20 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <EntityDeploy Include="EF\RenExtract.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>RenExtract.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="EF\RenExtract.edmx.diagram">
+      <DependentUpon>RenExtract.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="EF\PeMinutes.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PeMinutes.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="EF\PeMinutes.edmx.diagram">
+      <DependentUpon>PeMinutes.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -204,9 +289,17 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Teacher\Create.cshtml" />
+    <Content Include="Views\Teacher\Delete.cshtml" />
+    <Content Include="Views\Teacher\Details.cshtml" />
+    <Content Include="Views\Teacher\Edit.cshtml" />
+    <Content Include="Views\Teacher\Index.cshtml" />
+    <Content Include="Views\Substitute\Create.cshtml" />
+    <Content Include="Views\Substitute\Delete.cshtml" />
+    <Content Include="Views\Substitute\Details.cshtml" />
+    <Content Include="Views\Substitute\Edit.cshtml" />
+    <Content Include="Views\Substitute\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -217,6 +310,9 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
