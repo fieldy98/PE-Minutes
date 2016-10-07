@@ -12,12 +12,31 @@ namespace PEMinutes.Controllers
 {
     public class TeacherController : Controller
     {
+        private RenExtractEntities ren = new RenExtractEntities();
         private PEMinutesEntities db = new PEMinutesEntities();
 
         // GET: Teacher
-        public ActionResult Index()
+        // Landing Page
+        public ActionResult Index(string Badge)
         {
-            return View(db.EnteredPeMinutes.ToList());
+            var teacher = from s in ren.SchoolTeachersWithADLogins select s;
+
+            if (!String.IsNullOrEmpty(Badge))
+            {
+                teacher = teacher.Where(s => s.BADGE_NUM == Badge);
+                foreach (var item in teacher)
+                {
+                    ViewBag.Teacher = item.LOGIN_NAME;
+                    ViewBag.FirstName = item.TeacherFirstName;
+                    ViewBag.LastName = item.TeacherLastName;
+                    ViewBag.Badge = item.BADGE_NUM;
+                    ViewBag.School = item.Organization_Name;
+                }
+                return View(teacher);
+            }
+
+
+            return View(teacher);
         }
 
         // GET: Teacher/Details/5
@@ -36,14 +55,13 @@ namespace PEMinutes.Controllers
         }
 
         // GET: Teacher/Create
+         // Create New Minutes
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: Teacher/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
@@ -59,6 +77,7 @@ namespace PEMinutes.Controllers
         }
 
         // GET: Teacher/Edit/5
+        // Edit Minutes
         public ActionResult Edit(int? id)
         {
             if (id == null)

@@ -294,12 +294,10 @@
     <Content Include="Views\Teacher\Delete.cshtml" />
     <Content Include="Views\Teacher\Details.cshtml" />
     <Content Include="Views\Teacher\Edit.cshtml" />
-    <Content Include="Views\Teacher\Index.cshtml" />
+    <Content Include="Views\Teacher\Show.cshtml" />
     <Content Include="Views\Substitute\Create.cshtml" />
-    <Content Include="Views\Substitute\Delete.cshtml" />
-    <Content Include="Views\Substitute\Details.cshtml" />
-    <Content Include="Views\Substitute\Edit.cshtml" />
     <Content Include="Views\Substitute\Index.cshtml" />
+    <Content Include="Views\Teacher\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

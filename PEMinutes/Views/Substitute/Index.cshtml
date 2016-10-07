@@ -1,99 +1,120 @@
-﻿@model IEnumerable<PEMinutes.EF.SubMinute>
+﻿@model PEMinutes.EF.SubMinute
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Delete";
 }
 
-<h2>Index</h2>
+<h2>Delete</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>SubMinute</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
             @Html.DisplayNameFor(model => model.TeacherName)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TeacherName)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Minutes)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Minutes)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.BadgeNumber)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BadgeNumber)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.School)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.School)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Grade)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Grade)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Activity)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Activity)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Timestamp)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Timestamp)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.SubstituteName)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubstituteName)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.IsApproved)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsApproved)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.ApprovedBy)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedBy)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.ApproveTime)
-        </th>
-        <th>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApproveTime)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.IsLongTermSub)
-        </th>
-        <th></th>
-    </tr>
+        </dt>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TeacherName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Minutes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BadgeNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.School)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Grade)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Timestamp)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubstituteName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsApproved)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApprovedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApproveTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsLongTermSub)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+        <dd>
+            @Html.DisplayFor(model => model.IsLongTermSub)
+        </dd>
 
-</table>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

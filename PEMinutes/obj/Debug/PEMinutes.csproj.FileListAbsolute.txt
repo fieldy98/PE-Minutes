@@ -68,3 +68,4 @@ H:\Projects\peminutes.pbvusd.net\PEMinutes\bin\System.Web.WebPages.Deployment.xm
 H:\Projects\peminutes.pbvusd.net\PEMinutes\bin\System.Web.WebPages.Razor.xml
 H:\Projects\peminutes.pbvusd.net\PEMinutes\obj\Debug\PEMinutes.dll
 H:\Projects\peminutes.pbvusd.net\PEMinutes\obj\Debug\PEMinutes.pdb
+H:\Projects\peminutes.pbvusd.net\PEMinutes\obj\Debug\PEMinutes.csprojResolveAssemblyReference.cache

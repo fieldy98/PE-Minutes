@@ -1,93 +1,52 @@
-﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
+﻿@model IEnumerable<PEMinutes.EF.SchoolTeachersWithADLogin>
+
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Login";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TeacherName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Minutes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BadgeNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.School)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Grade)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Activity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Timestamp)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SubstituteName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsApproved)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApprovedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApproveTime)
-        </th>
-        <th></th>
-    </tr>
+@using (Html.BeginForm())
+{
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TeacherName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Minutes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BadgeNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.School)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Grade)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Timestamp)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubstituteName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsApproved)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApprovedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApproveTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+        <p>Badge #:</p>@Html.TextBox("Badge", null, new { id = "sbm"})
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="mybutton">Submit</button>
 }
 
-</table>
+
+
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Teacher Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Badge Number is @ViewBag.Badge</p>
+                    <br />
+                    <p> Are you @ViewBag.FirstName @ViewBag.LastName at @ViewBag.School?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+<script>
+    $("#sbm").click(function (e) {
+        e.preventDefault();
+        // validate form inputs
+        // if validated
+        $("#myForm").submit()
+        $('#myModal').modal('show');
+    });
+</script>
