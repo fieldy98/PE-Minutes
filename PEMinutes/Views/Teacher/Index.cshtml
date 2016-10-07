@@ -6,13 +6,12 @@
 }
 
 
-@using (Html.BeginForm())
-{
 
-        <p>Badge #:</p>@Html.TextBox("Badge", null, new { id = "sbm"})
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="mybutton">Submit</button>
-}
 
+<p>Badge #:</p>@Html.TextBox("Badge", null, new { id = "EnteredBadge-Form"})
+@*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="mybutton">Submit</button>*@
+
+<button onclick="QueryBadgeNumber()"> QueryBadge</button>
 
 
 
@@ -49,4 +48,26 @@
         $("#myForm").submit()
         $('#myModal').modal('show');
     });
+
+
+
+    function QueryBadgeNumber() {
+        var EnteredBadge = $("#EnteredBadge-Form").val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("IdentifyTeacher", "Teacher")',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                alert("Success");
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+
+    };
+
+
+
 </script>

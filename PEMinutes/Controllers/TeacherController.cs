@@ -19,33 +19,40 @@ namespace PEMinutes.Controllers
         // Landing Page
         public ActionResult Index(string Badge)
         {
-            var teacher = from s in ren.SchoolTeachersWithADLogins select s;
-
-            if (!String.IsNullOrEmpty(Badge))
-            {
-                teacher = teacher.Where(s => s.BADGE_NUM == Badge);
-                foreach (var item in teacher)
-                {
-                    ViewBag.Teacher = item.LOGIN_NAME;
-                    ViewBag.FirstName = item.TeacherFirstName;
-                    ViewBag.LastName = item.TeacherLastName;
-                    ViewBag.Badge = item.BADGE_NUM;
-                    ViewBag.School = item.Organization_Name;
-                }
-                return View(teacher);
-            }
 
 
-            return View(teacher);
+
+
+            ViewBag.IsValidUser = true;
+
+
+
+
+
+
+            //if (!String.IsNullOrEmpty(Badge))
+            //{
+            //    teacher = teacher.Where(s => s.BADGE_NUM == Badge);
+            //    foreach (var item in teacher)
+            //    {
+            //        ViewBag.Teacher = item.LOGIN_NAME;
+            //        ViewBag.FirstName = item.TeacherFirstName;
+            //        ViewBag.LastName = item.TeacherLastName;
+            //        ViewBag.Badge = item.BADGE_NUM;
+            //        ViewBag.School = item.Organization_Name;
+            //    }
+            //    return View(teacher);
+            //}
+
+
+            return View();
         }
 
-
-        public JsonResult IdentifyTeacher(int EnteredBadge)
+        [HttpGet]
+        public ActionResult IdentifyTeacher(int EnteredBadge)
         {
-            EnteredPeMinute SelectedTeacher = db.EnteredPeMinutes.FirstOrDefault();
 
-
-            return Json(SelectedTeacher, JsonRequestBehavior.AllowGet);
+            return Json(new { success = true });
         }
 
 
