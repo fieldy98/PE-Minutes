@@ -39,6 +39,16 @@ namespace PEMinutes.Controllers
             return View(teacher);
         }
 
+
+        public JsonResult IdentifyTeacher(int EnteredBadge)
+        {
+            EnteredPeMinute SelectedTeacher = db.EnteredPeMinutes.FirstOrDefault();
+
+
+            return Json(SelectedTeacher, JsonRequestBehavior.AllowGet);
+        }
+
+
         // GET: Teacher/Details/5
         public ActionResult Details(int? id)
         {
