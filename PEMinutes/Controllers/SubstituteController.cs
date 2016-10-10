@@ -54,5 +54,11 @@ namespace PEMinutes.Controllers
             }
             return View(subMinute);
         }
+        public ActionResult GetTeachers(string schoolname)
+        {
+            List<SchoolTeachersWithADLogin> myTeacherList = ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == schoolname).OrderBy(i => i.TeacherLastName).ToList();
+           
+            return PartialView(myTeacherList);
+        }
     }
 }
