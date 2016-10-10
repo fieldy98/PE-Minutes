@@ -30,17 +30,13 @@ namespace PEMinutes.Controllers
         {
             var EnteredBadgeString = User.Identity.Name; 
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
 
-            TeacherViewModel tvm = new TeacherViewModel();
-            //tvm.TeacherName = 
+            ViewBag.Name    =  SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+            ViewBag.School  = SelectedTeacher.Organization_Name;
+            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).OrderByDescending(i => i.Timestamp).ToList();
 
-
-
-            //List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).OrderByDescending(i => i.Timestamp).ToList();
-
-            return View(db.EnteredPeMinutes);
+            return View(TeachersPeMinutes);
         }
 
 
@@ -75,11 +71,22 @@ namespace PEMinutes.Controllers
         {
             if (ModelState.IsValid)
             {
+                var EnteredBadgeString = User.Identity.Name;
+                int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+                SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+
+                // Build variable with information not gathered from user.
+                enteredPeMinute.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+                enteredPeMinute.School      = SelectedTeacher.Organization_Name;
+                enteredPeMinute.Grade       = SelectedTeacher.COURSE_TITLE;
+                enteredPeMinute.BadgeNumber = BadgeNumber;
+                enteredPeMinute.Timestamp   = DateTime.Now;
+
+                // Apply the modifications and then save to the database
                 db.EnteredPeMinutes.Add(enteredPeMinute);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(enteredPeMinute);
         }
 

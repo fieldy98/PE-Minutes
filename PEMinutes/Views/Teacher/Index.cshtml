@@ -4,9 +4,10 @@
     ViewBag.Title = "Teacher Homepage";
 }
 
-<h2>Teacher Homepage</h2>
+<h2>@ViewBag.Name</h2>
+<h2>@ViewBag.School</h2>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create",null, new { @class = "btn btn-primary"})
 </p>
 <table class="table">
     <tr>
