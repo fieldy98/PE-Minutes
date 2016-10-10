@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PEMinutes.EF.SchoolTeachersWithADLogin>
+﻿@model PEMinutes.EF.SubMinute
 
 @{
     ViewBag.Title = "Delete";
@@ -8,120 +8,120 @@
 {
     @Html.DropDownList("School", "")
     @Html.DropDownList("Teacher", "")
-    @Html.ActionLink("Submit", "Create", new { school = ViewBag.School, teacher = ViewBag.Teacher })
+    @Html.ActionLink("Submit", "Create", new { school = ViewBag.School, teacher = ViewBag.Teacher})
 }
 
 @*<h2>Delete</h2>
 
-    <h3>Are you sure you want to delete this?</h3>
-    <div>
-        <h4>SubMinute</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.TeacherName)
-            </dt>
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>SubMinute</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TeacherName)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.TeacherName)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.TeacherName)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Minutes)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Minutes)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Minutes)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Minutes)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.BadgeNumber)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.BadgeNumber)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.BadgeNumber)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.BadgeNumber)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.School)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.School)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.School)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.School)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Grade)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Grade)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Grade)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Grade)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Activity)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Activity)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Activity)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Activity)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Timestamp)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Timestamp)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Timestamp)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Timestamp)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.SubstituteName)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.SubstituteName)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.SubstituteName)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.SubstituteName)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.IsApproved)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsApproved)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.IsApproved)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.IsApproved)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.ApprovedBy)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovedBy)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.ApprovedBy)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedBy)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.ApproveTime)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApproveTime)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.ApproveTime)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.ApproveTime)
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.IsLongTermSub)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsLongTermSub)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.IsLongTermSub)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.IsLongTermSub)
+        </dd>
 
-        </dl>
+    </dl>
 
-        @using (Html.BeginForm()) {
-            @Html.AntiForgeryToken()
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
 
-            <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="btn btn-default" /> |
-                @Html.ActionLink("Back to List", "Index")
-            </div>
-        }
-    </div>*@
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>*@
