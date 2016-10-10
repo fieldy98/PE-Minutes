@@ -298,10 +298,12 @@
     <Content Include="Views\Substitute\Create.cshtml" />
     <Content Include="Views\Substitute\Index.cshtml" />
     <Content Include="Views\Teacher\Index.cshtml" />
+    <Content Include="Views\Substitute\GetTeachers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Resources\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>

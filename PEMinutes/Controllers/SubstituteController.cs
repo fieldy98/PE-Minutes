@@ -27,7 +27,7 @@ namespace PEMinutes.Controllers
             IEnumerable<SelectListItem> teachers = schools.OrderBy(x => x.TeacherLastName).Select(x => new SelectListItem
             {
                 Value = x.BADGE_NUM,
-                Text = "x.TeacherLastName, x.TeacherFirstName"
+                Text = x.TeacherLastName + ", " + x.TeacherFirstName
             });
             ViewBag.School = items;
             ViewBag.Teacher = teachers;
@@ -53,6 +53,12 @@ namespace PEMinutes.Controllers
                 return RedirectToAction("Index");
             }
             return View(subMinute);
+        }
+        public ActionResult GetTeachers(string schoolname)
+        {
+            List<SchoolTeachersWithADLogin> myTeacherList = ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == schoolname).OrderBy(i => i.TeacherLastName).ToList();
+           
+            return PartialView(myTeacherList);
         }
     }
 }

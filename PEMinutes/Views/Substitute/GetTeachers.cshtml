@@ -1,0 +1,9 @@
+﻿@model IEnumerable<PEMinutes.EF.SchoolTeachersWithADLogin>
+
+<select id="MyTeachers" class="form-control">
+    <option value="">Choose a Teacher</option>
+    @foreach (var item in Model)
+    {
+        <option value="@item.BADGE_NUM">@item.TeacherLastName, @item.TeacherFirstName</option>
+    }
+</select>

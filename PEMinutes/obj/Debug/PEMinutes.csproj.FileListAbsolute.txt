@@ -136,6 +136,5 @@ C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\bin\System.Web.Razor.xml
 C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\bin\System.Web.WebPages.xml
 C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\bin\System.Web.WebPages.Deployment.xml
 C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\bin\System.Web.WebPages.Razor.xml
-C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\obj\Debug\PEMinutes.csprojResolveAssemblyReference.cache
 C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\obj\Debug\PEMinutes.dll
 C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\obj\Debug\PEMinutes.pdb

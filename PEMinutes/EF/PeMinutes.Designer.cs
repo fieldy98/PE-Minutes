@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'H:\Projects\peminutes.pbvusd.net\PEMinutes\EF\PeMinutes.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\EF\PeMinutes.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
