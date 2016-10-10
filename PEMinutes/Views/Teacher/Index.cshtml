@@ -1,74 +1,45 @@
-﻿@model IEnumerable<PEMinutes.EF.SchoolTeachersWithADLogin>
-
+﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Teacher Homepage";
 }
 
+<h2>Teacher Homepage</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Minutes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Activity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Timestamp)
+        </th>
+        <th></th>
+    </tr>
 
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Minutes)
+        </td>
 
+        <td>
+            @Html.DisplayFor(modelItem => item.Activity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Timestamp)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
 
-<p>Badge #:</p>@Html.TextBox("EnteredBadge", null, new { id = "EnteredBadgeForm"})
-@*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="mybutton">Submit</button>*@
-
-<button onclick="QueryBadgeNumber()"> QueryBadge</button>
-
-
-
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Teacher Confirmation</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Badge Number is @ViewBag.Badge</p>
-                    <br />
-                    <p> Are you @ViewBag.FirstName @ViewBag.LastName at @ViewBag.School?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
-
-
-<script>
-    //$("#sbm").click(function (e) {
-    //    e.preventDefault();
-    //    // validate form inputs
-    //    // if validated
-    //    $("#myForm").submit()
-    //    $('#myModal').modal('show');
-    //});
-
-    
-
-    function QueryBadgeNumber() {
-        var BadgeNumber = $("#EnteredBadgeForm").val();
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("IdentifyTeacher", "Teacher")',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: {EnteredBadge: BadgeNumber},
-            success: function (data) {
-                alert("Success");
-            },
-            error: function () {
-                alert("error");
-            }
-        });
-
-    };
-
-
-
-</script>
+</table>

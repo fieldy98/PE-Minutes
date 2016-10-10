@@ -7,6 +7,15 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PEMinutes.EF;
+using PEMinutes.Models;
+using PEMinutes.ViewModels;
+
+//
+// OVERVIEW:
+//      This controller handles functions for the Teacher role. 
+//      They are allowed to Create, View and Edit their minutes.
+//      They are also able to approve minutes submitted by their Sub.
+//
 
 namespace PEMinutes.Controllers
 {
@@ -17,40 +26,24 @@ namespace PEMinutes.Controllers
 
         // GET: Teacher
         // Landing Page
-        public ActionResult Index(string Badge)
+        public ActionResult Index()
         {
+            var EnteredBadgeString = User.Identity.Name; 
+            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
 
-            //if (!String.IsNullOrEmpty(Badge))
-            //{
-            //    teacher = teacher.Where(s => s.BADGE_NUM == Badge);
-            //    foreach (var item in teacher)
-            //    {
-            //        ViewBag.Teacher = item.LOGIN_NAME;
-            //        ViewBag.FirstName = item.TeacherFirstName;
-            //        ViewBag.LastName = item.TeacherLastName;
-            //        ViewBag.Badge = item.BADGE_NUM;
-            //        ViewBag.School = item.Organization_Name;
-            //    }
-            //    return View(teacher);
-            //}
+            int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+
+            TeacherViewModel tvm = new TeacherViewModel();
+            //tvm.TeacherName = 
 
 
-            return View();
+
+            //List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).OrderByDescending(i => i.Timestamp).ToList();
+
+            return View(db.EnteredPeMinutes);
         }
 
 
-        public JsonResult IdentifyTeacher(string EnteredBadge)
-        {
-            var teacherbadge = ren.SchoolTeachersWithADLogins.Where(x => x.BADGE_NUM == EnteredBadge).FirstOrDefault();
-            if (EnteredBadge == teacherbadge.BADGE_NUM)
-            {
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
-            }
-        }
 
 
         // GET: Teacher/Details/5
@@ -107,8 +100,6 @@ namespace PEMinutes.Controllers
         }
 
         // POST: Teacher/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
@@ -158,3 +149,24 @@ namespace PEMinutes.Controllers
         }
     }
 }
+
+
+
+
+
+
+
+//public JsonResult IdentifyTeacher(string EnteredBadge)
+//{
+//    var teacherbadge = ren.SchoolTeachersWithADLogins.Where(x => x.BADGE_NUM == EnteredBadge).FirstOrDefault();
+//    if (EnteredBadge == teacherbadge.BADGE_NUM)
+//    {
+//        return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+//    }
+//    else
+//    {
+//        return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+//    }
+//}
+
+

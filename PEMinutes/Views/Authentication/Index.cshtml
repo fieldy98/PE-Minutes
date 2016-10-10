@@ -13,8 +13,16 @@
 
 
                 <form class="form-signin">
-                    @Html.ActionLink("Teacher", "Login", "Authentication", new { @class = "btn btn-lg btn-primary btn-block" })
+                    @if (Request.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Teacher", "Index", new { Controller = "Teacher", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Teacher", "Login", "Authentication", new { @class = "btn btn-lg btn-primary btn-block" })
+                    }
                 </form>
+
                 <form class="form-signin">
                     @Html.ActionLink("Substitute", "Index", new { Controller = "Substitute", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block" })
                 </form>
