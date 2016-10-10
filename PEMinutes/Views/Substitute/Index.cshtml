@@ -110,9 +110,6 @@
                 </select>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
-                <div id="loadingteacher" style="color: #ff6a00;width:100%;float:left;text-align:center;display:none;">
-                    <i class="fa fa-5x fa-spin fa-spinner"></i>
-                </div>
                 <div id="teacherselect">
                 </div>
             </div>
@@ -153,6 +150,26 @@
             });
         }
     });
+
+        $("#myTeacher").on('change', function () {
+            var mySchool = $(this).val();
+            if (mySchool === "notaschool") {
+
+            } else {
+                $("#fademin").fadeIn('fast');
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("GetTeachers","Substitute")',
+                    data: { schoolname: mySchool },
+                    success: function (data) {
+                        $("#teacherselect").html(data);
+                    },
+                    error: function (data) {
+                        $(".errormessage").text('There was an error processing your request.');
+                    }
+                });
+            }
+        });
     </script>
 
 }

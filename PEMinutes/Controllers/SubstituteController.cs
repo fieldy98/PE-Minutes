@@ -19,32 +19,13 @@ namespace PEMinutes.Controllers
         public ActionResult Index()
         {
             var schools = ren.SchoolTeachersWithADLogins;
-            IEnumerable<SelectListItem> items = schools.OrderBy(x => x.Organization_Name).Select(x => new SelectListItem
-            {
-                Value = x.Organization_Name,
-                Text = x.Organization_Name
-            }).Distinct();
-            IEnumerable<SelectListItem> teachers = schools.OrderBy(x => x.TeacherLastName).Select(x => new SelectListItem
-            {
-                Value = x.BADGE_NUM,
-                Text = x.TeacherLastName + ", " + x.TeacherFirstName
-            });
-            ViewBag.School = items;
-            ViewBag.Teacher = teachers;
-
             return View(schools);
-        }
-
-        // GET: Substitute/Create
-        public ActionResult Create()
-        {
-            return View();
         }
 
         // POST: Substitute/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime,IsLongTermSub")] SubMinute subMinute)
+        public ActionResult Index([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime,IsLongTermSub")] SubMinute subMinute)
         {
             if (ModelState.IsValid)
             {
