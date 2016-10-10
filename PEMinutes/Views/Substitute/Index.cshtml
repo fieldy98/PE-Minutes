@@ -122,6 +122,13 @@
 
         </p>
     </div>
+
+    <div class="row">
+        <div id="GetSubMinForm">
+
+
+        </div>
+    </div>
 </div>
 
 
@@ -139,7 +146,7 @@
             $("#fademin").fadeIn('fast');
             $.ajax({
                 type: 'Get',
-                url: '@Url.Action("GetTeachers","Substitute")',
+                url: '@Url.Action("_GetTeachers","Substitute")',
                 data: { schoolname: mySchool },
                 success: function (data) {
                     $("#teacherselect").html(data);
@@ -151,25 +158,28 @@
         }
     });
 
-        $("#myTeacher").on('change', function () {
-            var mySchool = $(this).val();
-            if (mySchool === "notaschool") {
 
-            } else {
-                $("#fademin").fadeIn('fast');
-                $.ajax({
-                    type: 'Get',
-                    url: '@Url.Action("GetTeachers","Substitute")',
-                    data: { schoolname: mySchool },
-                    success: function (data) {
-                        $("#teacherselect").html(data);
-                    },
-                    error: function (data) {
-                        $(".errormessage").text('There was an error processing your request.');
-                    }
-                });
-            }
-        });
+
+        function LoadPeMinutes(element) {
+            var badge = $(element).val();
+            //var teacher = $(element).find(':selected').attr('data-badge');
+            $("#GetSubMinForm").html('');
+            //currentTeacher = teacher;
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("_GetSubMinForm","Substitute")',
+                data: { badge: badge },
+                beforeSend: function () {
+
+                },
+                success: function (data) {
+                    $("#GetSubMinForm").html(data);
+                },
+                error: function (data) {
+                    $(".errormessage").text('There was an error processing your request.');
+                }
+            });
+        };
     </script>
 
 }

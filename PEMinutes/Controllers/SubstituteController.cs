@@ -35,11 +35,22 @@ namespace PEMinutes.Controllers
             }
             return View(subMinute);
         }
-        public ActionResult GetTeachers(string schoolname)
+        public ActionResult _GetTeachers(string schoolname)
         {
             List<SchoolTeachersWithADLogin> myTeacherList = ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == schoolname).OrderBy(i => i.TeacherLastName).ToList();
            
             return PartialView(myTeacherList);
+        }
+
+        public ActionResult _GetSubMinForm(string badge)
+        {
+            var teacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(x=>x.BADGE_NUM == badge);
+            string[] schoolteacher = new string[4];
+            schoolteacher[0] = teacher.TeacherLastName + ", " + teacher.TeacherFirstName;
+            schoolteacher[1] = teacher.BADGE_NUM;
+            schoolteacher[2] = teacher.Organization_Name;
+            schoolteacher[3] = teacher.COURSE_TITLE;
+            return PartialView();
         }
     }
 }
