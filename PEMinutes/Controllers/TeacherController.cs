@@ -19,33 +19,37 @@ namespace PEMinutes.Controllers
         // Landing Page
         public ActionResult Index(string Badge)
         {
-            var teacher = from s in ren.SchoolTeachersWithADLogins select s;
 
-            if (!String.IsNullOrEmpty(Badge))
-            {
-                teacher = teacher.Where(s => s.BADGE_NUM == Badge);
-                foreach (var item in teacher)
-                {
-                    ViewBag.Teacher = item.LOGIN_NAME;
-                    ViewBag.FirstName = item.TeacherFirstName;
-                    ViewBag.LastName = item.TeacherLastName;
-                    ViewBag.Badge = item.BADGE_NUM;
-                    ViewBag.School = item.Organization_Name;
-                }
-                return View(teacher);
-            }
+            //if (!String.IsNullOrEmpty(Badge))
+            //{
+            //    teacher = teacher.Where(s => s.BADGE_NUM == Badge);
+            //    foreach (var item in teacher)
+            //    {
+            //        ViewBag.Teacher = item.LOGIN_NAME;
+            //        ViewBag.FirstName = item.TeacherFirstName;
+            //        ViewBag.LastName = item.TeacherLastName;
+            //        ViewBag.Badge = item.BADGE_NUM;
+            //        ViewBag.School = item.Organization_Name;
+            //    }
+            //    return View(teacher);
+            //}
 
 
-            return View(teacher);
+            return View();
         }
 
 
-        public JsonResult IdentifyTeacher(int EnteredBadge)
+        public JsonResult IdentifyTeacher(string EnteredBadge)
         {
-            EnteredPeMinute SelectedTeacher = db.EnteredPeMinutes.FirstOrDefault();
-
-
-            return Json(SelectedTeacher, JsonRequestBehavior.AllowGet);
+            var teacherbadge = ren.SchoolTeachersWithADLogins.Where(x => x.BADGE_NUM == EnteredBadge).FirstOrDefault();
+            if (EnteredBadge == teacherbadge.BADGE_NUM)
+            {
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 
