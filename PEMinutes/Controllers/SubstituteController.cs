@@ -25,13 +25,31 @@ namespace PEMinutes.Controllers
         // POST: Substitute/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime,IsLongTermSub")] SubMinute subMinute)
+        public ActionResult Index([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime,IsLongTermSub")] SubMinute subMinute, string badge)
         {
             if (ModelState.IsValid)
             {
+                int BadgeNumber = Int32.Parse(badge);  // convert string to int
+                SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == badge );
+
+                // Build variable with information not gathered from user.
+                subMinute.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+                subMinute.School = SelectedTeacher.Organization_Name;
+                subMinute.Grade = SelectedTeacher.COURSE_TITLE;
+                subMinute.BadgeNumber = BadgeNumber;
+                subMinute.Timestamp = DateTime.Now;
+
+                // Apply the modifications and then save to the database
                 db.SubMinutes.Add(subMinute);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+
+
+
+
+                //db.SubMinutes.Add(subMinute);
+                //db.SaveChanges();
+                //return RedirectToAction("Index");
             }
             return View(subMinute);
         }
@@ -42,14 +60,8 @@ namespace PEMinutes.Controllers
             return PartialView(myTeacherList);
         }
 
-        public ActionResult _GetSubMinForm(string badge)
+        public ActionResult _GetSubMinForm()
         {
-            var teacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(x=>x.BADGE_NUM == badge);
-            string[] schoolteacher = new string[4];
-            schoolteacher[0] = teacher.TeacherLastName + ", " + teacher.TeacherFirstName;
-            schoolteacher[1] = teacher.BADGE_NUM;
-            schoolteacher[2] = teacher.Organization_Name;
-            schoolteacher[3] = teacher.COURSE_TITLE;
             return PartialView();
         }
     }

@@ -42,7 +42,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink("Create", "Index", "Authentication", new { @class = "btn btn-default"})
+                @Html.ActionLink("Submit", "Index", new { Controller = "Authentication", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block", onclick = "SendBadge()"})
             </div>
         </div>
     </div>

@@ -180,6 +180,23 @@
                 }
             });
         };
+
+        function SendBadge()
+        {
+            var badge = $("#MyTeachers").val();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Index","Substitute")',
+                data: { badge: badge},
+                success: function (data) {
+                    alert("success");
+                },
+                error: function (data) {
+                    alert("error");
+                }
+            });
+        }
+ 
     </script>
 
 }
