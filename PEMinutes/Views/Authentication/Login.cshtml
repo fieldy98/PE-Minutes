@@ -1,0 +1,33 @@
+﻿@model PEMinutes.Models.User
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Login</h2>
+
+
+
+
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Login failed. Check your login details.");
+    <div>
+        <fieldset>
+            <legend>Login</legend>
+            <div class="editor-label">
+                @Html.LabelFor(u => u.StaffBadgeNumber)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(u => u.StaffBadgeNumber)
+                @Html.ValidationMessageFor(u => u.StaffBadgeNumber)
+            </div>
+
+            <input type="submit" value="Log In" />
+        </fieldset>
+    </div>
+}

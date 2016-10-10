@@ -20,16 +20,6 @@ namespace PEMinutes.Controllers
         public ActionResult Index(string Badge)
         {
 
-
-
-
-            ViewBag.IsValidUser = true;
-
-
-
-
-
-
             //if (!String.IsNullOrEmpty(Badge))
             //{
             //    teacher = teacher.Where(s => s.BADGE_NUM == Badge);
@@ -48,11 +38,18 @@ namespace PEMinutes.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult IdentifyTeacher(int EnteredBadge)
-        {
 
-            return Json(new { success = true });
+        public JsonResult IdentifyTeacher(string EnteredBadge)
+        {
+            var teacherbadge = ren.SchoolTeachersWithADLogins.Where(x => x.BADGE_NUM == EnteredBadge).FirstOrDefault();
+            if (EnteredBadge == teacherbadge.BADGE_NUM)
+            {
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

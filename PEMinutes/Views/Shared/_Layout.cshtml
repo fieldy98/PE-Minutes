@@ -8,8 +8,24 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+ 
     <div class="row">
         <div class="container body-content col-lg-12">
+            <div style="width: auto; background-color: #ffffff;">
+                @if (Request.IsAuthenticated)
+                {
+                    <strong>@Html.Encode(User.Identity.Name)</strong>
+                    @Html.ActionLink("Sign Out", "Logout", "Authentication")
+                }
+                else
+                {
+                    @Html.ActionLink("Sign In", "Login", "Authentication")
+                }
+            </div>
+
+
+
+
             @RenderBody()
         </div>
     </div>

@@ -8,7 +8,7 @@
 
 
 
-<p>Badge #:</p>@Html.TextBox("Badge", null, new { id = "EnteredBadge-Form"})
+<p>Badge #:</p>@Html.TextBox("EnteredBadge", null, new { id = "EnteredBadgeForm"})
 @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="mybutton">Submit</button>*@
 
 <button onclick="QueryBadgeNumber()"> QueryBadge</button>
@@ -41,23 +41,24 @@
 
 
 <script>
-    $("#sbm").click(function (e) {
-        e.preventDefault();
-        // validate form inputs
-        // if validated
-        $("#myForm").submit()
-        $('#myModal').modal('show');
-    });
+    //$("#sbm").click(function (e) {
+    //    e.preventDefault();
+    //    // validate form inputs
+    //    // if validated
+    //    $("#myForm").submit()
+    //    $('#myModal').modal('show');
+    //});
 
-
+    
 
     function QueryBadgeNumber() {
-        var EnteredBadge = $("#EnteredBadge-Form").val();
+        var BadgeNumber = $("#EnteredBadgeForm").val();
         $.ajax({
             type: "GET",
             url: '@Url.Action("IdentifyTeacher", "Teacher")',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
+            data: {EnteredBadge: BadgeNumber},
             success: function (data) {
                 alert("Success");
             },
