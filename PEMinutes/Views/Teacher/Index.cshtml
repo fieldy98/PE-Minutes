@@ -4,13 +4,15 @@
     ViewBag.Title = "Teacher Homepage";
 }
 
-<h2>@ViewBag.Name</h2>
+<h2>@ViewBag.Name </h2>
 <h2>@ViewBag.School</h2>
 <p>
-    @Html.ActionLink("Create New", "Create",null, new { @class = "btn btn-primary"})
+    @Html.ActionLink("New Minutes", "Create",null, new { @class = "btn btn-primary"})
 </p>
 <table class="table">
+    <caption>Total number of minutes this week</caption>
     <tr>
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.Minutes)
         </th>
@@ -25,6 +27,7 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td></td>
         <td>
             @Html.DisplayFor(modelItem => item.Minutes)
         </td>
@@ -35,10 +38,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.Timestamp)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        <td class="col-lg-1">
+            <div class="btn-group btn-group-sm">
+                @Html.ActionLink("View", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+            </div>
+
         </td>
     </tr>
 }
