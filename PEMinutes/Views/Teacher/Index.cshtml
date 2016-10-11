@@ -4,30 +4,33 @@
     ViewBag.Title = "Teacher Homepage";
 }
 <div class="col-sm-12">
-    <div class="col-sm-3">
-        <h2>@ViewBag.Name </h2>
+    <div class="col-sm-12 col-lg-3 center-block">
+        <h2 style="padding-top: 40px;">@ViewBag.Name </h2>
     </div>
-    <div class="col-sm-9 pull-right">
-        <h2>@ViewBag.School</h2>
+    <div class="col-sm-12 col-lg-9">
+        
+
+        
     </div>
 </div>
 
-<table class="table table-responsive col-sm-12">
-    <caption>Total number of minutes this week</caption>
-    <tr>
-        <th></th>
-        <th>
-            @Html.DisplayNameFor(model => model.Minutes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Activity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Timestamp)
-        </th>
-        <th></th>
-    </tr>
 
+<table class="table table-responsive col-sm-12">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Minutes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Timestamp)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 @foreach (var item in Model) {
     <tr>
         <td></td>
