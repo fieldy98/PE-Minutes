@@ -3,13 +3,16 @@
 @{
     ViewBag.Title = "Teacher Homepage";
 }
+<div class="col-sm-12">
+    <div class="col-sm-3">
+        <h2>@ViewBag.Name </h2>
+    </div>
+    <div class="col-sm-9 pull-right">
+        <h2>@ViewBag.School</h2>
+    </div>
+</div>
 
-<h2>@ViewBag.Name </h2>
-<h2>@ViewBag.School</h2>
-<p>
-    @Html.ActionLink("New Minutes", "Create",null, new { @class = "btn btn-primary"})
-</p>
-<table class="table">
+<table class="table table-responsive col-sm-12">
     <caption>Total number of minutes this week</caption>
     <tr>
         <th></th>

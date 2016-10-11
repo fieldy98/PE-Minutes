@@ -303,6 +303,7 @@
     <Content Include="Views\Authentication\Index.cshtml" />
     <Content Include="Views\Substitute\_GetSubMinForm.cshtml" />
     <Content Include="Views\Substitute\_GetTeachers.cshtml" />
+    <Content Include="Views\Shared\_navbar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

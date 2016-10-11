@@ -31,11 +31,11 @@ namespace PEMinutes.Controllers
             var EnteredBadgeString = User.Identity.Name; 
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+            ViewBag.School = SelectedTeacher.Organization_Name;
 
-            ViewBag.Name    =  SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-            ViewBag.School  = SelectedTeacher.Organization_Name;
             List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).OrderByDescending(i => i.Timestamp).ToList();
-
+            
             return View(TeachersPeMinutes);
         }
 
@@ -73,7 +73,10 @@ namespace PEMinutes.Controllers
             {
                 var EnteredBadgeString = User.Identity.Name;
                 int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+
+                // Associate Badge => Staff
                 SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+
 
                 // Build variable with information not gathered from user.
                 enteredPeMinute.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
@@ -154,6 +157,7 @@ namespace PEMinutes.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }
 

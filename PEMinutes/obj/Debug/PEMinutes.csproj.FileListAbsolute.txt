@@ -139,4 +139,3 @@ C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\bin\System.Web.WebPages.Razor.
 C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\obj\Debug\PEMinutes.dll
 C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\obj\Debug\PEMinutes.pdb
 C:\Users\dwhite\Source\Repos\peminutes2\PEMinutes\obj\Debug\PEMinutes.csprojResolveAssemblyReference.cache
-H:\Projects\peminutes.pbvusd.net\PEMinutes\obj\Debug\PEMinutes.csprojResolveAssemblyReference.cache

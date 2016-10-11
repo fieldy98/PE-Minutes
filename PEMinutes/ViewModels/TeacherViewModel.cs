@@ -22,15 +22,15 @@ namespace PEMinutes.ViewModels
         public DateTime ApproveTime { get; set; }
 
         // List
-        public List<TeacherSelectListEntry> MyTeachers { get; set; }
+        public List<DisplayDefaultMinutes> MyMinutes { get; set; }
         public TeacherViewModel()
         {
-            MyTeachers = new List<TeacherSelectListEntry>();
+            MyMinutes = new List<DisplayDefaultMinutes>();
         }
 
 
     }
-    public class TeacherSelectListEntry
+    public class DisplayDefaultMinutes
     {
         public string TeacherName { get; set; }
         public string CourseName { get; set; }

@@ -22,6 +22,11 @@ namespace PEMinutes.Controllers
             return View(schools);
         }
 
+        public ActionResult Create()
+        {
+            
+            return View();
+        }
         // POST: Substitute/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
