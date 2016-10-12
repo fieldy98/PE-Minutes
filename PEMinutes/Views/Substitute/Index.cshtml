@@ -9,7 +9,7 @@
         <div class="panel-body">
             <div class="col-sm-12 col-lg-12 center-block">
 
-                <h2><b>Please Choose the School and Teacher you are subbing for:</b></h2>
+                <h2>Please Choose the School and Teacher you are subbing for:</h2>
                 <div class="row">
                     <div class="Index-Form">
 
@@ -47,8 +47,6 @@
 
                 <script>
 
-                    var currentTeacher = '';
-
                     $("#SelectASchool").on('change', function () {
                         var mySchool = $(this).val();
                         if (mySchool === "notaschool") {
@@ -71,11 +69,8 @@
 
 
 
-                    function LoadPeMinutes(element) {
+                    function LoadSubMinutesCreate(element) {
                         var badge = $(element).val();
-                        $("#GetSubMinForm").html('');
-                        //var teacher = $(element).find(':selected').attr('data-badge');
-                        //currentTeacher = teacher;
                         $.ajax({
                             type: 'Get',
                             url: '@Url.Action("Create", "Substitute")',
