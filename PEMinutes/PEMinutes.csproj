@@ -302,6 +302,8 @@
     <Content Include="Views\Authentication\Login.cshtml" />
     <Content Include="Views\Authentication\Index.cshtml" />
     <Content Include="Views\Substitute\_GetTeachers.cshtml" />
+    <Content Include="Views\Teacher\Approve.cshtml" />
+    <Content Include="Views\Shared\_navbar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

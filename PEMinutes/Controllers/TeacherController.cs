@@ -112,6 +112,7 @@ namespace PEMinutes.Controllers
         }
 
         // POST: Checkout 
+        [HttpPost]
         public ActionResult Approve(int IssuedApproval)
         {
             var EnteredBadgeString = User.Identity.Name;
@@ -119,7 +120,7 @@ namespace PEMinutes.Controllers
             var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             var Minute = db.SubMinutes.FirstOrDefault(x => x.ID == IssuedApproval);
 
-            Minute.IsApproved = 1;
+            Minute.IsApproved = '1';
             Minute.ApprovedBy = TeacherNameVariable;
             Minute.ApproveTime = DateTime.Now;
             db.SubMinutes.Add(Minute);

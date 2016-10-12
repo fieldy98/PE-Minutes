@@ -37,18 +37,17 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td></td>
-                    <td>
+                    <td class="col-lg-2">
                         @Html.DisplayFor(modelItem => item.SubstituteName)
                     </td>
-                    <td>
+                    <td class="col-lg-1">
                         @Html.DisplayFor(modelItem => item.Minutes)
                     </td>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.Activity)
                     </td>
-                    <td>
+                    <td class="col-lg-2">
                         @Html.DisplayFor(modelItem => item.Timestamp)
                     </td>
                     <td class="col-lg-1">
