@@ -1,0 +1,99 @@
+﻿@model PEMinutes.EF.SubMinute
+
+@{
+    var SelectedBadge = ViewBag.SelectedBadge;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Enter your PE Minutes @ViewBag.SelectedBadge</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SubstituteName, "Full Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SubstituteName, new { htmlAttributes = new { id = "SubName", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SubstituteName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Minutes, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Minutes, new { htmlAttributes = new { id = "Minutes", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Minutes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Activity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Activity, new { htmlAttributes = new { id = "Activity", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Activity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" onclick="SubmitForm();" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    function SubmitForm() {
+
+        var SelectedBadge =  @ViewBag.SelectedBadge;
+        var Teacher = @ViewBag.SelectedTeacher;
+        var Sub = $("#SubName").val();
+        var minutes = $("#Minutes").val();
+        var Class = @ViewBag.SelectedCourse;
+        var School =@ViewBag.SelectedSchool;
+        var Activity = $("#Activity").val();
+        var LongTermSub = $("#IsLongTermSub").val();
+        var submitForm = true;
+
+        if (currentTeacher == '') {
+            myUserName = $("#UserName").val();
+        }
+
+        if (minutes.length <= 0) {
+            submitForm = false;
+            $('.myerrormessage').text("You must enter at least 1 minute to submit this form");
+        }
+        if (Sub.length <= 0) {
+            $('.myerrormessage').text("Please enter your first and last name.");
+            submitForm = false;
+        };
+
+        if (activity.length <= 0) {
+            $('.myerrormessage').text("You must enter an activity.");
+            submitForm = false;
+        }
+
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Create","Substitute")',
+                data: { TeacherName: Teacher, Minutes: minutes, Grade: Class, School: School, BadgeNumber: SelectedBadge, Activity: Activity, Timestamp: Time, SubstituteName: Sub },
+                success: function (data) {
+                    var url = '/Authentication/Index';
+                    window.location.href = url;
+                },
+                error: function (data) {
+
+                }
+            });
+    };
+    </script>
+}
