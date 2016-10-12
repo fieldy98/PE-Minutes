@@ -1,28 +1,25 @@
 ﻿@model PEMinutes.Models.User
 @{
-    ViewBag.Title = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Login";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Login</h2>
-
-
-
-
-
-
-
-@using (Html.BeginForm(null, null, FormMethod.Post, null))
-{
-    @Html.ValidationSummary(true, "Login failed. Check your login details.");
-    <div>
-        <div class="editor-label form-group">
-            @Html.LabelFor(u => u.StaffBadgeNumber)
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <h2 class="text-center">Login</h2>
+            <div class="modal-body" style="padding-bottom: 200px;">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form col-md-12 center-block" }))
+                {
+                    @Html.ValidationSummary(true, "Login failed. Check your login details.");
+                    <div class="form-group">
+                        @Html.TextBoxFor(u => u.StaffBadgeNumber, new { placeholder = "Badge Number", @class = "form-control input-lg input-block", style = "display: block;" })
+                        @Html.ValidationMessageFor(model => model.StaffBadgeNumber, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                    </div>
+                }
+            </div>
         </div>
-        <div class="editor-field form-group">
-            @Html.TextBoxFor(u => u.StaffBadgeNumber, new { placeholder = "Badge Number", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.StaffBadgeNumber, "", new { @class = "text-danger" })
-        </div>
-        <input type="submit" value="Submit" class="btn btn-primary" />
     </div>
-}
+</div>

@@ -3,44 +3,58 @@
 @{
     ViewBag.Title = "Teacher Homepage";
 }
+<div class="col-sm-12 panel">
+    <div class="panel-body">
+        <div class="col-sm-12 col-lg-3 center-block">
+            <h2>@ViewBag.Name </h2>
+        </div>
+        <div class="col-sm-12 col-lg-9">
 
-<h2>@ViewBag.Name</h2>
-<h2>@ViewBag.School</h2>
-<p>
-    @Html.ActionLink("Create New", "Create",null, new { @class = "btn btn-primary"})
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Minutes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Activity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Timestamp)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Minutes)
-        </td>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.Activity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Timestamp)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+        </div>
 
-</table>
+
+
+        <table class="table table-responsive col-sm-12">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Minutes)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Activity)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Timestamp)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Minutes)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Activity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Timestamp)
+                    </td>
+                    <td class="col-lg-1">
+                        <div class="btn-group btn-group-sm">
+                            @Html.ActionLink("View", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                        </div>
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
