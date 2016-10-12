@@ -1,99 +1,10 @@
 ﻿@model IEnumerable<PEMinutes.EF.SchoolTeachersWithADLogin>
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete";   
 }
-
-@*@using (Html.BeginForm())
-{
-    @Html.DropDownList("School", "")
-    @Html.DropDownList("Teacher", "")
-    @Html.ActionLink("Submit", "Create", new { school = ViewBag.School, teacher = ViewBag.Teacher })
-}
-
-
-
-
-<div class="bry-form-group">
-
-    <label class="dark-form-label">
-        School  <br />
-    </label>
-    <div class="input-group">
-        <div class="selectholder">
-
-            <select id="SelectASchool" class="form-control">
-                @foreach (var item in Model.OrderBy(x => x.Organization_Name).Select(x => x.Organization_Name).Distinct())
-                {
-                    <option value="@item">@item</option>
-                }
-
-            </select>
-
-        </div>
-        <div class="loadteachersbutton" onclick="LoadTeachersForSchool();" style="display:none;">
-            Load
-        </div>
-
-
-    </div>
-
-</div>
-
-<div class="bry-form-group">
-
-    <div class="form-group">
-
-        <label for="UserName" class="dark-form-label">
-            Teacher
-
-        </label>
-        <div class="input-group" id="TeacherSelectList">
-
-            <select id="UserName" class="form-control">
-                @foreach (var item in Model.OrderBy(x=>x.TeacherLastName))
-                {
-                    <option value="@item.BADGE_NUM">@item.TeacherLastName, @item.TeacherFirstName</option>
-                }
-                
-            </select>
-
-        </div>
-    </div>
-
-
-
-</div>*@
-
-
-
-
-
-
-
 
 <div class="container">
-    @*<div class="row">
-
-
-        <div class="col-lg-12 col-sm-12 col-md-12">
-            <div class="Index-Header">
-                <img src="~/Resources/districtlogo.png" />
-            </div>
-        </div>
-
-
-        <div class="row" style="margin-bottom:50px;">
-            <div class="col-lg-12 col-sm-12 col-md-12">
-                <div class="Index-Title">
-                    Physical Education Instruction
-                </div>
-            </div>
-
-
-        </div>
-
-    </div>*@
 
 
 
@@ -122,13 +33,11 @@
 
         </p>
     </div>
-
     <div class="row">
-        <div id="GetSubMinForm">
-
-
-        </div>
+        <p class="GetSubMinForm">
+        </p>
     </div>
+    
 </div>
 
 
@@ -162,41 +71,25 @@
 
         function LoadPeMinutes(element) {
             var badge = $(element).val();
-            //var teacher = $(element).find(':selected').attr('data-badge');
             $("#GetSubMinForm").html('');
+            //var teacher = $(element).find(':selected').attr('data-badge');
             //currentTeacher = teacher;
             $.ajax({
-                type: 'Get',
-                url: '@Url.Action("_GetSubMinForm","Substitute")',
-                data: { badge: badge },
+                type: 'Post',
+                url: '@Url.Action("Create", "Substitute")',
+                data: { selectedbadge: badge },
                 beforeSend: function () {
 
                 },
                 success: function (data) {
-                    $("#GetSubMinForm").html(data);
+                    var url = '/Substitute/Create?selectedbadge=' + badge;
+                    window.location.href = url;
                 },
                 error: function (data) {
                     $(".errormessage").text('There was an error processing your request.');
                 }
             });
         };
-
-        function SendBadge()
-        {
-            var badge = $("#MyTeachers").val();
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("Index","Substitute")',
-                data: { badge: badge},
-                success: function (data) {
-                    alert("success");
-                },
-                error: function (data) {
-                    alert("error");
-                }
-            });
-        }
- 
     </script>
 
 }
