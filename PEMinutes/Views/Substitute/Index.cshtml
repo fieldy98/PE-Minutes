@@ -5,91 +5,93 @@
 }
 
 <div class="container">
+    <div class="col-sm-12 panel">
+        <div class="panel-body">
+            <div class="col-sm-12 col-lg-12 center-block">
 
+                <h2><b>Please Choose the School and Teacher you are subbing for:</b></h2>
+                <div class="row">
+                    <div class="Index-Form">
 
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <select id="SelectASchool" class="form-control">
+                                <option value="">Choose a School</option>
+                                @foreach (var item in Model.OrderBy(x => x.Organization_Name).Select(x => x.Organization_Name).Distinct())
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <div id="teacherselect">
+                            </div>
+                        </div>
 
-    <div class="row">
-        <div class="Index-Form">
-
-            <div class="col-lg-4 col-md-4 col-sm-12">
-                <select id="SelectASchool" class="form-control">
-                    <option value="">Choose a School</option>
-                    @foreach (var item in Model.OrderBy(x => x.Organization_Name).Select(x => x.Organization_Name).Distinct())
-                    {
-                        <option value="@item">@item</option>
-                    }
-                </select>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12">
-                <div id="teacherselect">
+                    </div>
                 </div>
-            </div>
 
+                <div class="row">
+                    <p class="errormessage">
+
+                    </p>
+                </div>
+
+
+            </div>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <p class="errormessage">
 
-        </p>
-    </div>
-    <div class="row">
-        <p class="GetSubMinForm">
-        </p>
-    </div>
-    
-</div>
+            @section scripts{
 
+                <script>
 
-@section scripts{
+                    var currentTeacher = '';
 
-    <script>
+                    $("#SelectASchool").on('change', function () {
+                        var mySchool = $(this).val();
+                        if (mySchool === "notaschool") {
 
-    var currentTeacher = '';
-
-    $("#SelectASchool").on('change', function () {
-        var mySchool = $(this).val();
-        if (mySchool === "notaschool") {
-
-        } else {
-            $("#fademin").fadeIn('fast');
-            $.ajax({
-                type: 'Get',
-                url: '@Url.Action("_GetTeachers","Substitute")',
-                data: { schoolname: mySchool },
-                success: function (data) {
-                    $("#teacherselect").html(data);
-                },
-                error: function (data) {
-                    $(".errormessage").text('There was an error processing your request.');
-                }
-            });
-        }
-    });
+                        } else {
+                            $("#fademin").fadeIn('fast');
+                            $.ajax({
+                                type: 'Get',
+                                url: '@Url.Action("_GetTeachers","Substitute")',
+                                data: { schoolname: mySchool },
+                                success: function (data) {
+                                    $("#teacherselect").html(data);
+                                },
+                                error: function (data) {
+                                    $(".errormessage").text('There was an error processing your request.');
+                                }
+                            });
+                        }
+                    });
 
 
 
-        function LoadPeMinutes(element) {
-            var badge = $(element).val();
-            $("#GetSubMinForm").html('');
-            //var teacher = $(element).find(':selected').attr('data-badge');
-            //currentTeacher = teacher;
-            $.ajax({
-                type: 'Post',
-                url: '@Url.Action("Create", "Substitute")',
-                data: { selectedbadge: badge },
-                beforeSend: function () {
+                    function LoadPeMinutes(element) {
+                        var badge = $(element).val();
+                        $("#GetSubMinForm").html('');
+                        //var teacher = $(element).find(':selected').attr('data-badge');
+                        //currentTeacher = teacher;
+                        $.ajax({
+                            type: 'Get',
+                            url: '@Url.Action("Create", "Substitute")',
+                            data: { selectedbadge: badge },
+                            beforeSend: function () {
 
-                },
-                success: function (data) {
-                    var url = '/Substitute/Create?selectedbadge=' + badge;
-                    window.location.href = url;
-                },
-                error: function (data) {
-                    $(".errormessage").text('There was an error processing your request.');
-                }
-            });
-        };
-    </script>
+                            },
+                            success: function (data) {
+                                var url = '/Substitute/Create?selectedbadge=' + badge;
+                                window.location.href = url;
+                            },
+                            error: function (data) {
+                                $(".errormessage").text('There was an error processing your request.');
+                            }
+                        });
+                    };
+                </script>
 
-}
+            }

@@ -39,7 +39,7 @@ namespace PEMinutes.Controllers
 
         // POST: Teacher/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, string selectedbadge)
         {
             if (ModelState.IsValid)
@@ -57,7 +57,7 @@ namespace PEMinutes.Controllers
                 // Apply the modifications and then save to the database
                 db.SubMinutes.Add(sub);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Authentication");
             }
             return View(sub);
         }
@@ -116,7 +116,7 @@ namespace PEMinutes.Controllers
             return PartialView(myTeacherList);
         }
 
-        public ActionResult _GetSubMinForm(string badge)
+        public ActionResult _GetSubMinForm(string selectedbadge)
         {
             
 
