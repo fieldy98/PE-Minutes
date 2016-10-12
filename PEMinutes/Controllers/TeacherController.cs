@@ -78,11 +78,16 @@ namespace PEMinutes.Controllers
 
 
                 // Build variable with information not gathered from user.
-                enteredPeMinute.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+                var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+                enteredPeMinute.TeacherName = TeacherNameVariable;
                 enteredPeMinute.School      = SelectedTeacher.Organization_Name;
                 enteredPeMinute.Grade       = SelectedTeacher.COURSE_TITLE;
                 enteredPeMinute.BadgeNumber = BadgeNumber;
                 enteredPeMinute.Timestamp   = DateTime.Now;
+                enteredPeMinute.IsApproved = 1;
+                enteredPeMinute.ApprovedBy = TeacherNameVariable;
+                enteredPeMinute.ApproveTime = DateTime.Now;
+
 
                 // Apply the modifications and then save to the database
                 db.EnteredPeMinutes.Add(enteredPeMinute);
@@ -91,6 +96,48 @@ namespace PEMinutes.Controllers
             }
             return View(enteredPeMinute);
         }
+
+        // GET: Teacher/Approve
+        public ActionResult Approve()
+        {
+
+            var EnteredBadgeString = User.Identity.Name;
+            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+            ViewBag.School = SelectedTeacher.Organization_Name;
+            List<SubMinute> SubMinutesForApproval = db.SubMinutes.Where(i => i.BadgeNumber == TeacherBadgeNumber && i.IsApproved == null).OrderByDescending(i => i.Timestamp).ToList();
+            return View(SubMinutesForApproval);
+
+        }
+
+        // POST: Checkout 
+        public ActionResult Approve(int IssuedApproval)
+        {
+            var EnteredBadgeString = User.Identity.Name;
+            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+            var Minute = db.SubMinutes.FirstOrDefault(x => x.ID == IssuedApproval);
+
+            Minute.IsApproved = 1;
+            Minute.ApprovedBy = TeacherNameVariable;
+            Minute.ApproveTime = DateTime.Now;
+            db.SubMinutes.Add(Minute);
+            db.SaveChanges();
+
+            //EnteredPeMinute AddApprovedMinute = new EnteredPeMinute()
+            //{
+               
+            //};
+
+            //db.EnteredPeMinutes.Attach();
+            //db.SaveChanges();
+
+
+            return Json(new { success = true });
+        }
+
+
 
         // GET: Teacher/Edit/5
         // Edit Minutes
