@@ -1,5 +1,8 @@
 ﻿@model PEMinutes.EF.SubMinute
 
+@{
+    ViewBag.Title = "Substitute PE Minutes";
+}
 
 <div class="container">
     <div class="col-sm-12 panel">
@@ -39,7 +42,7 @@
 
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Create" class="btn btn-default" />
+                                <input type="submit" value="Create" class="btn btn-default" onclick="alert('Your minutes have been entered');"/>
                             </div>
                         </div>
                     </div>

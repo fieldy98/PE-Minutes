@@ -37,22 +37,26 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td class="col-lg-2">
+                    <td id="SubstituteName" class="col-lg-2">
                         @Html.DisplayFor(modelItem => item.SubstituteName)
                     </td>
-                    <td class="col-lg-1">
+                    <td id="Minutes" class="col-lg-1">
                         @Html.DisplayFor(modelItem => item.Minutes)
                     </td>
 
-                    <td>
+                    <td id="Activity">
                         @Html.DisplayFor(modelItem => item.Activity)
                     </td>
-                    <td class="col-lg-2">
+                    <td id="Timestamp" class="col-lg-2">
                         @Html.DisplayFor(modelItem => item.Timestamp)
+                    </td>
+                    <td id="SubID">
+                        @Html.DisplayFor(modelItem => item.ID)
                     </td>
                     <td class="col-lg-1">
                         <div class="btn-group btn-group-sm">
-                            @Html.ActionLink("Approve", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                            <input type="submit" value="Create" class="btn btn-default" onclick="CreateTeacherMinsFromSubMins($(this));UpdateSub($(this));" />
+                            @*@Html.ActionLink("Approve", "Details", new {  id = item.ID }, new { onclick = "CreateTeacherMinsFromSubMins($(this));", @class = "btn btn-default" })*@
                         </div>
 
                     </td>
@@ -62,3 +66,38 @@
         </table>
     </div>
 </div>
+
+<script>
+    function CreateTeacherMinsFromSubMins(element) {
+        var SelectedSubstituteName = $("#SubstituteName").html();
+        var SelectedMinutes = $("#Minutes").html();
+        var SelectedActivity = $("#Activity").html();
+        var SelectedTimestamp = $("#Timestamp").html();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("MoveSubToTeacher", "Teacher")',
+            data: { SelectedSubstituteName: SelectedSubstituteName, SelectedMinutes: SelectedMinutes, SelectedActivity: SelectedActivity, SelectedTimestamp: SelectedTimestamp },
+            success: function (data) {
+                alert("success");
+            },
+            error: function (data) {
+                alert("error");
+            }
+        });
+    };
+
+    function UpdateSub() {
+        var SelectedID = $("#SubID").html();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Approve", "Teacher")',
+            data: { SelectedID: SelectedID },
+            success: function (data) {
+                alert("success");
+            },
+            error: function (data) {
+                alert("error");
+            }
+        });
+    };
+</script>
