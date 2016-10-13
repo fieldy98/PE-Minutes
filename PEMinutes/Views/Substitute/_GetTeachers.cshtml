@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<PEMinutes.EF.SchoolTeachersWithADLogin>
 
+@* Dropdown list of teachers based on the selected school. The onchange will take you to the create page*@
 <select id="MyTeachers" class="form-control" onchange="LoadSubMinutesCreate($(this));">
     <option value="">Choose a Teacher</option>
     @foreach (var item in Model)
