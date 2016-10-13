@@ -14,6 +14,7 @@
                     <div class="Index-Form">
 
                         <div class="col-lg-4 col-md-4 col-sm-12">
+                            @*Dropdown list of schools in the district*@
                             <select id="SelectASchool" class="form-control">
                                 <option value="">Choose a School</option>
                                 @foreach (var item in Model.OrderBy(x => x.Organization_Name).Select(x => x.Organization_Name).Distinct())
@@ -22,6 +23,7 @@
                                 }
                             </select>
                         </div>
+                        @* this is an empty div for loading the _GetTeachers partial when a school is selected *@
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div id="teacherselect">
                             </div>
@@ -29,7 +31,7 @@
 
                     </div>
                 </div>
-
+                @* this is an empty div for loading the error message if an error is encountered *@
                 <div class="row">
                     <p class="errormessage">
 
@@ -38,25 +40,25 @@
 
 
             </div>
-            </div>
         </div>
     </div>
+</div>
 
 
             @section scripts{
 
                 <script>
-
+                    // When you select a school from the dropdown list this function will get a list of teachers from that school
                     $("#SelectASchool").on('change', function () {
-                        var mySchool = $(this).val();
-                        if (mySchool === "notaschool") {
+                        var SelectedSchool = $(this).val();
+                        if (SelectedSchool === "notaschool") {
 
                         } else {
                             $("#fademin").fadeIn('fast');
                             $.ajax({
                                 type: 'Get',
                                 url: '@Url.Action("_GetTeachers","Substitute")',
-                                data: { schoolname: mySchool },
+                                data: { SelectedSchool: SelectedSchool },
                                 success: function (data) {
                                     $("#teacherselect").html(data);
                                 },
@@ -68,7 +70,7 @@
                     });
 
 
-
+                    // When you select a teacher name this function will take you to the create page and pass in the badge number
                     function LoadSubMinutesCreate(element) {
                         var badge = $(element).val();
                         $.ajax({

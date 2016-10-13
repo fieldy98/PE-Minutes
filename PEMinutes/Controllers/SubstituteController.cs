@@ -15,7 +15,6 @@ namespace PEMinutes.Controllers
         private PEMinutesEntities db = new PEMinutesEntities();
         private RenExtractEntities ren = new RenExtractEntities();
 
-        // GET: Substitute
         public ActionResult Index()
         {
             var schools = ren.SchoolTeachersWithADLogins;
@@ -27,7 +26,8 @@ namespace PEMinutes.Controllers
             return View();
         }
 
-        // POST: Teacher/Create
+        // POST: Substitute/Create
+        // This is how the SubMinutes are created
         [HttpPost]
         
         public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, string selectedbadge)
@@ -35,7 +35,7 @@ namespace PEMinutes.Controllers
             if (ModelState.IsValid)
             {
                 int BadgeNumber = Int32.Parse(selectedbadge);  // convert string to int
-                SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == selectedbadge);
+                SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == selectedbadge); //Finding the teacher that matches the selected badge number
 
                 // Build variable with information not gathered from user.
                 sub.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
@@ -47,16 +47,17 @@ namespace PEMinutes.Controllers
                 // Apply the modifications and then save to the database
                 db.SubMinutes.Add(sub);
                 db.SaveChanges();
-                return RedirectToAction("Index", "Authentication");
+                return RedirectToAction("Index", "Authentication"); // takes the user back to the login page to choose subs or teacher
             }
             return View(sub);
         }
-
-        public ActionResult _GetTeachers(string schoolname)
+        // This loads the _GetTeachers Partial
+        public ActionResult _GetTeachers(string SelectedSchool)
         {
-            List<SchoolTeachersWithADLogin> myTeacherList = ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == schoolname && i.COURSE_TITLE.Contains("PS") == false && i.COURSE_TITLE.Contains("Kind") == false).OrderBy(i => i.TeacherLastName).ToList();
+            // This is the query for selecting teachers from the selected school and they are put into a list for the dropdown
+            List<SchoolTeachersWithADLogin> SelectedSchoolTeachers = ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == SelectedSchool && i.COURSE_TITLE.Contains("PS") == false && i.COURSE_TITLE.Contains("Kind") == false).OrderBy(i => i.TeacherLastName).ToList();
            
-            return PartialView(myTeacherList);
+            return PartialView(SelectedSchoolTeachers);
         }
     }
 }
