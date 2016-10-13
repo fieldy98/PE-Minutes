@@ -45,50 +45,50 @@
 </div>
 
 
-            @section scripts{
+@section scripts{
 
-                <script>
-                    // When you select a school from the dropdown list this function will get a list of teachers from that school
-                    $("#SelectASchool").on('change', function () {
-                        var SelectedSchool = $(this).val();
-                        if (SelectedSchool === "notaschool") {
+    <script>
+        // When you select a school from the dropdown list this function will get a list of teachers from that school
+        $("#SelectASchool").on('change', function () {
+            var SelectedSchool = $(this).val();
+            if (SelectedSchool === "notaschool") {
 
-                        } else {
-                            $("#fademin").fadeIn('fast');
-                            $.ajax({
-                                type: 'Get',
-                                url: '@Url.Action("_GetTeachers","Substitute")',
-                                data: { SelectedSchool: SelectedSchool },
-                                success: function (data) {
-                                    $("#teacherselect").html(data);
-                                },
-                                error: function (data) {
-                                    $(".errormessage").text('There was an error processing your request.');
-                                }
-                            });
-                        }
-                    });
-
-
-                    // When you select a teacher name this function will take you to the create page and pass in the badge number
-                    function LoadSubMinutesCreate(element) {
-                        var badge = $(element).val();
-                        $.ajax({
-                            type: 'Get',
-                            url: '@Url.Action("Create", "Substitute")',
-                            data: { selectedbadge: badge },
-                            beforeSend: function () {
-
-                            },
-                            success: function (data) {
-                                var url = '/Substitute/Create?selectedbadge=' + badge;
-                                window.location.href = url;
-                            },
-                            error: function (data) {
-                                $(".errormessage").text('There was an error processing your request.');
-                            }
-                        });
-                    };
-                </script>
-
+            } else {
+                $("#fademin").fadeIn('fast');
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("_GetTeachers","Substitute")',
+                    data: { SelectedSchool: SelectedSchool },
+                    success: function (data) {
+                        $("#teacherselect").html(data);
+                    },
+                    error: function (data) {
+                        $(".errormessage").text('There was an error processing your request.');
+                    }
+                });
             }
+        });
+
+
+        // When you select a teacher name this function will take you to the create page and pass in the badge number
+        function LoadSubMinutesCreate(element) {
+            var badge = $(element).val();
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("Create", "Substitute")',
+                data: { selectedbadge: badge },
+                beforeSend: function () {
+
+                },
+                success: function (data) {
+                    var url = '/Substitute/Create?selectedbadge=' + badge;
+                    window.location.href = url;
+                },
+                error: function (data) {
+                    $(".errormessage").text('There was an error processing your request.');
+                }
+            });
+        };
+    </script>
+
+}
