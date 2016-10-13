@@ -33,9 +33,13 @@ namespace PEMinutes.Controllers
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             ViewBag.School = SelectedTeacher.Organization_Name;
-            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).OrderByDescending(i => i.Timestamp).ToList();
+
             
-            return View(TeachersPeMinutes);
+
+
+
+
+            return View();
         }
 
         public ActionResult Manage()
@@ -43,6 +47,7 @@ namespace PEMinutes.Controllers
             var EnteredBadgeString = User.Identity.Name;
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).OrderByDescending(i => i.Timestamp).ToList();
             return View(TeachersPeMinutes);
         }
@@ -118,7 +123,7 @@ namespace PEMinutes.Controllers
 
         }
 
-        // POST: Checkout 
+        // POST: Approve
         [HttpPost]
         public ActionResult Approve(int SelectedID)
         {
@@ -128,20 +133,11 @@ namespace PEMinutes.Controllers
             var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             var Minute = db.SubMinutes.FirstOrDefault(x => x.ID == SelectedID);
 
-            Minute.IsApproved = '1';
+            Minute.IsApproved = 1;
             Minute.ApprovedBy = TeacherNameVariable;
             Minute.ApproveTime = DateTime.Now;
             db.Entry(Minute).State = EntityState.Modified;
             db.SaveChanges();
-
-            //EnteredPeMinute AddApprovedMinute = new EnteredPeMinute()
-            //{
-               
-            //};
-
-            //db.EnteredPeMinutes.Attach();
-            //db.SaveChanges();
-
 
             return Json(new { success = true });
         }
@@ -165,7 +161,7 @@ namespace PEMinutes.Controllers
             enteredPeMinute.School = SelectedTeacher.Organization_Name;
             enteredPeMinute.Grade = SelectedTeacher.COURSE_TITLE;
             
-            enteredPeMinute.IsApproved = '1';
+            enteredPeMinute.IsApproved = 1;
             enteredPeMinute.ApprovedBy = TeacherNameVariable;
             enteredPeMinute.ApproveTime = DateTime.Now;
             db.EnteredPeMinutes.Add(enteredPeMinute);

@@ -315,7 +315,6 @@
     <Content Include="Views\Substitute\_GetTeachers.cshtml" />
     <Content Include="Views\Teacher\Approve.cshtml" />
     <Content Include="Views\Shared\_navbar.cshtml" />
-    <Content Include="Views\Teacher\Test.cshtml" />
     <Content Include="Views\Shared\_sidebar.cshtml" />
     <Content Include="Views\Teacher\Manage.cshtml" />
   </ItemGroup>

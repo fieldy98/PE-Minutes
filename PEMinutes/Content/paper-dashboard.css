@@ -1808,8 +1808,8 @@ textarea.form-control {
   position: absolute;
 }
 .card .ct-chart {
-  margin: 30px 0 30px;
-  height: 245px;
+  margin: 0px 0 0px;
+  height: 200px;
 }
 .card .table tbody td:first-child,
 .card .table thead th:first-child {

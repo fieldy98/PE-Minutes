@@ -3,6 +3,7 @@
     ViewBag.Title = "Manage";
 }
 
+
 <div class="card">
     <div class="header">
         <h4 class="title">PE Minutes</h4>
@@ -40,9 +41,7 @@
                         @Html.DisplayFor(modelItem => item.Timestamp)
                     </td>
                     <td class="col-lg-1">
-                        <div class="btn-group btn-group-sm">
                             @Html.ActionLink("View", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
-                        </div>
 
                     </td>
                 </tr>
