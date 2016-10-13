@@ -38,7 +38,14 @@ namespace PEMinutes.Controllers
             return View(TeachersPeMinutes);
         }
 
-
+        public ActionResult Manage()
+        {
+            var EnteredBadgeString = User.Identity.Name;
+            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).OrderByDescending(i => i.Timestamp).ToList();
+            return View(TeachersPeMinutes);
+        }
 
 
         // GET: Teacher/Details/5

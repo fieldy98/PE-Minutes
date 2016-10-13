@@ -3,15 +3,10 @@
 @{
     ViewBag.Title = "Details";
 }
-
-<h2>Details</h2>
-
 <div>
-    <h4>EnteredPeMinute</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.TeacherName)
+            Teacher:
         </dt>
 
         <dd>
@@ -19,7 +14,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Minutes)
+            Minutes:
         </dt>
 
         <dd>
@@ -27,7 +22,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.BadgeNumber)
+            Badge Number:
         </dt>
 
         <dd>
@@ -35,7 +30,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.School)
+            School:
         </dt>
 
         <dd>
@@ -43,7 +38,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Grade)
+            Grade:
         </dt>
 
         <dd>
@@ -51,7 +46,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Activity)
+            Activity:
         </dt>
 
         <dd>
@@ -59,44 +54,54 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Timestamp)
+            Time:
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Timestamp)
         </dd>
+        @if (Model.SubstituteName != null)
+        {
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SubstituteName)
-        </dt>
+            <dt>
+                Substitute Name:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.SubstituteName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.SubstituteName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.IsApproved)
-        </dt>
+            <dt>
+                Approved:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.IsApproved)
-        </dd>
+                if (Model.IsApproved == 1)
+                {
+                    <dd>Yes</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ApprovedBy)
-        </dt>
+                }
+                else
+                {
+                    <dd>Needs Approval</dd>
+                }
 
-        <dd>
-            @Html.DisplayFor(model => model.ApprovedBy)
-        </dd>
+            <dt>
+                Approved By:
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ApproveTime)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ApprovedBy)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.ApproveTime)
-        </dd>
+            <dt>
+                Approved At:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ApproveTime)
+            </dd>
+        }
+
 
     </dl>
 </div>

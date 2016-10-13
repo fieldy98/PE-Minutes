@@ -1,0 +1,27 @@
+﻿<div class="sidebar" data-background-color="black" data-active-color="danger">
+    <!--
+        Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+        Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+    -->
+    <div class="sidebar-wrapper">
+        <div class="logo">
+            <a class="simple-text">
+                PE Minutes
+            </a>
+        </div>
+        <ul class="nav">
+            <li>
+                <i class="ti-stats-up"></i>
+                @Html.ActionLink("Dashboard", "Index", "Teacher")
+            </li>
+            <li>
+                <i class="ti-time"></i>
+                @Html.ActionLink("This Month", "Manage", "Teacher")
+            </li>
+            <li>
+                <i class="ti-clipboard"></i>
+                @Html.ActionLink("Approvals", "Approve", "Teacher")
+            </li>
+        </ul>
+    </div>
+</div>

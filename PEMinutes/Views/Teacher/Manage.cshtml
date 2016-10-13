@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
+@{
+    ViewBag.Title = "Manage";
+}
+
+<div class="card">
+    <div class="header">
+        <h4 class="title">PE Minutes</h4>
+        <p class="category">Your PE minutes over the last 30 days</p>
+    </div>
+    <div class="content table-responsive table-full-width">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Minutes)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Activity)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Timestamp)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Minutes)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Activity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Timestamp)
+                    </td>
+                    <td class="col-lg-1">
+                        <div class="btn-group btn-group-sm">
+                            @Html.ActionLink("View", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                        </div>
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+</div>
+
+ 

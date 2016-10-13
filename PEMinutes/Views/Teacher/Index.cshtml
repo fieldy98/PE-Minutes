@@ -1,60 +1,147 @@
 ﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
 
 @{
-    ViewBag.Title = "Teacher Homepage";
+    ViewBag.Title = "Dashboard";
 }
-<div class="col-sm-12 panel">
-    <div class="panel-body">
-        <div class="col-sm-12 col-lg-3 center-block">
-            <h2>@ViewBag.Name </h2>
-        </div>
-        <div class="col-sm-12 col-lg-9">
-
-
-
-        </div>
-
-
-
-        <table class="table table-responsive col-sm-12">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Minutes)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Activity)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Timestamp)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td></td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Minutes)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Activity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Timestamp)
-                    </td>
-                    <td class="col-lg-1">
-                        <div class="btn-group btn-group-sm">
-                            @Html.ActionLink("View", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+<div class="col-sm-12">
+    <div class="col-lg-3 col-sm-6">
+        <div class="card">
+            <div class="content">
+                <div class="row">
+                    <div class="col-xs-5">
+                        <div class="icon-big icon-warning text-center">
+                            <i class="ti-clipboard"></i>
                         </div>
-
-                    </td>
-                </tr>
-            }
-
-        </table>
+                    </div>
+                    <div class="col-xs-7">
+                        <div class="numbers">
+                            <p>Minutes This Week</p>
+                            205
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <hr />
+                    <div class="stats">
+                        <i class="ti-reload"></i> Updated now
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="col-lg-3 col-sm-6">
+        <div class="card">
+            <div class="content">
+                <div class="row">
+                    <div class="col-xs-5">
+                        <div class="icon-big icon-success text-center">
+                            <i class="ti-pencil-alt2"></i>
+                        </div>
+                    </div>
+                    <div class="col-xs-7">
+                        <div class="numbers">
+                            <p>Sub Approvals</p>
+                            5
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <hr />
+                    <div class="stats">
+                        <i class="ti-calendar"></i> Last day
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <div class="card">
+            <div class="content">
+                <div class="row">
+                    <div class="col-xs-5">
+                        <div class="icon-big icon-danger text-center">
+                            <i class="ti-pulse"></i>
+                        </div>
+                    </div>
+                    <div class="col-xs-7">
+                        <div class="numbers">
+                            <p>Current Status</p>
+                            OK
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <hr />
+                    <div class="stats">
+                        <i class="ti-timer"></i> In the last hour
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <div class="card">
+            <div class="content">
+                <div class="row">
+                    <div class="col-xs-5">
+                        <div class="icon-big icon-info text-center">
+                            <i class="ti-check"></i>
+                        </div>
+                    </div>
+                    <div class="col-xs-7">
+                        <div class="numbers">
+                            <p>Something Else</p>
+                            20
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <hr />
+                    <div class="stats">
+                        <i class="ti-reload"></i> Updated now
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Last Week</h4>
+                    <p class="category">Minutes Last Week</p>
+                </div>
+                <div class="content">
+                    <div class="ct-chart ct-perfect-fourth"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 </div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var data = {
+                // A labels array that can contain any sort of values
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                // Our series array that contains series objects or in this case series data arrays
+                series: [
+                  [5, 2, 4, 2, 0]
+                ]
+            };
+            // Create a new line chart object where as first parameter we pass in a selector
+            // that is resolving to our chart container element. The Second parameter
+            // is the actual data object.
+            new Chartist.Line('.ct-chart', data);
+        });
+    </script>
+    
+    
+    }
