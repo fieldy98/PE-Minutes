@@ -113,17 +113,18 @@ namespace PEMinutes.Controllers
 
         // POST: Checkout 
         [HttpPost]
-        public ActionResult Approve(int IssuedApproval)
+        public ActionResult Approve(int SelectedID)
         {
             var EnteredBadgeString = User.Identity.Name;
+            int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-            var Minute = db.SubMinutes.FirstOrDefault(x => x.ID == IssuedApproval);
+            var Minute = db.SubMinutes.FirstOrDefault(x => x.ID == SelectedID);
 
             Minute.IsApproved = '1';
             Minute.ApprovedBy = TeacherNameVariable;
             Minute.ApproveTime = DateTime.Now;
-            db.SubMinutes.Add(Minute);
+            db.Entry(Minute).State = EntityState.Modified;
             db.SaveChanges();
 
             //EnteredPeMinute AddApprovedMinute = new EnteredPeMinute()
@@ -138,6 +139,33 @@ namespace PEMinutes.Controllers
             return Json(new { success = true });
         }
 
+
+        // POST: Checkout 
+        [HttpPost]
+        public ActionResult MoveSubToTeacher(string SelectedSubstituteName, int SelectedMinutes, string SelectedActivity, DateTime SelectedTimestamp, EnteredPeMinute enteredPeMinute)
+        {
+            var EnteredBadgeString = User.Identity.Name;
+            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+
+            enteredPeMinute.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+            enteredPeMinute.Minutes = SelectedMinutes;
+            enteredPeMinute.Activity = SelectedActivity;
+            enteredPeMinute.Timestamp = SelectedTimestamp;
+            enteredPeMinute.SubstituteName = SelectedSubstituteName;
+            int BadgeNumber = Int32.Parse(SelectedTeacher.BADGE_NUM);  // convert string to int
+            enteredPeMinute.BadgeNumber = BadgeNumber;
+            enteredPeMinute.School = SelectedTeacher.Organization_Name;
+            enteredPeMinute.Grade = SelectedTeacher.COURSE_TITLE;
+            
+            enteredPeMinute.IsApproved = '1';
+            enteredPeMinute.ApprovedBy = TeacherNameVariable;
+            enteredPeMinute.ApproveTime = DateTime.Now;
+            db.EnteredPeMinutes.Add(enteredPeMinute);
+            db.SaveChanges();
+
+            return Json(new { success = true });
+        }
 
 
         // GET: Teacher/Edit/5
