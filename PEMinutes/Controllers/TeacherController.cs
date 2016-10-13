@@ -33,13 +33,26 @@ namespace PEMinutes.Controllers
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             ViewBag.School = SelectedTeacher.Organization_Name;
-
-            
-
+            ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();
 
 
 
-            return View();
+            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).ToList();
+
+
+            //DayOfWeek weekStart = DayOfWeek.Monday; // or Sunday, or whenever
+            //DateTime startingDate = DateTime.Today;
+
+            //while (startingDate.DayOfWeek != weekStart)
+            //    startingDate = startingDate.AddDays(-1);
+
+            //DateTime previousWeekStart = startingDate.AddDays(-7);
+            //DateTime previousWeekEnd = startingDate.AddDays(-1);
+
+
+
+
+            return View(TeachersPeMinutes);
         }
 
         public ActionResult Manage()
@@ -48,7 +61,8 @@ namespace PEMinutes.Controllers
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).OrderByDescending(i => i.Timestamp).ToList();
+            DateTime TenDays = DateTime.Now.AddDays(11);
+            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.Timestamp >= TenDays).OrderByDescending(i => i.Timestamp).ToList();
             return View(TeachersPeMinutes);
         }
 
@@ -169,6 +183,39 @@ namespace PEMinutes.Controllers
 
             return Json(new { success = true });
         }
+
+
+        // GET: Get Chart JSON Data
+        public JsonResult GetMinutesGraph()
+        {
+
+            var EnteredBadgeString = User.Identity.Name;
+            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+
+            DateTime TenDays = DateTime.Now.AddDays(-10);
+
+            var minutes = db.EnteredPeMinutes.Where(x => x.BadgeNumber == TeacherBadgeNumber).Select(x => x.Minutes);
+
+            return Json(minutes, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetDateGraph()
+        {
+
+            var EnteredBadgeString = User.Identity.Name;
+            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+
+            DateTime TenDays = DateTime.Now.AddDays(-10);
+
+            var dates = db.EnteredPeMinutes.Where(x => x.BadgeNumber == TeacherBadgeNumber).Select(x => x.Timestamp).ToString();
+
+
+
+            return Json(dates, JsonRequestBehavior.AllowGet);
+        }
+
 
 
         // GET: Teacher/Edit/5
