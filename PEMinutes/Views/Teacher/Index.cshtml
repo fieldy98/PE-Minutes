@@ -3,11 +3,6 @@
 @{
     ViewBag.Title = "Dashboard";
 }
-@ViewBag.ThisWeekGraphTimes
-
-<button onclick="GetData()" class="btn btn-default">Get Data</button>
-
-<button onclick="GetTimes()" class="btn btn-default">Get Time</button>
 
 <div class="row">
     <div class="col-lg-2 col-sm-6">
@@ -66,7 +61,7 @@
             </div>
             <div class="content">
                 <div class="ct-chart ct-perfect-fourth"></div>
-
+     
             </div>
         </div>
     </div>
@@ -76,12 +71,16 @@
 
 @section Scripts{
     <script>
+        
+
+
+
         function GetData() {
             $.ajax({
                 url: '@Url.Action("GetMinutesGraph", "Teacher")',
                 type: 'GET',
                 success: function (data) {
-                    alert("SUCCESS")
+                    alert(data)
                 },
                 error: function () {
                     alert("error");
@@ -93,7 +92,10 @@
                 url: '@Url.Action("GetDateGraph", "Teacher")',
                 type: 'GET',
                 success: function (data) {
-                    alert("SUCCESS")
+                    var re = /-?\d+/;
+                    var m = re.exec(data);
+                    var d = new Date(parseInt(m[0]));
+                    return d;
                 },
                 error: function () {
                     alert("error");
@@ -102,14 +104,20 @@
         }
     </script>
     <script>
+
+
+
+
+
         $(document).ready(function () {
+
+
+
             var data = {
                 // A labels array that can contain any sort of values
-                labels: ['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'],
+                labels: [@Html.Raw(Json.Encode(@ViewBag.SevenDays)),@Html.Raw(Json.Encode(@ViewBag.SixDays)),@Html.Raw(Json.Encode(@ViewBag.FiveDays)),@Html.Raw(Json.Encode(@ViewBag.FourDays)),@Html.Raw(Json.Encode(@ViewBag.ThreeDays)),@Html.Raw(Json.Encode(@ViewBag.TwoDays)),@Html.Raw(Json.Encode(@ViewBag.Yester)),@Html.Raw(Json.Encode(@ViewBag.Now))],
                 // Our series array that contains series objects or in this case series data arrays
-                series: [
-                  [10, 20, 15, 20, 16]
-                ]
+                series: [[@Html.Raw(Json.Encode(@ViewBag.SevenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.SixDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.FiveDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.FourDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.ThreeDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.TwoDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.Yesterday)),@Html.Raw(Json.Encode(@ViewBag.Today))]]
             }
 
             // Create a new line chart object where as first parameter we pass in a selector
