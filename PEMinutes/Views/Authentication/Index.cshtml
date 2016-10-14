@@ -2,26 +2,27 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <h2 class="text-center">Welcome to PE minutes</h2>
-            <div class="modal-body" style="padding-bottom: 30px;">
-                <form class="form-signin">
-                    @if (Request.IsAuthenticated)
-                    {
-                        @Html.ActionLink("Teacher", "Index", new { Controller = "Teacher", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block" })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Teacher", "Login", "Authentication", new { @class = "btn btn-lg btn-primary btn-block" })
-                    }
-                </form>
-                <form class="form-signin">
-                    @Html.ActionLink("Substitute", "Index", new { Controller = "Substitute", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block" })
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="container">
+    <form class="form-signin">
+        <h2 class="form-signin-heading text-center">Welcome to <br> PE Minutes</h2>
+        @if (Request.IsAuthenticated)
+            {
+            @Html.ActionLink("Teacher", "Index", new { Controller = "Teacher", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block" })
+        }
+        else
+        {
+            @Html.ActionLink("Teacher", "Login", "Authentication", new { @class = "btn btn-lg btn-primary btn-block" })
+        }
+        @Html.ActionLink("Substitute", "Index", new { Controller = "Substitute", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block" })
+    </form>
 </div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("div").removeClass("main-panel");
+        });
+    </script>
+}
+
+
