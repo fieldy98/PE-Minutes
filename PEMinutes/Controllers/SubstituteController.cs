@@ -14,7 +14,7 @@ namespace PEMinutes.Controllers
 
         public ActionResult Index()
         {
-            var schools = ren.SchoolTeachersWithADLogins;
+            var schools = ren.SchoolTeachersWithADLogins.Where(x=>x.Organization_Name.Contains("Elemen")); // Limiting the dropdown to only elementary schools
             return View(schools);
         }
 
