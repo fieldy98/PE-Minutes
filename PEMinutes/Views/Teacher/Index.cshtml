@@ -56,8 +56,8 @@
     <div class="sol-sm-5 col-md-5 col-lg-10">
         <div class="card">
             <div class="header">
-                <h4 class="title">Last Week</h4>
-                <p class="category">Minutes Last Week</p>
+                <h4 class="title">Last Two Weeks</h4>
+                <p class="category">Minutes over the last two weeks</p>
             </div>
             <div class="content">
                 <div class="ct-chart ct-perfect-fourth"></div>
@@ -115,9 +115,9 @@
 
             var data = {
                 // A labels array that can contain any sort of values
-                labels: [@Html.Raw(Json.Encode(@ViewBag.TwelveDays)),@Html.Raw(Json.Encode(@ViewBag.ElevenDays)),@Html.Raw(Json.Encode(@ViewBag.TenDays)),@Html.Raw(Json.Encode(@ViewBag.NineDays)),@Html.Raw(Json.Encode(@ViewBag.EightDays)),@Html.Raw(Json.Encode(@ViewBag.SevenDays)),@Html.Raw(Json.Encode(@ViewBag.SixDays)),@Html.Raw(Json.Encode(@ViewBag.FiveDays)),@Html.Raw(Json.Encode(@ViewBag.FourDays)),@Html.Raw(Json.Encode(@ViewBag.ThreeDays)),@Html.Raw(Json.Encode(@ViewBag.TwoDays)),@Html.Raw(Json.Encode(@ViewBag.Yester)),@Html.Raw(Json.Encode(@ViewBag.Now))],
+                labels: [@Html.Raw(Json.Encode(@ViewBag.TwelveDays)),@Html.Raw(Json.Encode(@ViewBag.ElevenDays)),@Html.Raw(Json.Encode(@ViewBag.TenDays)),@Html.Raw(Json.Encode(@ViewBag.NineDays)),@Html.Raw(Json.Encode(@ViewBag.EightDays)),@Html.Raw(Json.Encode(@ViewBag.SevenDays)),@Html.Raw(Json.Encode(@ViewBag.SixDays)),@Html.Raw(Json.Encode(@ViewBag.FiveDays)),@Html.Raw(Json.Encode(@ViewBag.FourDays)),@Html.Raw(Json.Encode(@ViewBag.ThreeDays)),@Html.Raw(Json.Encode(@ViewBag.TwoDays)),@Html.Raw(Json.Encode(@ViewBag.Yester))],
                 // Our series array that contains series objects or in this case series data arrays
-                series: [[@Html.Raw(Json.Encode(@ViewBag.TwelveDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.ElevenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.TenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.NineDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.EightDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.SevenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.SixDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.FiveDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.FourDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.ThreeDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.TwoDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.Yesterday)),@Html.Raw(Json.Encode(@ViewBag.Today))]]
+                series: [[@Html.Raw(Json.Encode(@ViewBag.TwelveDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.ElevenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.TenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.NineDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.EightDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.SevenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.SixDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.FiveDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.FourDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.ThreeDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.TwoDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.Yesterday))]]
             }
 
             // Create a new line chart object where as first parameter we pass in a selector
