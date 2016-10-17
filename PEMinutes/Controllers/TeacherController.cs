@@ -20,6 +20,19 @@ using System.Globalization;
 
 namespace PEMinutes.Controllers
 {
+    // This is an extension method to allow me to create the start of the week.
+    public static class DateTimeExtensions
+    {
+        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = dt.DayOfWeek - startOfWeek;
+            if (diff < 0)
+            {
+                diff += 7;
+            }
+            return dt.AddDays(-1 * diff).Date;
+        }
+    }
     public class TeacherController : Controller
     {
         private RenExtractEntities ren = new RenExtractEntities();
@@ -35,6 +48,17 @@ namespace PEMinutes.Controllers
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             ViewBag.School = SelectedTeacher.Organization_Name;
             ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();
+
+            DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
+            var CurrentWeekMinutes = db.EnteredPeMinutes.Where(x => x.Timestamp >= CurrentWeek).Sum(x => x.Minutes);
+            if (CurrentWeekMinutes == null)
+            {
+                ViewBag.CurrentWeekMinutes = 0;
+            }
+            else
+            {
+                ViewBag.CurrentWeekMinutes = CurrentWeekMinutes;
+            }
 
 
 
@@ -120,6 +144,7 @@ namespace PEMinutes.Controllers
 
             return View(TeachersPeMinutes);
         }
+        
 
         public ActionResult Manage()
         {
