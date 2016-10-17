@@ -42,12 +42,18 @@ namespace PEMinutes.Controllers
         // Landing Page
         public ActionResult Index()
         {
+            DateTime now = DateTime.Now;
+
+            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
+            lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
+
             var EnteredBadgeString = User.Identity.Name; 
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             ViewBag.School = SelectedTeacher.Organization_Name;
             ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();
+            ViewBag.Approved = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.ApprovedBy != null && i.Timestamp > lastDayLastMonth).Count();
 
             DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
             var CurrentWeekMinutes = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= CurrentWeek).Sum(x => x.Minutes);
@@ -60,31 +66,33 @@ namespace PEMinutes.Controllers
                 ViewBag.CurrentWeekMinutes = CurrentWeekMinutes;
             }
 
-
-
+            var ThisMonth = DateTime.Today.ToString("MMMM");
+            ViewBag.ThisMonth = ThisMonth;
 
             // Section for determining the minutes that can be used in a graph for the admin view. This will give the current month from 1 to today
-            DateTime now = DateTime.Now;
+            //DateTime now = DateTime.Now;
 
-            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
-            lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
+            //DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
+            //lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
 
-            var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp > lastDayLastMonth && x.Timestamp <= DateTime.Today)
-                     let DatesMonthMinutes = MonthMinutes
-                     group MonthMinutes by new { a = DatesMonthMinutes.Timestamp.Value.Day + "-" + DatesMonthMinutes.Timestamp.Value.Month + "-" + DatesMonthMinutes.Timestamp.Value.Year } into CompletedMinutes
-                     select new
-                     {
-                         CompletedMinutesDateLabel = CompletedMinutes.Key, // This provides a list of dates that have minutes entered in for them
-                         CompletedMinutesSum = CompletedMinutes.Sum(x=> x.Minutes) // This is a summation of all minutes put in for a particular day
-                     };
+            //var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp > lastDayLastMonth && x.Timestamp <= DateTime.Today)
+            //         let DatesMonthMinutes = MonthMinutes
+            //         group MonthMinutes by new { a = DatesMonthMinutes.Timestamp.Value.Day + "-" + DatesMonthMinutes.Timestamp.Value.Month + "-" + DatesMonthMinutes.Timestamp.Value.Year } into CompletedMinutes
+            //         select new
+            //         {
+            //             CompletedMinutesDateLabel = CompletedMinutes.Key, // This provides a list of dates that have minutes entered in for them
+            //             CompletedMinutesSum = CompletedMinutes.Sum(x=> x.Minutes) // This is a summation of all minutes put in for a particular day
+            //         };
 
-            ViewBag.Dates = AdminTrackMinutes.Select(x => x.CompletedMinutesDateLabel.a).ToArray(); // x.CompletedMinutesDateLabe.a is needed because if we leave .a off it will give a result of "a":"Date"
-            ViewBag.DTMinutes = AdminTrackMinutes.Select(x => x.CompletedMinutesSum).ToArray();
+            //ViewBag.Dates = AdminTrackMinutes.Select(x => x.CompletedMinutesDateLabel.a).ToArray(); // x.CompletedMinutesDateLabe.a is needed because if we leave .a off it will give a result of "a":"Date"
+            //ViewBag.DTMinutes = AdminTrackMinutes.Select(x => x.CompletedMinutesSum).ToArray();
             // end of the data for the graph in admin view
 
 
 
             // this is a hard coded entry for the teachrs chart so that they can visually see if they missed a day. The other method that is used for admin view will skip the non entered days on the label and the teachers wont be able to see what they missed easily
+            var FourteenDaysAgo = DateTime.Now.AddDays(-14).Date;
+            var ThirteenDaysAgo = DateTime.Now.AddDays(-13).Date;
             var TwelveDaysAgo = DateTime.Now.AddDays(-12).Date;
             var ElevenDaysAgo = DateTime.Now.AddDays(-11).Date;
             var TenDaysAgo = DateTime.Now.AddDays(-10).Date;
@@ -99,6 +107,8 @@ namespace PEMinutes.Controllers
             var Yesterday = DateTime.Now.AddDays(-1).Date;
             var Today = DateTime.Today.Date;
 
+            ViewBag.FourteenDays = FourteenDaysAgo.ToShortDateString();
+            ViewBag.ThirteenDays = ThirteenDaysAgo.ToShortDateString();
             ViewBag.TwelveDays = TwelveDaysAgo.ToShortDateString();
             ViewBag.ElevenDays = ElevenDaysAgo.ToShortDateString();
             ViewBag.TenDays = TenDaysAgo.ToShortDateString();
@@ -112,6 +122,8 @@ namespace PEMinutes.Controllers
             ViewBag.TwoDays = TwoDaysAgo.ToShortDateString();
             ViewBag.Yester = Yesterday.ToShortDateString();
             ViewBag.Now = Today.ToShortDateString();
+            ViewBag.FourteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= FourteenDaysAgo && x.Timestamp < ThirteenDaysAgo).Sum(x => x.Minutes);
+            ViewBag.ThirteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= ThirteenDaysAgo && x.Timestamp < TwelveDaysAgo).Sum(x => x.Minutes);
             ViewBag.TwelveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= TwelveDaysAgo && x.Timestamp < ElevenDaysAgo).Sum(x => x.Minutes);
             ViewBag.ElevenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= ElevenDaysAgo && x.Timestamp < TenDaysAgo).Sum(x => x.Minutes);
             ViewBag.TenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= TenDaysAgo && x.Timestamp < NineDaysAgo).Sum(x => x.Minutes);
@@ -127,20 +139,7 @@ namespace PEMinutes.Controllers
             ViewBag.Today = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= Today.Date).Sum(x => x.Minutes);
             // end of the sections where we build the chart data
 
-            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).ToList();
-
-
-            //DayOfWeek weekStart = DayOfWeek.Monday; // or Sunday, or whenever
-            //DateTime startingDate = DateTime.Today;
-
-            //while (startingDate.DayOfWeek != weekStart)
-            //    startingDate = startingDate.AddDays(-1);
-
-            //DateTime previousWeekStart = startingDate.AddDays(-7);
-            //DateTime previousWeekEnd = startingDate.AddDays(-1);
-
-
-
+            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).ToList(); // Finds all of the teachers minutes
 
             return View(TeachersPeMinutes);
         }
@@ -148,12 +147,23 @@ namespace PEMinutes.Controllers
 
         public ActionResult Manage()
         {
+            DateTime now = DateTime.Now;
+
+            var ThisMonth = DateTime.Today.ToString("MMMM");
+            ViewBag.ThisMonth = ThisMonth;
+
+            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
+            lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
+
             var EnteredBadgeString = User.Identity.Name;
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+            int EnteredBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-            DateTime ThirtyOneDays = DateTime.Now.AddDays(-31);
-            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.Timestamp >= ThirtyOneDays).OrderByDescending(i => i.Timestamp).ToList();
+            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == EnteredBadgeNumber && i.Timestamp > lastDayLastMonth).OrderByDescending(i => i.Timestamp).ToList(); // Finds the minutes for the signed in teacher for the current month
+            var Approved = db.EnteredPeMinutes.Where(i => i.BadgeNumber == EnteredBadgeNumber && i.SubstituteName != null && i.Timestamp > lastDayLastMonth).Count();
+            ViewBag.Approved = Approved;
+            ViewBag.CurrentMonthMinuteCount = TeachersPeMinutes.Count();
+            ViewBag.PercentApproved = ((float)Approved / TeachersPeMinutes.Count()).ToString("0.00%");
             ViewBag.TotalMonthMins = TeachersPeMinutes.Sum(x => x.Minutes);
             return View(TeachersPeMinutes);
         }
@@ -202,9 +212,9 @@ namespace PEMinutes.Controllers
                 enteredPeMinute.Grade       = SelectedTeacher.COURSE_TITLE;
                 enteredPeMinute.BadgeNumber = BadgeNumber;
                 enteredPeMinute.Timestamp   = DateTime.Now;
-                enteredPeMinute.IsApproved = 1;
-                enteredPeMinute.ApprovedBy = TeacherNameVariable;
-                enteredPeMinute.ApproveTime = DateTime.Now;
+                //enteredPeMinute.IsApproved = 1;
+                //enteredPeMinute.ApprovedBy = TeacherNameVariable;
+                //enteredPeMinute.ApproveTime = DateTime.Now;
 
 
                 // Apply the modifications and then save to the database
@@ -275,41 +285,6 @@ namespace PEMinutes.Controllers
 
             return Json(new { success = true });
         }
-
-
-        // GET: Get Chart JSON Data
-        public JsonResult GetMinutesGraph()
-        {
-
-            var EnteredBadgeString = User.Identity.Name;
-            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-
-            DateTime TenDays = DateTime.Now.AddDays(-10);
-
-            Array minutes = db.EnteredPeMinutes.Where(x => x.BadgeNumber == TeacherBadgeNumber).Select(x => x.Minutes).ToArray();
-
-            return Json(minutes, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult GetDateGraph()
-        {
-
-            var EnteredBadgeString = User.Identity.Name;
-            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-
-            DateTime TenDays = DateTime.Now.AddDays(-10);
-
-
-
-            Array dates = db.EnteredPeMinutes.Where(x => x.BadgeNumber == TeacherBadgeNumber).Select(x => x.Timestamp).ToArray();
-
-
-            return Json(dates, JsonRequestBehavior.AllowGet);
-        }
-
-
 
         // GET: Teacher/Edit/5
         // Edit Minutes
