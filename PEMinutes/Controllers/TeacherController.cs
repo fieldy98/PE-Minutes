@@ -50,7 +50,7 @@ namespace PEMinutes.Controllers
             ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();
 
             DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
-            var CurrentWeekMinutes = db.EnteredPeMinutes.Where(x => x.Timestamp >= CurrentWeek).Sum(x => x.Minutes);
+            var CurrentWeekMinutes = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= CurrentWeek).Sum(x => x.Minutes);
             if (CurrentWeekMinutes == null)
             {
                 ViewBag.CurrentWeekMinutes = 0;
