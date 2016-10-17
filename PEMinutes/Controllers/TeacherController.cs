@@ -107,21 +107,21 @@ namespace PEMinutes.Controllers
             var Yesterday = DateTime.Now.AddDays(-1).Date;
             var Today = DateTime.Today.Date;
 
-            ViewBag.FourteenDays = FourteenDaysAgo.ToShortDateString();
-            ViewBag.ThirteenDays = ThirteenDaysAgo.ToShortDateString();
-            ViewBag.TwelveDays = TwelveDaysAgo.ToShortDateString();
-            ViewBag.ElevenDays = ElevenDaysAgo.ToShortDateString();
-            ViewBag.TenDays = TenDaysAgo.ToShortDateString();
-            ViewBag.NineDays = NineDaysAgo.ToShortDateString();
-            ViewBag.EightDays = EightDaysAgo.ToShortDateString();
-            ViewBag.SevenDays = SevenDaysAgo.ToShortDateString();
-            ViewBag.SixDays = SixDaysAgo.ToShortDateString();
-            ViewBag.FiveDays = FiveDaysAgo.ToShortDateString();
-            ViewBag.FourDays = FourDaysAgo.ToShortDateString();
-            ViewBag.ThreeDays = ThreeDaysAgo.ToShortDateString();
-            ViewBag.TwoDays = TwoDaysAgo.ToShortDateString();
-            ViewBag.Yester = Yesterday.ToShortDateString();
-            ViewBag.Now = Today.ToShortDateString();
+            ViewBag.FourteenDays = FourteenDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.ThirteenDays = ThirteenDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.TwelveDays = TwelveDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.ElevenDays = ElevenDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.TenDays = TenDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.NineDays = NineDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.EightDays = EightDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.SevenDays = SevenDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.SixDays = SixDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.FiveDays = FiveDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.FourDays = FourDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.ThreeDays = ThreeDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.TwoDays = TwoDaysAgo.ToString("MMM dd,yyyy");
+            ViewBag.Yester = Yesterday.ToString("MMM dd,yyyy");
+            ViewBag.Now = Today.ToString("MMM dd,yyyy");
             ViewBag.FourteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= FourteenDaysAgo && x.Timestamp < ThirteenDaysAgo).Sum(x => x.Minutes);
             ViewBag.ThirteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= ThirteenDaysAgo && x.Timestamp < TwelveDaysAgo).Sum(x => x.Minutes);
             ViewBag.TwelveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= TwelveDaysAgo && x.Timestamp < ElevenDaysAgo).Sum(x => x.Minutes);
@@ -212,10 +212,6 @@ namespace PEMinutes.Controllers
                 enteredPeMinute.Grade       = SelectedTeacher.COURSE_TITLE;
                 enteredPeMinute.BadgeNumber = BadgeNumber;
                 enteredPeMinute.Timestamp   = DateTime.Now;
-                //enteredPeMinute.IsApproved = 1;
-                //enteredPeMinute.ApprovedBy = TeacherNameVariable;
-                //enteredPeMinute.ApproveTime = DateTime.Now;
-
 
                 // Apply the modifications and then save to the database
                 db.EnteredPeMinutes.Add(enteredPeMinute);
