@@ -36,24 +36,36 @@ namespace PEMinutes.Controllers
             ViewBag.School = SelectedTeacher.Organization_Name;
             ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();
 
-            var SevenDays = DateTime.Now.AddDays(-7);
 
-            var EntryDates = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp > SevenDays).Select(x => x.Timestamp).ToString();
 
-            var tt = from t in db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp > SevenDays).Select(x => x.Timestamp)
-                     let dt = t
-                     group t by new { a = dt.Value.Day + "-" + dt.Value.Month + "-" + dt.Value.Year } into dtd
+
+            // Section for determining the minutes that can be used in a graph for the admin view. This will give the current month from 1 to today
+            DateTime now = DateTime.Now;
+
+            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
+            lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
+
+            var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp > lastDayLastMonth && x.Timestamp <= DateTime.Today)
+                     let DatesMonthMinutes = MonthMinutes
+                     group MonthMinutes by new { a = DatesMonthMinutes.Timestamp.Value.Day + "-" + DatesMonthMinutes.Timestamp.Value.Month + "-" + DatesMonthMinutes.Timestamp.Value.Year } into CompletedMinutes
                      select new
                      {
-                         dtgrp = dtd.Key,
-                         dtcnt = dtd.Count()
+                         CompletedMinutesDateLabel = CompletedMinutes.Key, // This provides a list of dates that have minutes entered in for them
+                         CompletedMinutesSum = CompletedMinutes.Sum(x=> x.Minutes) // This is a summation of all minutes put in for a particular day
                      };
 
+            ViewBag.Dates = AdminTrackMinutes.Select(x => x.CompletedMinutesDateLabel.a).ToArray(); // x.CompletedMinutesDateLabe.a is needed because if we leave .a off it will give a result of "a":"Date"
+            ViewBag.DTMinutes = AdminTrackMinutes.Select(x => x.CompletedMinutesSum).ToArray();
+            // end of the data for the graph in admin view
 
-            Array PeDates = tt.Select(x => x.dtgrp.a).ToArray();
-            ViewBag.Dates = PeDates;
-            ViewBag.DTMinutes = tt.Select(x => x.dtcnt).ToArray();
-            
+
+
+            // this is a hard coded entry for the teachrs chart so that they can visually see if they missed a day. The other method that is used for admin view will skip the non entered days on the label and the teachers wont be able to see what they missed easily
+            var TwelveDaysAgo = DateTime.Now.AddDays(-12).Date;
+            var ElevenDaysAgo = DateTime.Now.AddDays(-11).Date;
+            var TenDaysAgo = DateTime.Now.AddDays(-10).Date;
+            var NineDaysAgo = DateTime.Now.AddDays(-9).Date;
+            var EightDaysAgo = DateTime.Now.AddDays(-8).Date;
             var SevenDaysAgo = DateTime.Now.AddDays(-7).Date;
             var SixDaysAgo = DateTime.Now.AddDays(-6).Date;
             var FiveDaysAgo = DateTime.Now.AddDays(-5).Date;
@@ -63,6 +75,11 @@ namespace PEMinutes.Controllers
             var Yesterday = DateTime.Now.AddDays(-1).Date;
             var Today = DateTime.Today.Date;
 
+            ViewBag.TwelveDays = TwelveDaysAgo.ToShortDateString();
+            ViewBag.ElevenDays = ElevenDaysAgo.ToShortDateString();
+            ViewBag.TenDays = TenDaysAgo.ToShortDateString();
+            ViewBag.NineDays = NineDaysAgo.ToShortDateString();
+            ViewBag.EightDays = EightDaysAgo.ToShortDateString();
             ViewBag.SevenDays = SevenDaysAgo.ToShortDateString();
             ViewBag.SixDays = SixDaysAgo.ToShortDateString();
             ViewBag.FiveDays = FiveDaysAgo.ToShortDateString();
@@ -71,6 +88,11 @@ namespace PEMinutes.Controllers
             ViewBag.TwoDays = TwoDaysAgo.ToShortDateString();
             ViewBag.Yester = Yesterday.ToShortDateString();
             ViewBag.Now = Today.ToShortDateString();
+            ViewBag.TwelveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= TwelveDaysAgo && x.Timestamp < ElevenDaysAgo).Sum(x => x.Minutes);
+            ViewBag.ElevenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= ElevenDaysAgo && x.Timestamp < TenDaysAgo).Sum(x => x.Minutes);
+            ViewBag.TenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= TenDaysAgo && x.Timestamp < NineDaysAgo).Sum(x => x.Minutes);
+            ViewBag.NineDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= NineDaysAgo && x.Timestamp < EightDaysAgo).Sum(x => x.Minutes);
+            ViewBag.EightDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= EightDaysAgo && x.Timestamp < SevenDaysAgo).Sum(x => x.Minutes);
             ViewBag.SevenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= SevenDaysAgo && x.Timestamp < SixDaysAgo).Sum(x => x.Minutes);
             ViewBag.SixDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= SixDaysAgo && x.Timestamp < FiveDaysAgo).Sum(x => x.Minutes);
             ViewBag.FiveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= FiveDaysAgo && x.Timestamp < FourDaysAgo).Sum(x => x.Minutes);
@@ -79,10 +101,7 @@ namespace PEMinutes.Controllers
             ViewBag.TwoDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= TwoDaysAgo && x.Timestamp < Yesterday).Sum(x => x.Minutes);
             ViewBag.Yesterday = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= Yesterday && x.Timestamp < Today).Sum(x => x.Minutes);
             ViewBag.Today = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= Today.Date).Sum(x => x.Minutes);
-
-            Array minutes = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp > SevenDays).Select(x => x.Minutes).ToArray();
-
-            ViewBag.Minutes = minutes;
+            // end of the sections where we build the chart data
 
             List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).ToList();
 
