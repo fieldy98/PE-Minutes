@@ -71,46 +71,51 @@
 
 @section Scripts{
     <script>
-        function GetData() {
-            $.ajax({
-                url: '@Url.Action("GetMinutesGraph", "Teacher")',
-                type: 'GET',
-                success: function (data) {
-                    alert(data)
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-        }
-        function GetTimes() {
-            $.ajax({
-                url: '@Url.Action("GetDateGraph", "Teacher")',
-                type: 'GET',
-                success: function (data) {
-                    var re = /-?\d+/;
-                    var m = re.exec(data);
-                    var d = new Date(parseInt(m[0]));
-                    return d;
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-        }
-    </script>
-    <script>
         $(document).ready(function () {
+            // building the 'data' variable
             var data = {
-                // A labels array that can contain any sort of values
-                labels: [@Html.Raw(Json.Encode(@ViewBag.FourteenDays)),@Html.Raw(Json.Encode(@ViewBag.ThirteenDays)),@Html.Raw(Json.Encode(@ViewBag.TwelveDays)),@Html.Raw(Json.Encode(@ViewBag.ElevenDays)),@Html.Raw(Json.Encode(@ViewBag.TenDays)),@Html.Raw(Json.Encode(@ViewBag.NineDays)),@Html.Raw(Json.Encode(@ViewBag.EightDays)),@Html.Raw(Json.Encode(@ViewBag.SevenDays)),@Html.Raw(Json.Encode(@ViewBag.SixDays)),@Html.Raw(Json.Encode(@ViewBag.FiveDays)),@Html.Raw(Json.Encode(@ViewBag.FourDays)),@Html.Raw(Json.Encode(@ViewBag.ThreeDays)),@Html.Raw(Json.Encode(@ViewBag.TwoDays)),@Html.Raw(Json.Encode(@ViewBag.Yester)),@Html.Raw(Json.Encode(@ViewBag.Now))],
-                // Our series array that contains series objects or in this case series data arrays
-                series: [[@Html.Raw(Json.Encode(@ViewBag.FourteenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.ThirteenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.TwelveDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.ElevenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.TenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.NineDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.EightDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.SevenDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.SixDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.FiveDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.FourDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.ThreeDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.TwoDaysAgo)),@Html.Raw(Json.Encode(@ViewBag.Yesterday)),@Html.Raw(Json.Encode(@ViewBag.Today))]]
+                // A labels to display the last two weeks of dates
+                labels: [
+                    @Html.Raw(Json.Encode(@ViewBag.FourteenDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.ThirteenDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.TwelveDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.ElevenDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.TenDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.NineDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.EightDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.SevenDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.SixDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.FiveDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.FourDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.ThreeDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.TwoDays)),
+                    @Html.Raw(Json.Encode(@ViewBag.Yester)),
+                    @Html.Raw(Json.Encode(@ViewBag.Now))
+                ],
+                // Our series array that contains the minutes 
+                // for the teacher over the last two weeks
+                series: [[
+                    @Html.Raw(Json.Encode(@ViewBag.FourteenDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.ThirteenDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.TwelveDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.ElevenDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.TenDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.NineDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.EightDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.SevenDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.SixDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.FiveDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.FourDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.ThreeDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.TwoDaysAgo)),
+                    @Html.Raw(Json.Encode(@ViewBag.Yesterday)),
+                    @Html.Raw(Json.Encode(@ViewBag.Today))
+                ]]
             }
 
             // Create a new line chart object where as first parameter we pass in a selector
             // that is resolving to our chart container element. The Second parameter
-            // is the actual data object.
+            // is the actual 'data' object.
             new Chartist.Bar('.ct-chart', data);
         });
     </script>
@@ -120,12 +125,4 @@
             $('#dashboard').attr('active');
         });
     </script>
-
-
-
-
-
-
-
-
 }

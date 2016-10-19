@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using PEMinutes.EF;
 using PEMinutes.Models;
-using PEMinutes.ViewModels;
+using PEMinutes.ViewModels.Teacher;
 using System.Globalization;
 
 //
