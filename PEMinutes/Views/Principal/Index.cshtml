@@ -3,62 +3,70 @@
 @{
     ViewBag.Title = "Index";
 }
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_PrincipalSidebar.cshtml")
 
-@*<h2>Index</h2>*@
+}
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_PrincipalTopNav.cshtml")
+    }
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">This Weeks Minutes</h4>
+                            <p class="category">Minutes for each teacher</p>
+                        </div>
+                        <div class="content">
+                            <div class="ct-chart ct-perfect-fourth"></div> @*The graph of the last 2 weeks minutes*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>
+                        Teacher
+                    </th>
+                    <th>
+                        Minutes
+                    </th>
+                </tr>
+                @foreach (var item in Model.OrderByDescending(x => x.Minutes).Take(2))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TeacherName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Minutes)
+                        </td>
+                    </tr>
+                }
 
-<div class="row">
-    <div class="sol-sm-12">
-        <div class="card">
-            <div class="header">
-                <h4 class="title">This Weeks Minutes</h4>
-                <p class="category">Minutes for each teacher</p>
-            </div>
-            <div class="content">
-                <div class="ct-chart ct-perfect-fourth"></div> @*The graph of the last 2 weeks minutes*@
-            </div>
+            </table>
         </div>
     </div>
 </div>
-<table class="table">
-    <tr>
-        <th>
-            Teacher
-        </th>
-        <th>
-            Minutes
-        </th>
-    </tr>
+                @section Scripts{
+                    <script>
+                        $(document).ready(function () {
+                            var data = {
+                                // A labels array that can contain any sort of values
+                                labels: @Html.Raw(Json.Encode(@ViewBag.TeachersNames)),
+                                // Our series array that contains series objects or in this case series data arrays
+                                series: [@Html.Raw(Json.Encode(@ViewBag.TeachersMinutes))]
+                            }
 
-   
- 
-@foreach (var item in ViewBag.TeachersNames)
-{
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item)
-        </td>
-        
-    </tr>
-}
-
-</table>
-
-
-
-@section Scripts{
-    <script>
-        $(document).ready(function () {
-            var data = {
-                // A labels array that can contain any sort of values
-                labels: @Html.Raw(Json.Encode(@ViewBag.TeachersNames)),
-                // Our series array that contains series objects or in this case series data arrays
-                series: [@Html.Raw(Json.Encode(@ViewBag.TeachersMinutes))]
-            }
-
-            // Create a new line chart object where as first parameter we pass in a selector
-            // that is resolving to our chart container element. The Second parameter
-            // is the actual data object.
-            new Chartist.Bar('.ct-chart', data);
-        });
-    </script>
-}
+                            // Create a new line chart object where as first parameter we pass in a selector
+                            // that is resolving to our chart container element. The Second parameter
+                            // is the actual data object.
+                            new Chartist.Bar('.ct-chart', data);
+                        });
+                    </script>
+                }

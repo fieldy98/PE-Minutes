@@ -2,54 +2,67 @@
 @{
     ViewBag.Title = "Manage";
 }
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_TeacherSidebar.cshtml")
 
+}
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_TeacherTopNav.cshtml")
+    }
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
 
-<div class="card">
-    <div class="header">
-        <h4 class="title">@ViewBag.ThisMonth's PE Minutes</h4>
-        <p class="category">You have @ViewBag.CurrentMonthMinuteCount entries totaling @ViewBag.TotalMonthMins minutes in @ViewBag.ThisMonth.<br/>@ViewBag.PercentApproved of your minutes were created by substitutes.</p>
-    </div>
-    <div class="content table-responsive table-full-width">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Minutes)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Activity)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Timestamp)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            @foreach (var item in Model)
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">@ViewBag.ThisMonth's PE Minutes</h4>
+                        <p class="category">You have @ViewBag.CurrentMonthMinuteCount entries totaling @ViewBag.TotalMonthMins minutes in @ViewBag.ThisMonth.<br />@ViewBag.PercentApproved of your minutes were created by substitutes.</p>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Minutes)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Activity)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Timestamp)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
             {
-                <tr>
-                    <td></td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Minutes)
-                    </td>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Minutes)
+                                    </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Activity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Timestamp)
-                    </td>
-                    <td class="col-lg-1">
-                        @Html.ActionLink("View", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Activity)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Timestamp)
+                                    </td>
+                                    <td class="col-lg-1">
+                                        @Html.ActionLink("View", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
 
-                    </td>
-                </tr>
-            }
+                                    </td>
+                                </tr>
+                            }
 
-        </table>
-
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-

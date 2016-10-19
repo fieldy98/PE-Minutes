@@ -3,111 +3,128 @@
 @{
     ViewBag.Title = "Details";
 }
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            Teacher:
-        </dt>
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_TeacherSidebar.cshtml")
 
-        <dd>
-            @Html.DisplayFor(model => model.TeacherName)
-        </dd>
+}
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_TeacherTopNav.cshtml")
+    }
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt>
+                            Teacher:
+                        </dt>
 
-        <dt>
-            Minutes:
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.TeacherName)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Minutes)
-        </dd>
+                        <dt>
+                            Minutes:
+                        </dt>
 
-        <dt>
-            Badge Number:
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Minutes)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.BadgeNumber)
-        </dd>
+                        <dt>
+                            Badge Number:
+                        </dt>
 
-        <dt>
-            School:
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.BadgeNumber)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.School)
-        </dd>
+                        <dt>
+                            School:
+                        </dt>
 
-        <dt>
-            Grade:
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.School)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Grade)
-        </dd>
+                        <dt>
+                            Grade:
+                        </dt>
 
-        <dt>
-            Activity:
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Grade)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Activity)
-        </dd>
+                        <dt>
+                            Activity:
+                        </dt>
 
-        <dt>
-            Time:
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Activity)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Timestamp)
-        </dd>
-        @if (Model.SubstituteName != null)
-        {
+                        <dt>
+                            Time:
+                        </dt>
 
-            <dt>
-                Substitute Name:
-            </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Timestamp)
+                        </dd>
+                        @if (Model.SubstituteName != null)
+                        {
 
-            <dd>
-                @Html.DisplayFor(model => model.SubstituteName)
-            </dd>
+                            <dt>
+                                Substitute Name:
+                            </dt>
 
-            <dt>
-                Approved:
-            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.SubstituteName)
+                            </dd>
 
-                if (Model.IsApproved == 1)
-                {
-                    <dd>Yes</dd>
+                            <dt>
+                                Approved:
+                            </dt>
 
-                }
-                else
-                {
-                    <dd>Needs Approval</dd>
-                }
+                            if (Model.IsApproved == 1)
+                            {
+                                <dd>Yes</dd>
 
-            <dt>
-                Approved By:
-            </dt>
+                            }
+                            else
+                            {
+                                <dd>Needs Approval</dd>
+                            }
 
-            <dd>
-                @Html.DisplayFor(model => model.ApprovedBy)
-            </dd>
+                            <dt>
+                                Approved By:
+                            </dt>
 
-            <dt>
-                Approved At:
-            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.ApprovedBy)
+                            </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.ApproveTime)
-            </dd>
-        }
+                            <dt>
+                                Approved At:
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ApproveTime)
+                            </dd>
+                        }
 
 
-    </dl>
-</div>
-<hr />
-<div class="btn-group" style="padding-bottom: 20px;">
-    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default" })
-    @Html.ActionLink("Delete", "Delete", new { id = Model.ID }, new { @class = "btn btn-danger" })
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn btn-default" })
+                    </dl>
+                </div>
+                <hr />
+                <div class="btn-group" style="padding-bottom: 20px;">
+                    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Delete", "Delete", new { id = Model.ID }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn btn-default" })
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

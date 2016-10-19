@@ -1,0 +1,107 @@
+﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
+
+@{
+    ViewBag.Title = "Reports";
+}
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_PrincipalSidebar.cshtml")
+
+}
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_PrincipalTopNav.cshtml")
+    }
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TeacherName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Minutes)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BadgeNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.School)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Grade)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Activity)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Timestamp)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SubstituteName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IsApproved)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ApprovedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ApproveTime)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TeacherName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Minutes)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BadgeNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.School)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Grade)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Activity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Timestamp)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SubstituteName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsApproved)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ApprovedBy)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ApproveTime)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

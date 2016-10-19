@@ -32,7 +32,7 @@ namespace PEMinutes.Controllers
             {
                 if (user.IsPrincipal(user.StaffBadgeNumber))
                 {
-                    // If a match is found, create a cookie and return the teacher homepage
+                    // If a match is found, create a cookie and return the Principal homepage
                     FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
                     return RedirectToAction("Index", "Principal");
                 }

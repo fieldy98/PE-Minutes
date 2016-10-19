@@ -157,6 +157,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\PrincipalController.cs" />
     <Compile Include="Controllers\SubstituteController.cs" />
@@ -329,12 +330,21 @@
     <Content Include="Views\Authentication\Index.cshtml" />
     <Content Include="Views\Substitute\_GetTeachers.cshtml" />
     <Content Include="Views\Teacher\Approve.cshtml" />
-    <Content Include="Views\Shared\_navbar.cshtml" />
-    <Content Include="Views\Shared\_sidebar.cshtml" />
+    <Content Include="Views\Shared\_AdministrationTopNav.cshtml" />
+    <Content Include="Views\Shared\_TeacherSidebar.cshtml" />
     <Content Include="Views\Teacher\Manage.cshtml" />
     <Content Include="Views\Principal\Details.cshtml" />
     <Content Include="Views\Principal\Index.cshtml" />
-    <Content Include="Views\Principal\Manage.cshtml" />
+    <Content Include="Views\Principal\Reports.cshtml" />
+    <Content Include="Views\Shared\_PrincipalTopNav.cshtml" />
+    <Content Include="Views\Shared\_TeacherTopNav.cshtml" />
+    <Content Include="Views\Shared\_PrincipalSideBar.cshtml" />
+    <Content Include="Views\Shared\_AdministrationSideBar.cshtml" />
+    <Content Include="Views\Administration\Create.cshtml" />
+    <Content Include="Views\Administration\Delete.cshtml" />
+    <Content Include="Views\Administration\Details.cshtml" />
+    <Content Include="Views\Administration\Edit.cshtml" />
+    <Content Include="Views\Administration\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

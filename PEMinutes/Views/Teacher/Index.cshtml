@@ -4,71 +4,83 @@
     ViewBag.Title = "Dashboard";
 }
 
-<div class="row">
-    <div class="col-lg-2 col-sm-6">
-        <div class="card">
-            <div class="content">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <div class="icon-big icon-warning text-center">
-                            <i class="ti-clipboard"></i>
-                        </div>
-                    </div>
-                    <div class="col-xs-9">
-                        <div class="numbers">
-                            <p>Minutes this Week</p>
-                            @ViewBag.CurrentWeekMinutes  @*This will display the current weeks minutes for the logged in user*@
-                        </div>
-                    </div>
-                </div>
-                @*<div class="footer">
-                        <hr />
-                        <div class="stats">
-                            <i class="ti-reload"></i> Updated now
-                        </div>
-                    </div>*@
-            </div>
-        </div>
-        <div class="card">
-            <div class="content">
-                <div class="row">
-                    <div class="col-xs-5">
-                        <div class="icon-big icon-success text-center">
-                            <i class="ti-pencil-alt2"></i>
-                        </div>
-                    </div>
-                    <div class="col-xs-7">
-                        <div class="numbers">
-                            <p>Sub Approvals</p>
-                            @ViewBag.NeedsApproval @*This will display the minutes needing approvals*@
-                        </div>
-                    </div>
-                </div>
-                @*<div class="footer">
-                        <hr />
-                        <div class="stats">
-                            <i class="ti-calendar"></i> Last day
-                        </div>
-                    </div>*@
-            </div>
-        </div>
-    </div>
-    <div class="sol-sm-5 col-md-5 col-lg-10">
-        <div class="card">
-            <div class="header">
-                <h4 class="title">Last Two Weeks</h4>
-                <p class="category">Minutes over the last two weeks</p>
-            </div>
-            <div class="content">
-                <div class="ct-chart ct-perfect-fourth"></div> @*The graph of the last 2 weeks minutes*@
 
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_TeacherSidebar.cshtml")
+
+}
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_TeacherTopNav.cshtml")
+    }
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-2 col-sm-6">
+                    <div class="card">
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <div class="icon-big icon-warning text-center">
+                                        <i class="ti-clipboard"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-9">
+                                    <div class="numbers">
+                                        <p>Minutes this Week</p>
+                                        @ViewBag.CurrentWeekMinutes  @*This will display the current weeks minutes for the logged in user*@
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-reload"></i> Updated now
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    <div class="icon-big icon-success text-center">
+                                        <i class="ti-pencil-alt2"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-7">
+                                    <div class="numbers">
+                                        <p>Sub Approvals</p>
+                                        @ViewBag.NeedsApproval @*This will display the minutes needing approvals*@
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-calendar"></i> Last day
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5 col-md-5 col-lg-10">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Last Two Weeks</h4>
+                            <p class="category">Minutes over the last two weeks</p>
+                        </div>
+                        <div class="content">
+                            <div class="ct-chart"></div> @*The graph of the last 2 weeks minutes*@
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
 @section Scripts{
     <script>
         $(document).ready(function () {
@@ -92,7 +104,7 @@
                     @Html.Raw(Json.Encode(@ViewBag.Yester)),
                     @Html.Raw(Json.Encode(@ViewBag.Now))
                 ],
-                // Our series array that contains the minutes 
+                // Our series array that contains the minutes
                 // for the teacher over the last two weeks
                 series: [[
                     @Html.Raw(Json.Encode(@ViewBag.FourteenDaysAgo)),

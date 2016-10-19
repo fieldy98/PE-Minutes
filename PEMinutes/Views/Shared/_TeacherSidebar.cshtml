@@ -1,0 +1,23 @@
+﻿<div class="sidebar" data-background-color="black" data-active-color="danger">
+    <div class="sidebar-wrapper">
+        <div class="logo">
+            <a class="simple-text">
+                PE Minutes
+            </a>
+        </div>
+        <ul class="nav">
+            <li id="dashboard">
+                <i class="ti-stats-up"></i>
+                @Html.ActionLink("Dashboard", "Index", "Teacher")
+            </li>
+            <li id="ThisMonth">
+                <i class="ti-time"></i>
+                @Html.ActionLink((string)DateTime.Today.ToString("MMMM") + "'s Minutes", "Manage", "Teacher")
+            </li>
+            <li id="Approvals">
+                <i class="ti-clipboard"></i>
+                @Html.ActionLink("Approvals", "Approve", "Teacher")
+            </li>
+        </ul>
+    </div>
+</div>

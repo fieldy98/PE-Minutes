@@ -3,104 +3,118 @@
 @{
     ViewBag.Title = "Details";
 }
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_PrincipalSidebar.cshtml")
 
-<h2>Details</h2>
+}
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_PrincipalTopNav.cshtml")
+    }
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div>
+                    <h4>EnteredPeMinute</h4>
+                    <hr />
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.TeacherName)
+                        </dt>
 
-<div>
-    <h4>EnteredPeMinute</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TeacherName)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.TeacherName)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.TeacherName)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Minutes)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Minutes)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Minutes)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Minutes)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.BadgeNumber)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.BadgeNumber)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.BadgeNumber)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.BadgeNumber)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.School)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.School)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.School)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.School)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Grade)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Grade)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Grade)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Grade)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Activity)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Activity)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Activity)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Activity)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Timestamp)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Timestamp)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Timestamp)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Timestamp)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.SubstituteName)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SubstituteName)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.SubstituteName)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.SubstituteName)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.IsApproved)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.IsApproved)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.IsApproved)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.IsApproved)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ApprovedBy)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ApprovedBy)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.ApprovedBy)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.ApprovedBy)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ApproveTime)
+                        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ApproveTime)
-        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.ApproveTime)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.ApproveTime)
-        </dd>
-
-    </dl>
+                    </dl>
+                </div>
+                <p>
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+                    @Html.ActionLink("Back to List", "Index")
+                </p>
+                </div>
+            </div>
+        </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

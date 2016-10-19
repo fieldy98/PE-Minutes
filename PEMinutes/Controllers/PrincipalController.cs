@@ -15,27 +15,20 @@ namespace PEMinutes.Controllers
         private PEMinutesEntities db = new PEMinutesEntities();
         private RenExtractEntities ren = new RenExtractEntities();
 
-        // GET: Principal
+        // GET: /Principal/Index
         public ActionResult Index()
         {
             DateTime now = DateTime.Now;
             DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
             lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
             DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
-            var PrincipalView = db.EnteredPeMinutes.Where(x => x.Timestamp > lastDayLastMonth);
+            var PrincipalView = db.EnteredPeMinutes.Where(x => x.Timestamp > lastDayLastMonth).OrderBy(x=>x.TeacherName);
 
 
 
 
 
-
-            // Section for determining the minutes that can be used in a graph for the admin view. This will give the current month from 1 to today
-            //DateTime now = DateTime.Now;
-
-            //DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
-            //lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
-
-            var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.Timestamp > CurrentWeek)
+            var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.Timestamp > CurrentWeek).OrderByDescending(x=>x.Minutes).Take(1)
                                     let MonthTeacherNames = MonthMinutes
                                     group MonthMinutes by new { a = MonthTeacherNames.TeacherName} into CompletedMinutes
                                     select new
@@ -61,6 +54,14 @@ namespace PEMinutes.Controllers
 
             return View(PrincipalView);
         }
+
+        // GET: /Principal/Reports
+        public ActionResult Reports()
+        {
+
+            return View();
+        }
+
 
         // GET: Principal/Details/5
         public ActionResult Details(int? id)

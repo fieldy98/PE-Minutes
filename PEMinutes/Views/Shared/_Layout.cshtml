@@ -15,33 +15,15 @@
 </head>
 <body>
     <div class="wrapper">
-
-        @if (Request.IsAuthenticated)
-        {
-            @Html.Partial("_sidebar")
-        }
-        <div class="main-panel">
-
-            @if (Request.IsAuthenticated)
-            {
-                @Html.Partial("_navbar")
-            }
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        @RenderBody()
-                    </div>
-                </div>
-            </div>
-        </div>
+        @RenderBody()
     </div>
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/Scripts/paper-dashboard.js")
-        @Scripts.Render("~/Scripts/chartist.min.js")
-        @Scripts.Render("~/Scripts/bootstrap-notify.js")
-        @Scripts.Render("~/Scripts/bootstrap-checkbox-radio.js")
-        @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/paper-dashboard.js")
+    @Scripts.Render("~/Scripts/chartist.min.js")
+    @Scripts.Render("~/Scripts/bootstrap-notify.js")
+    @Scripts.Render("~/Scripts/bootstrap-checkbox-radio.js")
+    @RenderSection("scripts", required: false)
 </body>
 </html>
