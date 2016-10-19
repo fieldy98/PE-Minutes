@@ -69,27 +69,6 @@ namespace PEMinutes.Controllers
             var ThisMonth = DateTime.Today.ToString("MMMM");
             ViewBag.ThisMonth = ThisMonth;
 
-            // Section for determining the minutes that can be used in a graph for the admin view. This will give the current month from 1 to today
-            //DateTime now = DateTime.Now;
-
-            //DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
-            //lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
-
-            //var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp > lastDayLastMonth && x.Timestamp <= DateTime.Today)
-            //         let DatesMonthMinutes = MonthMinutes
-            //         group MonthMinutes by new { a = DatesMonthMinutes.Timestamp.Value.Day + "-" + DatesMonthMinutes.Timestamp.Value.Month + "-" + DatesMonthMinutes.Timestamp.Value.Year } into CompletedMinutes
-            //         select new
-            //         {
-            //             CompletedMinutesDateLabel = CompletedMinutes.Key, // This provides a list of dates that have minutes entered in for them
-            //             CompletedMinutesSum = CompletedMinutes.Sum(x=> x.Minutes) // This is a summation of all minutes put in for a particular day
-            //         };
-
-            //ViewBag.Dates = AdminTrackMinutes.Select(x => x.CompletedMinutesDateLabel.a).ToArray(); // x.CompletedMinutesDateLabe.a is needed because if we leave .a off it will give a result of "a":"Date"
-            //ViewBag.DTMinutes = AdminTrackMinutes.Select(x => x.CompletedMinutesSum).ToArray();
-            // end of the data for the graph in admin view
-
-
-
             // this is a hard coded entry for the teachrs chart so that they can visually see if they missed a day. The other method that is used for admin view will skip the non entered days on the label and the teachers wont be able to see what they missed easily
             var FourteenDaysAgo = DateTime.Now.AddDays(-14).Date;
             var ThirteenDaysAgo = DateTime.Now.AddDays(-13).Date;

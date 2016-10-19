@@ -32,5 +32,17 @@
   </EntityType>
   <EntityContainer Name="RenExtractEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="SchoolTeachersWithADLogins" EntityType="Self.SchoolTeachersWithADLogin" />
+    <EntitySet Name="SchoolToPrincipals" EntityType="RenExtractModel.SchoolToPrincipal" />
   </EntityContainer>
+  <EntityType Name="SchoolToPrincipal">
+    <Key>
+      <PropertyRef Name="ORGANIZATION_NAME" />
+      <PropertyRef Name="Principal" />
+    </Key>
+    <Property Name="ORGANIZATION_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="SchoolAddress" Type="String" MaxLength="146" FixedLength="false" Unicode="true" />
+    <Property Name="Principal" Type="String" Nullable="false" MaxLength="121" FixedLength="false" Unicode="true" />
+    <Property Name="adLoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="BADGE_NUM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>

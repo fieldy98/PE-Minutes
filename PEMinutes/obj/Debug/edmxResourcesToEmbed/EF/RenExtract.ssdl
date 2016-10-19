@@ -32,6 +32,19 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not
     <Property Name="LOGIN_NAME" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="aId" Type="bigint" Nullable="false" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="SchoolToPrincipal">
+    <Key>
+      <PropertyRef Name="ORGANIZATION_NAME" />
+      <PropertyRef Name="Principal" />
+    </Key>
+    <Property Name="ORGANIZATION_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="SchoolAddress" Type="nvarchar" MaxLength="146" />
+    <Property Name="Principal" Type="nvarchar" MaxLength="121" Nullable="false" />
+    <Property Name="adLoginName" Type="varchar" MaxLength="100" />
+    <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
+  </EntityType>
   <EntityContainer Name="RenExtractModelStoreContainer">
     <EntitySet Name="SchoolTeachersWithADLogin" EntityType="Self.SchoolTeachersWithADLogin" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
@@ -52,6 +65,15 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not
     [SchoolTeachersWithADLogin].[LOGIN_NAME] AS [LOGIN_NAME], 
     [SchoolTeachersWithADLogin].[aId] AS [aId]
     FROM [dbo].[SchoolTeachersWithADLogin] AS [SchoolTeachersWithADLogin]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="SchoolToPrincipal" EntityType="Self.SchoolToPrincipal" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [SchoolToPrincipal].[ORGANIZATION_NAME] AS [ORGANIZATION_NAME], 
+    [SchoolToPrincipal].[SchoolAddress] AS [SchoolAddress], 
+    [SchoolToPrincipal].[Principal] AS [Principal], 
+    [SchoolToPrincipal].[adLoginName] AS [adLoginName], 
+    [SchoolToPrincipal].[BADGE_NUM] AS [BADGE_NUM]
+    FROM [dbo].[SchoolToPrincipal] AS [SchoolToPrincipal]</DefiningQuery>
     </EntitySet>
   </EntityContainer>
 </Schema>

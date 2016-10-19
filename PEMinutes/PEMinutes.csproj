@@ -158,6 +158,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\PrincipalController.cs" />
     <Compile Include="Controllers\SubstituteController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="EF\EnteredPeMinute.cs">
@@ -194,6 +195,9 @@
       <DependentUpon>RenExtract.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF\SchoolTeachersWithADLogin.cs">
+      <DependentUpon>RenExtract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\SchoolToPrincipal.cs">
       <DependentUpon>RenExtract.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\SubMinute.cs">
@@ -317,6 +321,12 @@
     <Content Include="Views\Shared\_navbar.cshtml" />
     <Content Include="Views\Shared\_sidebar.cshtml" />
     <Content Include="Views\Teacher\Manage.cshtml" />
+    <Content Include="Views\Principal\Create.cshtml" />
+    <Content Include="Views\Principal\Delete.cshtml" />
+    <Content Include="Views\Principal\Details.cshtml" />
+    <Content Include="Views\Principal\Edit.cshtml" />
+    <Content Include="Views\Principal\Index.cshtml" />
+    <Content Include="Views\Principal\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

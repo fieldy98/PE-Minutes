@@ -7,11 +7,11 @@
         <h2 class="form-signin-heading text-center">Welcome to <br> PE Minutes</h2>
         @if (Request.IsAuthenticated)
             {
-            @Html.ActionLink("Teacher", "Index", new { Controller = "Teacher", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block" })
+            @Html.ActionLink("Staff", "Index", new { Controller = "Teacher", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block" })
         }
         else
         {
-            @Html.ActionLink("Teacher", "Login", "Authentication", new { @class = "btn btn-lg btn-primary btn-block" })
+            @Html.ActionLink("Staff", "Login", "Authentication", new { @class = "btn btn-lg btn-primary btn-block" })
         }
         @Html.ActionLink("Substitute", "Index", new { Controller = "Substitute", action = "Index" }, new { @class = "btn btn-lg btn-primary btn-block" })
     </form>

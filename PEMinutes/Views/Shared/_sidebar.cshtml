@@ -10,15 +10,15 @@
             </a>
         </div>
         <ul class="nav">
-            <li>
+            <li id="dashboard">
                 <i class="ti-stats-up"></i>
                 @Html.ActionLink("Dashboard", "Index", "Teacher")
             </li>
-            <li>
+            <li id="ThisMonth">
                 <i class="ti-time"></i>
                 @Html.ActionLink((string)DateTime.Today.ToString("MMMM") + "'s Minutes", "Manage", "Teacher")
             </li>
-            <li>
+            <li id="Approvals">
                 <i class="ti-clipboard"></i>
                 @Html.ActionLink("Approvals", "Approve", "Teacher")
             </li>

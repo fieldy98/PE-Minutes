@@ -9,9 +9,22 @@ namespace PEMinutes.Models
         [Required]
         [Display(Name = "Badge Number")]
         public string StaffBadgeNumber { get; set; }
-        public bool IsValid(string _badge)
+        public bool IsTeacher(string _badge)
         {
             var db = new RenExtractEntities().SchoolTeachersWithADLogins;
+            var QueryDB = db.FirstOrDefault(x => x.BADGE_NUM == _badge);
+            if (QueryDB != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool IsPrincipal(string _badge)
+        {
+            var db = new RenExtractEntities().SchoolToPrincipals;
             var QueryDB = db.FirstOrDefault(x => x.BADGE_NUM == _badge);
             if (QueryDB != null)
             {
