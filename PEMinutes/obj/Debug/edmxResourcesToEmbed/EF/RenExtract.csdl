@@ -33,6 +33,7 @@
   <EntityContainer Name="RenExtractEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="SchoolTeachersWithADLogins" EntityType="Self.SchoolTeachersWithADLogin" />
     <EntitySet Name="SchoolToPrincipals" EntityType="RenExtractModel.SchoolToPrincipal" />
+    <EntitySet Name="MinutesAdmins" EntityType="RenExtractModel.MinutesAdmin" />
   </EntityContainer>
   <EntityType Name="SchoolToPrincipal">
     <Key>
@@ -43,6 +44,15 @@
     <Property Name="SchoolAddress" Type="String" MaxLength="146" FixedLength="false" Unicode="true" />
     <Property Name="Principal" Type="String" Nullable="false" MaxLength="121" FixedLength="false" Unicode="true" />
     <Property Name="adLoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="BADGE_NUM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="MinutesAdmin">
+    <Key>
+      <PropertyRef Name="FIRST_NAME" />
+      <PropertyRef Name="LAST_NAME" />
+    </Key>
+    <Property Name="FIRST_NAME" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+    <Property Name="LAST_NAME" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
     <Property Name="BADGE_NUM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

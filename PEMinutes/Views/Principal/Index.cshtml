@@ -23,50 +23,100 @@
                             <p class="category">Minutes for each teacher</p>
                         </div>
                         <div class="content">
-                            <div class="ct-chart ct-perfect-fourth"></div> @*The graph of the last 2 weeks minutes*@
+                            <div class="ct-chart"></div> @*The graph of the last 2 weeks minutes*@
                         </div>
                     </div>
                 </div>
             </div>
-            <table class="table">
-                <tr>
-                    <th>
-                        Teacher
-                    </th>
-                    <th>
-                        Minutes
-                    </th>
-                </tr>
-                @foreach (var item in Model.OrderByDescending(x => x.Minutes).Take(2))
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TeacherName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Minutes)
-                        </td>
-                    </tr>
-                }
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="header">
+                                    <div class="content">
+                                        <h4 class="title">Monthly Minutes</h4>
+                                        <p class="category">Total Minutes for the Month</p>
+                                    </div>
+                                    <table class="table">
+                                        <tr>
+                                            <th>
+                                                Teacher
+                                            </th>
+                                            <th>
+                                                Minutes
+                                            </th>
+                                        </tr>
+                                        @foreach (var item in Model.GroupBy(x => x.TeacherName))
+                                        {
+                                            var sum = item.Sum(x => x.Minutes);
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Key)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => sum)
+                                                </td>
+                                            </tr>
+                                        }
 
-            </table>
-        </div>
-    </div>
-</div>
-                @section Scripts{
-                    <script>
-                        $(document).ready(function () {
-                            var data = {
-                                // A labels array that can contain any sort of values
-                                labels: @Html.Raw(Json.Encode(@ViewBag.TeachersNames)),
-                                // Our series array that contains series objects or in this case series data arrays
-                                series: [@Html.Raw(Json.Encode(@ViewBag.TeachersMinutes))]
-                            }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="header">
+                                    <div class="content">
+                                        <h4 class="title">Bottom Minutes</h4>
+                                        <p class="category">Teachers who did not meet requirements last week</p>
+                                    </div>
+                                    <table class="table">
+                                        <tr>
+                                            <th>
+                                                Teacher
+                                            </th>
+                                            <th>
+                                                Minutes
+                                            </th>
+                                        </tr>
+                                        @foreach (var item in Model.Where(x => x.Timestamp >= ViewBag.lastweek && x.Timestamp < ViewBag.CurrentWeek).GroupBy(x => x.TeacherName))
+                                        {
+                                            var sum = item.Sum(x => x.Minutes);
+                                            if (item.Sum(x => x.Minutes) < 100)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Key)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => sum)
+                                                    </td>
+                                                </tr>
+                                            }
 
-                            // Create a new line chart object where as first parameter we pass in a selector
-                            // that is resolving to our chart container element. The Second parameter
-                            // is the actual data object.
-                            new Chartist.Bar('.ct-chart', data);
-                        });
-                    </script>
-                }
+                                        }
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            @section Scripts{
+                <script>
+                    $(document).ready(function () {
+                        var data = {
+                            // A labels array that can contain any sort of values
+                            labels: @Html.Raw(Json.Encode(@ViewBag.TeachersNames)),
+                            // Our series array that contains series objects or in this case series data arrays
+                            series: [@Html.Raw(Json.Encode(@ViewBag.TeachersMinutes))]
+                        }
+
+                        // Create a new line chart object where as first parameter we pass in a selector
+                        // that is resolving to our chart container element. The Second parameter
+                        // is the actual data object.
+                        new Chartist.Bar('.ct-chart', data);
+                    });
+                </script>
+            }

@@ -3,91 +3,127 @@
 @{
     ViewBag.Title = "Index";
 }
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_AdministrationSidebar.cshtml")
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TeacherName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Minutes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BadgeNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.School)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Grade)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Activity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Timestamp)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SubstituteName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsApproved)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApprovedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApproveTime)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TeacherName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Minutes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BadgeNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.School)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Grade)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Timestamp)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubstituteName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsApproved)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApprovedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApproveTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
 }
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_AdministrationTopNav.cshtml")
+    }
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">This Weeks Minutes</h4>
+                            <p class="category">Minutes for each School</p>
+                        </div>
+                        <div class="content">
+                            <div class="ct-chart"></div> @*The graph of the last 2 weeks minutes*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="header">
+                            <div class="content">
+                                <h4 class="title">Monthly Minutes</h4>
+                                <p class="category">Total Minutes for the Month</p>
+                            </div>
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        Teacher
+                                    </th>
+                                    <th>
+                                        Minutes
+                                    </th>
+                                </tr>
+                                @foreach (var item in Model.GroupBy(x => x.School))
+                                {
+                                    var sum = item.Sum(x => x.Minutes);
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Key)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => sum)
+                                        </td>
+                                    </tr>
+                                }
 
-</table>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="header">
+                            <div class="content">
+                                <h4 class="title">Behind Teachers</h4>
+                                <p class="category">Number of teachers behind at each school</p>
+                            </div>
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        School
+                                    </th>
+                                    <th>
+                                        Teachers
+                                    </th>
+                                </tr>
+                                @foreach (var school in Model.Where(x => x.Timestamp >= ViewBag.lastweek && x.Timestamp < ViewBag.CurrentWeek).GroupBy(x => x.School))
+                                {
+                                    var count = 0;
+                                    foreach (var item in school.GroupBy(x => x.TeacherName))
+                                    {
+                                        var sum = item.Sum(x => x.Minutes);
+                                        if (item.Sum(x => x.Minutes) < 100)
+                                        {
+                                            count++;
+
+                                        }
+                                    }
+                                    <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => school.Key)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => count)
+                                            </td>
+                                        </tr>
+                                }
+                                
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+                    $(document).ready(function () {
+                        var data = {
+                            // A labels array that can contain any sort of values
+                            labels: @Html.Raw(Json.Encode(@ViewBag.SchoolNames)),
+                            // Our series array that contains series objects or in this case series data arrays
+                            series: [@Html.Raw(Json.Encode(@ViewBag.SchoolMinutes))]
+                        }
+
+                        // Create a new line chart object where as first parameter we pass in a selector
+                        // that is resolving to our chart container element. The Second parameter
+                        // is the actual data object.
+                        new Chartist.Bar('.ct-chart', data);
+                    });
+    </script>
+}

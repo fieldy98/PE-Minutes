@@ -1,6 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="RenExtractModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <!--Errors Found During Generation:
+warning 6002: The table/view 'RenExtract.dbo.MinutesAdmins' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="MinutesAdmins">
+    <Key>
+      <PropertyRef Name="FIRST_NAME" />
+      <PropertyRef Name="LAST_NAME" />
+    </Key>
+    <Property Name="FIRST_NAME" Type="nvarchar" MaxLength="60" Nullable="false" />
+    <Property Name="LAST_NAME" Type="nvarchar" MaxLength="60" Nullable="false" />
+    <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <!--Errors Found During Generation:
 warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="SchoolTeachersWithADLogin">
     <Key>
@@ -46,6 +57,13 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityContainer Name="RenExtractModelStoreContainer">
+    <EntitySet Name="MinutesAdmins" EntityType="Self.MinutesAdmins" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [MinutesAdmins].[FIRST_NAME] AS [FIRST_NAME], 
+    [MinutesAdmins].[LAST_NAME] AS [LAST_NAME], 
+    [MinutesAdmins].[BADGE_NUM] AS [BADGE_NUM]
+    FROM [dbo].[MinutesAdmins] AS [MinutesAdmins]</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="SchoolTeachersWithADLogin" EntityType="Self.SchoolTeachersWithADLogin" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [SchoolTeachersWithADLogin].[Organization_Name] AS [Organization_Name], 

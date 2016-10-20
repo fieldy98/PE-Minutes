@@ -34,5 +34,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="MinutesAdmins">
+      <EntityTypeMapping TypeName="RenExtractModel.MinutesAdmin">
+        <MappingFragment StoreEntitySet="MinutesAdmins">
+          <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
+          <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+          <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

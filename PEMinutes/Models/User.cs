@@ -35,5 +35,18 @@ namespace PEMinutes.Models
                 return false;
             }
         }
+        public bool IsAdmin(string _badge)
+        {
+            var db = new RenExtractEntities().MinutesAdmins;
+            var QueryDB = db.FirstOrDefault(x => x.BADGE_NUM == _badge);
+            if (QueryDB != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

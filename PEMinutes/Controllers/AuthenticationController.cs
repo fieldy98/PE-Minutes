@@ -30,7 +30,13 @@ namespace PEMinutes.Controllers
             // Checks with the 'User' model and runs the users input through the IsValid method.
             if (ModelState.IsValid)
             {
-                if (user.IsPrincipal(user.StaffBadgeNumber))
+                if (user.IsAdmin(user.StaffBadgeNumber))
+                {
+                    // If a match is found, create a cookie and return the Principal homepage
+                    FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
+                    return RedirectToAction("Index", "Administration");
+                }
+                else if (user.IsPrincipal(user.StaffBadgeNumber))
                 {
                     // If a match is found, create a cookie and return the Principal homepage
                     FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);

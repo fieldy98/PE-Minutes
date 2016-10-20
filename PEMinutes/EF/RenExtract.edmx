@@ -6,6 +6,17 @@
     <edmx:StorageModels>
     <Schema Namespace="RenExtractModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
+warning 6002: The table/view 'RenExtract.dbo.MinutesAdmins' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MinutesAdmins">
+          <Key>
+            <PropertyRef Name="FIRST_NAME" />
+            <PropertyRef Name="LAST_NAME" />
+          </Key>
+          <Property Name="FIRST_NAME" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="LAST_NAME" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SchoolTeachersWithADLogin">
           <Key>
@@ -51,6 +62,13 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
           <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityContainer Name="RenExtractModelStoreContainer">
+          <EntitySet Name="MinutesAdmins" EntityType="Self.MinutesAdmins" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MinutesAdmins].[FIRST_NAME] AS [FIRST_NAME], 
+    [MinutesAdmins].[LAST_NAME] AS [LAST_NAME], 
+    [MinutesAdmins].[BADGE_NUM] AS [BADGE_NUM]
+    FROM [dbo].[MinutesAdmins] AS [MinutesAdmins]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="SchoolTeachersWithADLogin" EntityType="Self.SchoolTeachersWithADLogin" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [SchoolTeachersWithADLogin].[Organization_Name] AS [Organization_Name], 
@@ -118,6 +136,7 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
         <EntityContainer Name="RenExtractEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="SchoolTeachersWithADLogins" EntityType="Self.SchoolTeachersWithADLogin" />
           <EntitySet Name="SchoolToPrincipals" EntityType="RenExtractModel.SchoolToPrincipal" />
+          <EntitySet Name="MinutesAdmins" EntityType="RenExtractModel.MinutesAdmin" />
         </EntityContainer>
         <EntityType Name="SchoolToPrincipal">
           <Key>
@@ -128,6 +147,15 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
           <Property Name="SchoolAddress" Type="String" MaxLength="146" FixedLength="false" Unicode="true" />
           <Property Name="Principal" Type="String" Nullable="false" MaxLength="121" FixedLength="false" Unicode="true" />
           <Property Name="adLoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BADGE_NUM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MinutesAdmin">
+          <Key>
+            <PropertyRef Name="FIRST_NAME" />
+            <PropertyRef Name="LAST_NAME" />
+          </Key>
+          <Property Name="FIRST_NAME" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="LAST_NAME" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="BADGE_NUM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
@@ -166,6 +194,15 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
                 <ScalarProperty Name="Principal" ColumnName="Principal" />
                 <ScalarProperty Name="SchoolAddress" ColumnName="SchoolAddress" />
                 <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MinutesAdmins">
+            <EntityTypeMapping TypeName="RenExtractModel.MinutesAdmin">
+              <MappingFragment StoreEntitySet="MinutesAdmins">
+                <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
