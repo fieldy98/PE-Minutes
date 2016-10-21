@@ -4,12 +4,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using PEMinutes.EF;
-using PEMinutes.Models;
-using PEMinutes.ViewModels;
-using System.Globalization;
 
 //
 // OVERVIEW:
@@ -173,7 +169,7 @@ namespace PEMinutes.Controllers
         // POST: Teacher/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
+        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime,InstructionTime")] EnteredPeMinute enteredPeMinute)
         {
             if (ModelState.IsValid)
             {
@@ -203,7 +199,6 @@ namespace PEMinutes.Controllers
         // GET: Teacher/Approve
         public ActionResult Approve()
         {
-
             var EnteredBadgeString = User.Identity.Name;
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
@@ -211,7 +206,6 @@ namespace PEMinutes.Controllers
             ViewBag.School = SelectedTeacher.Organization_Name;
             List<SubMinute> SubMinutesForApproval = db.SubMinutes.Where(i => i.BadgeNumber == TeacherBadgeNumber && i.IsApproved == null).OrderByDescending(i => i.Timestamp).ToList();
             return View(SubMinutesForApproval);
-
         }
 
         // POST: Approve
@@ -280,7 +274,7 @@ namespace PEMinutes.Controllers
         // POST: Teacher/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
+        public ActionResult Edit([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime,InstructionTime")] EnteredPeMinute enteredPeMinute)
         {
             if (ModelState.IsValid)
             {

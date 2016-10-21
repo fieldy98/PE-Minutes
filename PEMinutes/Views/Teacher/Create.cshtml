@@ -3,13 +3,9 @@
 @{
     ViewBag.Title = "Create";
 }
-
-<h2>Create</h2>
-
 @if (Request.IsAuthenticated)
 {
     @Html.Partial("~/Views/Shared/_TeacherSidebar.cshtml")
-
 }
 <div class="main-panel">
     @if (Request.IsAuthenticated)
@@ -22,10 +18,7 @@
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
-
                     <div class="form-horizontal">
-                        @*<h4>EnteredPeMinute</h4>*@
-                        <hr />
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
                             @Html.LabelFor(model => model.Minutes, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -34,6 +27,21 @@
                                 @Html.ValidationMessageFor(model => model.Minutes, "", new { @class = "text-danger" })
                             </div>
                         </div>
+
+                        <div class="form-group">
+
+                            @Html.LabelFor(model => model.InstructionTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.InstructionTime, new { htmlAttributes = new { id = "instruction", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.InstructionTime, "", new { @class = "text-danger" })
+
+
+
+
+
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             @Html.LabelFor(model => model.Activity, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -55,6 +63,26 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+
+        $(function () {
+            $('#instruction').datetimepicker({
+                
+
+
+
+
+            });
+        });
+</script>
+
 }

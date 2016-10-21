@@ -1,0 +1,61 @@
+﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
+@{
+    ViewBag.Title = "Reports";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="header">
+                    <div class="content">
+                        <h4 class="title">Build Report</h4>
+                        <p class="category">Total Minutes for the Month</p>
+                    </div>
+                    <table class="table" id="Reports">
+                        <thead>
+                            <tr>
+                                <th>
+                                    School
+                                </th>
+                                <th>
+                                    Minutes
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TeacherName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Minutes)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            $('#Reports').DataTable({
+                dom: 'Bfrtip',
+                lengthMenu: [
+            [20],
+            ['Show all']
+                ],
+                buttons: [
+                   'excel', 'pdf'
+                ]
+            } );
+        } );
+    </script>
+}

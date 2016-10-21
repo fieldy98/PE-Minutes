@@ -15,11 +15,14 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-
                 <div class="card">
                     <div class="header">
                         <h4 class="title">@ViewBag.ThisMonth's PE Minutes</h4>
-                        <p class="category">You have @ViewBag.CurrentMonthMinuteCount entries totaling @ViewBag.TotalMonthMins minutes in @ViewBag.ThisMonth.<br />@ViewBag.PercentApproved of your minutes were created by substitutes.</p>
+                        <p class="category">
+                            You have @ViewBag.CurrentMonthMinuteCount entries totaling @ViewBag.TotalMonthMins minutes in @ViewBag.ThisMonth.
+                            <br />
+                            @ViewBag.PercentApproved of your minutes were created by substitutes.
+                        </p>
                     </div>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-striped">
@@ -39,7 +42,7 @@
                                 </tr>
                             </thead>
                             @foreach (var item in Model)
-            {
+                            {
                                 <tr>
                                     <td></td>
                                     <td>
@@ -58,7 +61,6 @@
                                     </td>
                                 </tr>
                             }
-
                         </table>
                     </div>
                 </div>

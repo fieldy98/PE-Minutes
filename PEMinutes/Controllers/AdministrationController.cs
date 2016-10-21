@@ -47,6 +47,25 @@ namespace PEMinutes.Controllers
             return View(AdminView);
         }
 
+        public ActionResult Reports()
+        {
+            DateTime now = DateTime.Now;
+            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
+            lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
+            DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
+            var lastweek = DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(-7);
+            ViewBag.lastweek = lastweek;  // used to find falling behind teachers
+            ViewBag.CurrentWeek = CurrentWeek; // used to find falling behind teachers
+
+            var EnteredBadgeString = User.Identity.Name;
+            MinutesAdmin SelectedAdmin = ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+            ViewBag.Name = SelectedAdmin.FIRST_NAME + " " + SelectedAdmin.LAST_NAME; ;
+
+            var AdminView = db.EnteredPeMinutes.Where(x => x.Timestamp > lastDayLastMonth).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
+            return View(AdminView);
+        }
+
         // GET: Administration/Details/5
         public ActionResult Details(int? id)
         {

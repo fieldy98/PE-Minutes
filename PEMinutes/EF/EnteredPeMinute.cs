@@ -26,5 +26,6 @@ namespace PEMinutes.EF
         public Nullable<int> IsApproved { get; set; }
         public string ApprovedBy { get; set; }
         public Nullable<System.DateTime> ApproveTime { get; set; }
+        public Nullable<System.DateTime> InstructionTime { get; set; }
     }
 }

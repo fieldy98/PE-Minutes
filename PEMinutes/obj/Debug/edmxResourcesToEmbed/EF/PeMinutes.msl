@@ -4,6 +4,7 @@
     <EntitySetMapping Name="EnteredPeMinutes">
       <EntityTypeMapping TypeName="PEMinutesModel.EnteredPeMinute">
         <MappingFragment StoreEntitySet="EnteredPeMinutes">
+          <ScalarProperty Name="InstructionTime" ColumnName="InstructionTime" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
           <ScalarProperty Name="Minutes" ColumnName="Minutes" />
@@ -22,6 +23,7 @@
     <EntitySetMapping Name="SubMinutes">
       <EntityTypeMapping TypeName="PEMinutesModel.SubMinute">
         <MappingFragment StoreEntitySet="SubMinutes">
+          <ScalarProperty Name="InstructionTime" ColumnName="InstructionTime" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
           <ScalarProperty Name="Minutes" ColumnName="Minutes" />

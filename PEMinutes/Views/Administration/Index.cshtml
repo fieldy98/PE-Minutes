@@ -37,60 +37,66 @@
                                 <p class="category">Total Minutes for the Month</p>
                             </div>
                             <table class="table">
-                                <tr>
-                                    <th>
-                                        Teacher
-                                    </th>
-                                    <th>
-                                        Minutes
-                                    </th>
-                                </tr>
-                                @foreach (var item in Model.GroupBy(x => x.School))
-                                {
-                                    var sum = item.Sum(x => x.Minutes);
+                                <thead>
                                     <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Key)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => sum)
-                                        </td>
+                                        <th>
+                                            School
+                                        </th>
+                                        <th>
+                                            Minutes
+                                        </th>
                                     </tr>
-                                }
-
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.GroupBy(x => x.School))
+                                    {
+                                        var sum = item.Sum(x => x.Minutes);
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Key)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => sum)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <div class="card">
+                    <div class="card" id="BehindTeachers">
                         <div class="header">
                             <div class="content">
                                 <h4 class="title">Behind Teachers</h4>
                                 <p class="category">Number of teachers behind at each school</p>
                             </div>
                             <table class="table">
-                                <tr>
-                                    <th>
-                                        School
-                                    </th>
-                                    <th>
-                                        Teachers
-                                    </th>
-                                </tr>
-                                @foreach (var school in Model.Where(x => x.Timestamp >= ViewBag.lastweek && x.Timestamp < ViewBag.CurrentWeek).GroupBy(x => x.School))
-                                {
-                                    var count = 0;
-                                    foreach (var item in school.GroupBy(x => x.TeacherName))
-                                    {
-                                        var sum = item.Sum(x => x.Minutes);
-                                        if (item.Sum(x => x.Minutes) < 100)
-                                        {
-                                            count++;
-
-                                        }
-                                    }
+                                <thead>
                                     <tr>
+                                        <th>
+                                            School
+                                        </th>
+                                        <th>
+                                            Teachers
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var school in Model.Where(x => x.Timestamp >= ViewBag.lastweek && x.Timestamp < ViewBag.CurrentWeek).GroupBy(x => x.School))
+                                    {
+                                        var count = 0;
+                                        foreach (var item in school.GroupBy(x => x.TeacherName))
+                                        {
+                                            var sum = item.Sum(x => x.Minutes);
+                                            if (item.Sum(x => x.Minutes) < 100)
+                                            {
+                                                count++;
+
+                                            }
+                                        }
+                                        <tr>
                                             <td>
                                                 @Html.DisplayFor(modelItem => school.Key)
                                             </td>
@@ -98,9 +104,9 @@
                                                 @Html.DisplayFor(modelItem => count)
                                             </td>
                                         </tr>
-                                }
-                                
+                                    }
 
+                                </tbody>
                             </table>
 
                         </div>
@@ -125,5 +131,22 @@
                         // is the actual data object.
                         new Chartist.Bar('.ct-chart', data);
                     });
+        
+    </script>
+
+
+
+
+
+
+    <script>
+        $(document).ready(function() {
+            $('#MonthlyView').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel', 'pdf'
+                ]
+            } );
+        } );
     </script>
 }

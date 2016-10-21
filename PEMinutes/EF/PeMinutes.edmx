@@ -21,6 +21,7 @@
           <Property Name="IsApproved" Type="int" />
           <Property Name="ApprovedBy" Type="varchar" MaxLength="255" />
           <Property Name="ApproveTime" Type="datetime" />
+          <Property Name="InstructionTime" Type="datetime" />
         </EntityType>
         <EntityType Name="SubMinutes">
           <Key>
@@ -39,6 +40,7 @@
           <Property Name="ApprovedBy" Type="varchar" MaxLength="255" />
           <Property Name="ApproveTime" Type="datetime" />
           <Property Name="IsLongTermSub" Type="int" />
+          <Property Name="InstructionTime" Type="datetime" />
         </EntityType>
         <EntityContainer Name="PEMinutesModelStoreContainer">
           <EntitySet Name="EnteredPeMinutes" EntityType="Self.EnteredPeMinutes" Schema="dbo" store:Type="Tables" />
@@ -64,6 +66,7 @@
           <Property Name="IsApproved" Type="Int32" />
           <Property Name="ApprovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ApproveTime" Type="DateTime" Precision="3" />
+          <Property Name="InstructionTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="SubMinute">
           <Key>
@@ -82,6 +85,7 @@
           <Property Name="ApprovedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ApproveTime" Type="DateTime" Precision="3" />
           <Property Name="IsLongTermSub" Type="Int32" />
+          <Property Name="InstructionTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityContainer Name="PEMinutesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="EnteredPeMinutes" EntityType="Self.EnteredPeMinute" />
@@ -96,6 +100,7 @@
           <EntitySetMapping Name="EnteredPeMinutes">
             <EntityTypeMapping TypeName="PEMinutesModel.EnteredPeMinute">
               <MappingFragment StoreEntitySet="EnteredPeMinutes">
+                <ScalarProperty Name="InstructionTime" ColumnName="InstructionTime" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
                 <ScalarProperty Name="Minutes" ColumnName="Minutes" />
@@ -114,6 +119,7 @@
           <EntitySetMapping Name="SubMinutes">
             <EntityTypeMapping TypeName="PEMinutesModel.SubMinute">
               <MappingFragment StoreEntitySet="SubMinutes">
+                <ScalarProperty Name="InstructionTime" ColumnName="InstructionTime" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
                 <ScalarProperty Name="Minutes" ColumnName="Minutes" />
