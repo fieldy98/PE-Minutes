@@ -2,16 +2,27 @@
 @{
     ViewBag.Title = "Reports";
 }
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_AdministrationSidebar.cshtml")
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="header">
-                    <div class="content">
-                        <h4 class="title">Build Report</h4>
-                        <p class="category">Total Minutes for the Month</p>
+}
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_AdministrationTopNav.cshtml")
+    }
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Minutes</h4>
+                        <p class="category">
+                            Total Number
+                        </p>
                     </div>
+                    <hr />
                     <table class="table" id="Reports">
                         <thead>
                             <tr>
@@ -28,7 +39,7 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.TeacherName)
+                                        @Html.DisplayFor(modelItem => item.School)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Minutes)
@@ -41,11 +52,20 @@
             </div>
         </div>
     </div>
- </div>
+</div>
 
 @section Scripts{
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            var currentdate = new Date();
+            var timestamp =
+                        +(currentdate.getMonth() + 1) + "-"
+                        + currentdate.getDate() + "-"
+                        + currentdate.getFullYear() + "_"
+                        + currentdate.getHours() + "-"
+                        + currentdate.getMinutes() + "-"
+                        + currentdate.getSeconds();
+
             $('#Reports').DataTable({
                 dom: 'Bfrtip',
                 lengthMenu: [
@@ -53,9 +73,16 @@
             ['Show all']
                 ],
                 buttons: [
-                   'excel', 'pdf'
+                    {
+                        extend: 'excelHtml5',
+                        title: 'PEMinuteAdminReport' + '_' + timestamp
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'PEMinuteAdminReport' + '_' + timestamp
+                    }
                 ]
-            } );
-        } );
+            });
+        });
     </script>
 }
