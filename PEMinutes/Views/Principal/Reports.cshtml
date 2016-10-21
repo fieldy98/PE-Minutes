@@ -1,5 +1,4 @@
-﻿@model IEnumerable<PEMinutes.ViewModels.PrincipalViewModel>
-
+﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
 @{
     ViewBag.Title = "Reports";
 }
@@ -8,9 +7,6 @@
     @Html.Partial("~/Views/Shared/_PrincipalSidebar.cshtml")
 
 }
-
-
-
 <div class="main-panel">
     @if (Request.IsAuthenticated)
     {
@@ -19,110 +15,120 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="card">
-                    <form class="form-inline">
-
-                        @using (Html.BeginForm())
-                        {
-
-
-
-                            @*<select>
-
-                                @for (var i = 0; i < Model.Count(); i++)
-                                {
-                                    <option value="@Html.DisplayFor(x => x[i].SchoolTeachers)">@Model.SchoolTeachers</option>
-                                }
-
-
-
-                            </select>*@
-
-
-                            @*<div class="form-group pull-left">
-                    Filter by Teacher: @Html.DropDownList("_teacher", new List<SelectListItem>()
-                                  {
-
-                                  }}, "Change School Site", new { @class = "form-control" })
-
-                </div>*@
-
-
-                            @*<div class="form-group pull-left">
-                    @*Dropdown list of schools in the district
-                    <select id="SelectASchool" class="form-control">
-                        <option value="">Choose a School</option>
-                        @foreach (var item in ViewBag.SelectedTeacherList)
-                        {
-                            <option value="@item">@item</option>
-                        }
-                    </select>
-                </div>*@
-                            <div class="pull-left">
-                                <div class="form-group">
-                                    Select a Timeframe: @Html.TextBox("DateRange", null, new { name = "daterange", @class = "form-control" })
-                                </div>
-
-                                <div class="form-group" style="margin-left: 30px;">
-                                    <input type="submit" class="btn btn-default" value="Submit" />
-                                </div>
-
+                @if (Model.Count() > 0)
+                {
+                    <div class="card">
+                        <div class="content">
+                            <div class="header">
+                                <h4 class="title">Minutes</h4>
+                                <p class="category">
+                                    Total Number
+                                </p>
                             </div>
-                        }
-                    </form>
-
-
-
-
-                    <table class="table">
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.TeacherName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Minutes)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Activity)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Timestamp)
-                            </th>
-                            <th></th>
-                        </tr>
-
-                        @foreach (var item in Model)
-                        {
-                            
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TeacherName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Minutes)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Activity)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Timestamp)
-                                </td>
-                            </tr>
-                        }
-
-                    </table>
-                </div>
+                            <hr />
+                            <table class="table" id="ReportTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.TeacherName)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Minutes)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Activity)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Timestamp)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TeacherName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Minutes)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Activity)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Timestamp)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center">There are currently no minutes to generate the report. Please try again later</p>
+                }
             </div>
         </div>
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        $('input[name="daterange"]').daterangepicker();
 
+
+
+@section Scripts{
+    @*
+        Call DataTables Dependencies
+    *@
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/DataTables/buttons.bootstrap.min.js"></script>
+    <script src="~/Scripts/DataTables/buttons.html5.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="http://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            //Setup Timestamp
+            var currentdate = new Date();
+            var timestamp =
+                +(currentdate.getMonth() + 1) + "-"
+                + currentdate.getDate() + "-"
+                + currentdate.getFullYear() + "_"
+                + currentdate.getHours() + "-"
+                + currentdate.getMinutes() + "-"
+                + currentdate.getSeconds();
+            // Setup DataTable
+            $('#ReportTable').DataTable({
+                dom: 'Bfrtip',
+                lengthMenu: [
+            [20],
+            ['Show all']
+                ],
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title: 'PEMinuteAdminReport' + '_' + timestamp
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'PEMinuteAdminReport' + '_' + timestamp
+                    }
+                ]
+            });
+            // Pull Search Field to the right
+            $("#ReportTable_filter").addClass("pull-right");
+
+
+            jQuery('#Reports').addClass('active');
+        });
 
     </script>
-    
-    
-    }
+}

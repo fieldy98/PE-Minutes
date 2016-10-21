@@ -120,7 +120,7 @@
                 </div>
                 <hr />
                 <div class="btn-group" style="padding-bottom: 20px;">
-                    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Back", "Manage", null, new { @class = "btn btn-default" })
                     @Html.ActionLink("Delete", "Delete", new { id = Model.ID }, new { @class = "btn btn-danger" })
                     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn btn-default" })
                 </div>
@@ -128,3 +128,6 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>jQuery('#Reports').addClass('active');</script>
+}

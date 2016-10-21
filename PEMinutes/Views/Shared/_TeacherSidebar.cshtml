@@ -6,11 +6,11 @@
             </a>
         </div>
         <ul class="nav">
-            <li id="dashboard">
+            <li id="Dashboard">
                 <i class="ti-stats-up"></i>
                 @Html.ActionLink("Dashboard", "Index", "Teacher")
             </li>
-            <li id="ThisMonth">
+            <li id="Reports">
                 <i class="ti-time"></i>
                 @Html.ActionLink((string)DateTime.Today.ToString("MMMM") + "'s Minutes", "Manage", "Teacher")
             </li>
