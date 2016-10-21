@@ -119,7 +119,7 @@
 
                         <div class="form-actions no-color">
                             <input type="submit" value="Delete" class="btn btn-danger" />
-                            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default" })
+                            @Html.ActionLink("Back", "Manage", null, new { @class = "btn btn-default" })
                         </div>
                     }
                 </div>
@@ -127,3 +127,6 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>jQuery('#Reports').addClass('active');</script>
+}

@@ -15,6 +15,8 @@ namespace PEMinutes.Controllers
         private PEMinutesEntities db = new PEMinutesEntities();
         private RenExtractEntities ren = new RenExtractEntities();
 
+
+
         // GET: /Principal/Index
         public ActionResult Index()
         {
@@ -51,57 +53,19 @@ namespace PEMinutes.Controllers
         }
 
         // GET: /Principal/Reports
-        public ActionResult Reports(string _dateRange, string _teacher)
+        public ActionResult Reports()
         {
-            PrincipalViewModel pvm = new PrincipalViewModel();
             var EnteredBadgeString = User.Identity.Name;
             SchoolToPrincipal SelectedPrincipal = ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             var SelectedSchool = SelectedPrincipal.ORGANIZATION_NAME;
+            ViewBag.Name = SelectedPrincipal.Principal;
 
-            List<SchoolTeachersWithADLogin> myfellowteachers = ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == SelectedSchool
-                && i.COURSE_TITLE.Contains("PS") == false && i.COURSE_TITLE.Contains("Kind") == false).ToList();
-            //foreach (var item in myfellowteachers)
-            //{
-            //    tsl.TeacherName = item.TeacherFirstName + " " + item.TeacherLastName;
+            DateTime PastTenDays = DateTime.Now.AddDays(-11);
 
-            //    pvm.SchoolTeachers = tsl;
-            //}
-            //pvm.SchoolTeachers = pvm.SchoolTeachers.ToList();
-            
+            var SchoolReport = db.EnteredPeMinutes.Where( x => x.School == SelectedSchool && x.Timestamp > PastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
 
-
-
-
-
-            if (!String.IsNullOrEmpty(_dateRange))
-            {
-                
-                var dates = _dateRange.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                var start = dates[0];                               // Select first and second sections
-                var end = dates[1];
-                DateTime StartDate = Convert.ToDateTime(start);         // Convert 'start' and 'end' to DateTime
-                DateTime EndDate = Convert.ToDateTime(end).AddDays(1);
-
-                if (_dateRange != null && _teacher != null)
-                {
-                    var SearchDateAndTeacher = db.EnteredPeMinutes.Where(x => x.School == SelectedSchool && x.TeacherName == _teacher && x.Timestamp >= StartDate && x.Timestamp <= EndDate);
-                    return View(SearchDateAndTeacher);
-                }
-                else if (_dateRange != null)
-                {
-                    var SearchDate = db.EnteredPeMinutes.Where(x => x.School == SelectedSchool && x.Timestamp >= StartDate && x.Timestamp <= EndDate);
-                    return View(SearchDate);
-                }
-
-            }
-            else if (!String.IsNullOrEmpty(_teacher))
-            {
-                var SearchTeacher = db.EnteredPeMinutes.Where(x => x.School == SelectedSchool && x.TeacherName.Contains(_teacher));
-                return View(SearchTeacher);
-            }
-            var AllMinutesAtSite = db.EnteredPeMinutes.Where(x => x.School == SelectedSchool);
-            return View(pvm);
-            
+            return View(SchoolReport);
         }
 
 

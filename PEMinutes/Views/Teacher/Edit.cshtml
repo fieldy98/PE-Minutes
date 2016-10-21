@@ -58,7 +58,7 @@
                 }
 
                 <div>
-                    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Back", "Manage", null, new { @class = "btn btn-default" })
                 </div>
             </div>
         </div>
@@ -66,6 +66,7 @@
 </div>
 
 @section Scripts {
+    <script>jQuery('#Reports').addClass('active');</script>
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
     $(function () {
@@ -73,7 +74,6 @@
     });
     </script>
 }
-
 
 
 
