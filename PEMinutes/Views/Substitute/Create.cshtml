@@ -25,6 +25,14 @@
                             </div>
                         </div>
                         <div class="form-group">
+
+                            @Html.LabelFor(model => model.InstructionTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.InstructionTime, new { htmlAttributes = new { id = "instruction", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.InstructionTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
                             @Html.LabelFor(model => model.Minutes, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.Minutes, new { htmlAttributes = new { id = "Minutes", @class = "form-control" } }) @* Form for putting in the minutes the activity lasted *@
@@ -58,4 +66,16 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+
+        $(function () {
+            $('#instruction').datetimepicker({
+
+
+
+
+
+            });
+        });
+</script>
 }

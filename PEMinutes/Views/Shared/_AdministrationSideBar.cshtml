@@ -8,11 +8,19 @@
         <ul class="nav">
             <li id="dashboard">
                 <i class="ti-stats-up"></i>
-                @Html.ActionLink("Dashboard", "Index", "Teacher")
+                @Html.ActionLink("Dashboard", "Index", "Administration")
             </li>
-            <li id="ThisMonth">
+            <li id="LastTen">
                 <i class="ti-time"></i>
-                @Html.ActionLink((string)DateTime.Today.ToString("MMMM") + "'s Minutes", "Manage", "Teacher")
+                @Html.ActionLink("Last 10 Days", "Reports", "Administration", new { timeFrame = -14, divisor = 200 }, null)
+            </li>
+            <li id="LastFive">
+                <i class="ti-time"></i>
+                @Html.ActionLink("Last 5 Days", "Reports", "Administration", new { timeFrame = -7, divisor = 100 }, null)
+            </li>
+            <li id="Yesterday">
+                <i class="ti-time"></i>
+                @Html.ActionLink("Yesterday", "Reports", "Administration", new { timeFrame = -1, divisor = 20 }, null)
             </li>
         </ul>
     </div>

@@ -31,38 +31,40 @@ namespace PEMinutes.Controllers
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedAdmin.FIRST_NAME + " " + SelectedAdmin.LAST_NAME; ;
 
-            var AdminView = db.EnteredPeMinutes.Where(x => x.Timestamp > lastDayLastMonth).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
+            var AdminView = db.EnteredPeMinutes.Where(x => x.InstructionTime >= lastweek.Date && x.InstructionTime < now.Date).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
             // Graph tracking minutes per teacher
-            var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.Timestamp > CurrentWeek).OrderBy(x => x.School)
+            var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.InstructionTime >= lastweek.Date && x.InstructionTime < now.Date).OrderBy(x => x.School)
                                     let MonthSchoolNames = MonthMinutes
                                     group MonthMinutes by new { a = MonthSchoolNames.School } into CompletedMinutes
                                     select new
                                     {
                                         CompletedMinutesDateLabel = CompletedMinutes.Key.a, // This provides a list of dates that have minutes entered in for them
-                                        CompletedMinutesSum = CompletedMinutes.Sum(x => x.Minutes) // This is a summation of all minutes put in for a particular day
-                                    };
+                                        CompletedMinutesSum = ((float)CompletedMinutes.Sum(x => x.Minutes) /(200 * CompletedMinutes.Count())) * 100 // This is a summation of all minutes put in for a particular day
+        };
+
 
             ViewBag.SchoolNames = AdminTrackMinutes.Select(x => x.CompletedMinutesDateLabel).ToArray(); // x.CompletedMinutesDateLabe.a is needed because if we leave .a off it will give a result of "a":"Date"
             ViewBag.SchoolMinutes = AdminTrackMinutes.Select(x => x.CompletedMinutesSum).ToArray();
             return View(AdminView);
         }
 
-        public ActionResult Reports()
+        public ActionResult Reports(int timeFrame, int divisor)
         {
             DateTime now = DateTime.Now;
-            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
-            lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
+            DateTime SelectedTimeFrame = now.AddDays(timeFrame);
             DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
             var lastweek = DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(-7);
             ViewBag.lastweek = lastweek;  // used to find falling behind teachers
             ViewBag.CurrentWeek = CurrentWeek; // used to find falling behind teachers
+
+            ViewBag.Divisor = divisor;
 
             var EnteredBadgeString = User.Identity.Name;
             MinutesAdmin SelectedAdmin = ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedAdmin.FIRST_NAME + " " + SelectedAdmin.LAST_NAME; ;
 
-            var AdminView = db.EnteredPeMinutes.Where(x => x.Timestamp > lastDayLastMonth).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
+            var AdminView = db.EnteredPeMinutes.Where(x => x.InstructionTime >= SelectedTimeFrame.Date && x.InstructionTime < now.Date).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
             return View(AdminView);
         }
 

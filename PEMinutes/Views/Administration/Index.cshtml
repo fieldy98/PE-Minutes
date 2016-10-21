@@ -33,8 +33,8 @@
                     <div class="card">
                         <div class="header">
                             <div class="content">
-                                <h4 class="title">Monthly Minutes</h4>
-                                <p class="category">Total Minutes for the Month</p>
+                                <h4 class="title">Percentage of Requirement</h4>
+                                <p class="category">How the schools are measuring up to the 200 minute requirement</p>
                             </div>
                             <table class="table">
                                 <thead>
@@ -50,7 +50,7 @@
                                 <tbody>
                                     @foreach (var item in Model.GroupBy(x => x.School))
                                     {
-                                        var sum = item.Sum(x => x.Minutes);
+                                        var sum = ((float)item.Sum(x => x.Minutes) / (item.Count() * 200)).ToString("0.00%");
                                         <tr>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Key)

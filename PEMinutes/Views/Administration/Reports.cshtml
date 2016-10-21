@@ -2,60 +2,167 @@
 @{
     ViewBag.Title = "Reports";
 }
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_AdministrationSidebar.cshtml")
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="header">
-                    <div class="content">
-                        <h4 class="title">Build Report</h4>
-                        <p class="category">Total Minutes for the Month</p>
+}
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_AdministrationTopNav.cshtml")
+    }
+    <div class="container">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#Percent" aria-controls="Percent Complete" role="tab" data-toggle="tab">Percent Complete</a></li>
+            <li role="presentation"><a href="#Activity" aria-controls="Activity" role="tab" data-toggle="tab">Activity</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="Percent">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="header">
+                                <div class="content">
+                                    <h4 class="title">Percentage Report</h4>
+                                    <p class="category">Total Percentage for teacher</p>
+                                </div>
+                                <table class="table" id="Reports">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Teacher Name
+                                            </th>
+                                            <th>
+                                                School
+                                            </th>
+                                            <th>
+                                                Total Minutes
+                                            </th>
+                                            <th>
+                                                Percentage of Goal
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.GroupBy(x=>x.TeacherName))
+                                        {
+                                            var teacher = Model.FirstOrDefault(x=>x.TeacherName == item.Key);
+                                            var sum = item.Sum(x => x.Minutes);
+                                            var percent = ((float) sum / @ViewBag.Divisor).ToString("0.00%");
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Key)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => teacher.School)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => sum)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => percent)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <table class="table" id="Reports">
-                        <thead>
-                            <tr>
-                                <th>
-                                    School
-                                </th>
-                                <th>
-                                    Minutes
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TeacherName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Minutes)
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="Activity">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="header">
+                                <div class="content">
+                                    <h4 class="title">Activities Report</h4>
+                                    <p class="category">Total Activities List</p>
+                                </div>
+                                <table class="table" id="Activities">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                School
+                                            </th>
+                                            <th>
+                                                Date of Instruction
+                                            </th>
+                                            <th>
+                                                Minutes
+                                            </th>
+                                            <th>
+                                                Activity
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.OrderBy(x=>x.TeacherName))
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.TeacherName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.School)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.InstructionTime)
+                                                </td>
+                                                <th>
+                                                    @Html.DisplayFor(modelItem => item.Minutes)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayFor(modelItem => item.Activity)
+                                                </th>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
- </div>
+    </div>
 
-@section Scripts{
-    <script>
-        $(document).ready(function() {
-            $('#Reports').DataTable({
-                dom: 'Bfrtip',
-                lengthMenu: [
-            [20],
-            ['Show all']
-                ],
-                buttons: [
-                   'excel', 'pdf'
-                ]
-            } );
-        } );
-    </script>
-}
+    @section Scripts{
+        <script>
+            $('#myTabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
+            $(document).ready(function () {
+                $('#Reports').DataTable({
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                [20],
+                ['Show all']
+                    ],
+                    buttons: [
+                       'excel', 'pdf'
+                    ]
+                });
+            });
+            $(document).ready(function () {
+                $('#Activities').DataTable({
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                [20],
+                ['Show all']
+                    ],
+                    buttons: [
+                       'excel', 'pdf'
+                    ]
+                });
+            });
+        </script>
+    }
