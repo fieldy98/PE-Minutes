@@ -19,6 +19,7 @@ namespace PEMinutes.ViewModels
         public int? CountTeacher { get; set; }
         public int? MeetReq { get; set; }
         public float? Percent { get; set; }
+        public string Date { get; set; }
         public List<TeacherSelectListEntry> MyTeachers { get; set; }
         public List<TeacherCount> TeachCount { get; set; }
         public AdministrationViewModel()

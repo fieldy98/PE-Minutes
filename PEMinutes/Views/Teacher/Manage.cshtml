@@ -20,8 +20,6 @@
                         <h4 class="title">@ViewBag.ThisMonth's PE Minutes</h4>
                         <p class="category">
                             You have @ViewBag.CurrentMonthMinuteCount entries totaling @ViewBag.TotalMonthMins minutes in @ViewBag.ThisMonth.
-                            <br />
-                            @ViewBag.PercentApproved of your minutes were created by substitutes.
                         </p>
                     </div>
                     <div class="content table-responsive table-full-width">
@@ -36,7 +34,7 @@
                                         @Html.DisplayNameFor(model => model.Activity)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Timestamp)
+                                        @Html.DisplayNameFor(model => model.InstructionTime)
                                     </th>
                                     <th></th>
                                 </tr>
@@ -53,7 +51,7 @@
                                         @Html.DisplayFor(modelItem => item.Activity)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Timestamp)
+                                        @Html.DisplayFor(modelItem => item.InstructionTime)
                                     </td>
                                     <td class="col-lg-1">
                                         @Html.ActionLink("View", "Details", new { id = item.ID }, new { @class = "btn btn-default" })

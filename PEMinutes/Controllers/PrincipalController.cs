@@ -34,9 +34,9 @@ namespace PEMinutes.Controllers
             var SelectedSchool = SelectedPrincipal.ORGANIZATION_NAME;
             ViewBag.Name = SelectedPrincipal.Principal;
 
-            var PrincipalView = db.EnteredPeMinutes.Where(x => x.Timestamp > lastDayLastMonth && x.School == SelectedSchool ).OrderBy(x=>x.TeacherName); // select all minutes from the school the principal belongs to
+            var PrincipalView = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastDayLastMonth && x.School == SelectedSchool ).OrderBy(x=>x.TeacherName); // select all minutes from the school the principal belongs to
             // Graph tracking minutes per teacher
-            var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.Timestamp > CurrentWeek && x.School == SelectedSchool).OrderByDescending(x=>x.Minutes)
+            var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.InstructionTime > CurrentWeek && x.School == SelectedSchool).OrderByDescending(x=>x.Minutes)
                                     let MonthTeacherNames = MonthMinutes
                                     group MonthMinutes by new { a = MonthTeacherNames.TeacherName} into CompletedMinutes
                                     select new
@@ -63,7 +63,7 @@ namespace PEMinutes.Controllers
 
             DateTime PastTenDays = DateTime.Now.AddDays(-11);
 
-            var SchoolReport = db.EnteredPeMinutes.Where( x => x.School == SelectedSchool && x.Timestamp > PastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
+            var SchoolReport = db.EnteredPeMinutes.Where( x => x.School == SelectedSchool && x.InstructionTime > PastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
 
             return View(SchoolReport);
         }
@@ -119,7 +119,7 @@ namespace PEMinutes.Controllers
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
+        //public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
         //{
         //    if (ModelState.IsValid)
         //    {
@@ -151,7 +151,7 @@ namespace PEMinutes.Controllers
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
+        //public ActionResult Edit([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
         //{
         //    if (ModelState.IsValid)
         //    {

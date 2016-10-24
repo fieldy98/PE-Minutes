@@ -1,4 +1,4 @@
-﻿@model PEMinutes.EF.EnteredPeMinute
+﻿@model PEMinutes.ViewModels.TeacherEditViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -26,6 +26,16 @@
                     <div class="form-horizontal">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         @Html.HiddenFor(model => model.ID)
+                        @Html.HiddenFor(model => model.TeacherName)
+                        @Html.HiddenFor(model => model.BadgeNumber)
+                        @Html.HiddenFor(model => model.Grade)
+                        @Html.HiddenFor(model => model.School)
+                        @Html.HiddenFor(model => model.Timestamp)
+                        @Html.HiddenFor(model => model.SubstituteName)
+                        @Html.HiddenFor(model => model.IsApproved)
+                        @Html.HiddenFor(model => model.ApprovedBy)
+                        @Html.HiddenFor(model => model.ApprovedTime)
+
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Minutes, htmlAttributes: new { @class = "control-label col-md-2" })

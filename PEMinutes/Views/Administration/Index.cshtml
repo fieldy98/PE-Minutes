@@ -13,15 +13,28 @@
     {
         @Html.Partial("~/Views/Shared/_AdministrationTopNav.cshtml")
     }
-    @Model.SchoolName
     <div class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="header">
-                            <h4 class="title">This Weeks Minutes</h4>
-                            <p class="category">Minutes for each School</p>
+                            <div class="col-sm-4">
+                                <h4 class="title">This Weeks Minutes</h4>
+                                <p class="category">Minutes for each School</p>
+                            </div>
+                                <form class="form-inline pull-right">
+                                    @using (Html.BeginForm())
+                                    {
+                                        <div class="form-group">
+                                            @Html.TextBox("SelectedDate", Model.Date, new { @class = "form-control" })
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" value="Search" class="btn btn-default" />
+                                        </div>
+                                        
+                                    }
+                                    </form>
                         </div>
                         <div class="content">
                             <div class="ct-chart"></div> @*The graph of the last 2 weeks minutes*@
@@ -34,8 +47,10 @@
                     <div class="card">
                         <div class="header">
                             <div class="content">
-                                <h4 class="title">Percentage of Requirement</h4>
-                                <p class="category">How the schools are measuring up to the 200 minute requirement</p>
+                                <div class="col-sm-3">
+                                    <h4 class="title">Percentage of Requirement</h4>
+                                    <p class="category">How the schools are measuring up to the 200 minute requirement</p>
+                                </div>
                             </div>
                             <table class="table">
                                 <thead>
@@ -62,13 +77,13 @@
                                                 @Html.DisplayFor(modelItem => item.SchoolName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CountTeacher)
-                                            </td>
-                                            <td>
                                                 @Html.DisplayFor(modelItem => item.MeetReq)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Percent)
+                                                @Html.DisplayFor(modelItem => item.CountTeacher)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Percent)%
                                             </td>
                                         </tr>
                                     }
@@ -83,21 +98,54 @@
 </div>
 @section Scripts{
     <script>
-                    $(document).ready(function () {
-                        var data = {
-                            // A labels array that can contain any sort of values
-                            labels: @Html.Raw(Json.Encode(Model.TeachCount.Select(x=>x.SchoolName))),
-                            // Our series array that contains series objects or in this case series data arrays
-                            series: [@Html.Raw(Json.Encode(Model.TeachCount.Select(x=>x.Percent)))]
-                        }
+        $(document).ready(function () {
 
-                        // Create a new line chart object where as first parameter we pass in a selector
-                        // that is resolving to our chart container element. The Second parameter
-                        // is the actual data object.
-                        new Chartist.Bar('.ct-chart', data);
-                        jQuery('#Dashboard').addClass('active');
-                    });
-        
+
+
+
+            var data = {
+                // A labels array that can contain any sort of values
+                labels: @Html.Raw(Json.Encode(Model.TeachCount.Select(x=>x.SchoolName))),
+                // Our series array that contains series objects or in this case series data arrays
+                series: [@Html.Raw(Json.Encode(Model.TeachCount.Select(x=>x.Percent)))]
+            }
+
+            // Create a new line chart object where as first parameter we pass in a selector
+            // that is resolving to our chart container element. The Second parameter
+            // is the actual data object.
+            new Chartist.Bar('.ct-chart', data);
+            jQuery('#Dashboard').addClass('active');
+
+
+            function BackADay() {
+                var SelectedDate = $('#CurrentDate').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("TotalGraph", "Administration")',
+                    data: { SelectedDate: SelectedDate },
+                    success: function (data) {
+                        //$("#SelectDate").html(data);
+                        alert("success");
+                    },
+                    error: function (data) {
+                        alert("error");
+                    }
+                })
+
+            };
+
+
+
+        });
+    </script>
+
+
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('#instruction').datetimepicker();
+        });
     </script>
 
 
@@ -105,14 +153,7 @@
 
 
 
-    <script>
-        $(document).ready(function() {
-            $('#MonthlyView').DataTable( {
-                dom: 'Bfrtip',
-                buttons: [
-                    'excel', 'pdf'
-                ]
-            } );
-        } );
-    </script>
+
+
+
 }

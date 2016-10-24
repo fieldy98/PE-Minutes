@@ -5,49 +5,44 @@
 }
 
 <div class="container">
-    <div class="col-sm-12 panel">
-        <div class="panel-body">
-            <div class="col-sm-12 col-lg-12 center-block">
-
-                <h2>Please Choose the School and Teacher you are subbing for:</h2>
-                <div class="row">
-                    <div class="Index-Form">
-
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                            @*Dropdown list of schools in the district*@
-                            <select id="SelectASchool" class="form-control">
-                                <option value="">Choose a School</option>
-                                @foreach (var item in Model.OrderBy(x => x.Organization_Name).Select(x => x.Organization_Name).Distinct())
-                                {
-                                    <option value="@item">@item</option>
-                                }
-                            </select>
-                        </div>
-                        @* this is an empty div for loading the _GetTeachers partial when a school is selected *@
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                            <div id="teacherselect">
-                            </div>
-                        </div>
-
+    <div class="content">
+        <div class="col-sm-12 card" style="margin-top: 40px; padding-bottom: 20px;">
+            <div class="header">
+                <h4 class="title">Location</h4>
+                <p class="category">Let's start with some basic information</p>
+            </div>
+            <div class="content">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    @*Dropdown list of schools in the district*@
+                    <select id="SelectASchool" class="form-control">
+                        <option value="">Where are you?</option>
+                        @foreach (var item in Model.OrderBy(x => x.Organization_Name).Select(x => x.Organization_Name).Distinct())
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                </div>
+                @* this is an empty div for loading the _GetTeachers partial when a school is selected *@
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div id="teacherselect">
                     </div>
                 </div>
                 @* this is an empty div for loading the error message if an error is encountered *@
                 <div class="row">
-                    <p class="errormessage">
-
-                    </p>
+                    <p class="errormessage"></p>
                 </div>
-                <div>
-                    @Html.ActionLink("Back", "Index", new { Controller = "Authentication", action = "Index" }, new { @class = "btn" })
-                </div>
-
             </div>
+        </div>
+        <div>
+            @Html.ActionLink("Back", "Index", new { Controller = "Authentication", action = "Index" }, new { @class = "btn" })
         </div>
     </div>
 </div>
 
 
-@section scripts{
+
+
+@section Scripts{
 
     <script>
         // When you select a school from the dropdown list this function will get a list of teachers from that school

@@ -18,8 +18,9 @@ namespace PEMinutes.Controllers
             return View(schools);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(string selectedbadge)
         {
+            
             return View();
         }
 

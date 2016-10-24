@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using PEMinutes.EF;
+using PEMinutes.ViewModels;
 
 //
 // OVERVIEW:
@@ -49,10 +50,10 @@ namespace PEMinutes.Controllers
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             ViewBag.School = SelectedTeacher.Organization_Name;
             ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();
-            ViewBag.Approved = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.ApprovedBy != null && i.Timestamp > lastDayLastMonth).Count();
+            ViewBag.Approved = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.ApprovedBy != null && i.InstructionTime > lastDayLastMonth).Count();
 
             DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
-            var CurrentWeekMinutes = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= CurrentWeek).Sum(x => x.Minutes);
+            var CurrentWeekMinutes = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= CurrentWeek).Sum(x => x.Minutes);
             if (CurrentWeekMinutes == null)
             {
                 ViewBag.CurrentWeekMinutes = 0;
@@ -97,21 +98,21 @@ namespace PEMinutes.Controllers
             ViewBag.TwoDays = TwoDaysAgo.ToString("MMM dd,yyyy");
             ViewBag.Yester = Yesterday.ToString("MMM dd,yyyy");
             ViewBag.Now = Today.ToString("MMM dd,yyyy");
-            ViewBag.FourteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= FourteenDaysAgo && x.Timestamp < ThirteenDaysAgo).Sum(x => x.Minutes);
-            ViewBag.ThirteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= ThirteenDaysAgo && x.Timestamp < TwelveDaysAgo).Sum(x => x.Minutes);
-            ViewBag.TwelveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= TwelveDaysAgo && x.Timestamp < ElevenDaysAgo).Sum(x => x.Minutes);
-            ViewBag.ElevenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= ElevenDaysAgo && x.Timestamp < TenDaysAgo).Sum(x => x.Minutes);
-            ViewBag.TenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= TenDaysAgo && x.Timestamp < NineDaysAgo).Sum(x => x.Minutes);
-            ViewBag.NineDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= NineDaysAgo && x.Timestamp < EightDaysAgo).Sum(x => x.Minutes);
-            ViewBag.EightDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= EightDaysAgo && x.Timestamp < SevenDaysAgo).Sum(x => x.Minutes);
-            ViewBag.SevenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= SevenDaysAgo && x.Timestamp < SixDaysAgo).Sum(x => x.Minutes);
-            ViewBag.SixDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= SixDaysAgo && x.Timestamp < FiveDaysAgo).Sum(x => x.Minutes);
-            ViewBag.FiveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= FiveDaysAgo && x.Timestamp < FourDaysAgo).Sum(x => x.Minutes);
-            ViewBag.FourDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= FourDaysAgo && x.Timestamp < ThreeDaysAgo).Sum(x => x.Minutes);
-            ViewBag.ThreeDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= ThreeDaysAgo && x.Timestamp < TwoDaysAgo).Sum(x => x.Minutes);
-            ViewBag.TwoDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= TwoDaysAgo && x.Timestamp < Yesterday).Sum(x => x.Minutes);
-            ViewBag.Yesterday = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= Yesterday && x.Timestamp < Today).Sum(x => x.Minutes);
-            ViewBag.Today = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.Timestamp >= Today).Sum(x => x.Minutes);
+            ViewBag.FourteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= FourteenDaysAgo && x.InstructionTime < ThirteenDaysAgo).Sum(x => x.Minutes);
+            ViewBag.ThirteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= ThirteenDaysAgo && x.InstructionTime < TwelveDaysAgo).Sum(x => x.Minutes);
+            ViewBag.TwelveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= TwelveDaysAgo && x.InstructionTime < ElevenDaysAgo).Sum(x => x.Minutes);
+            ViewBag.ElevenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= ElevenDaysAgo && x.InstructionTime < TenDaysAgo).Sum(x => x.Minutes);
+            ViewBag.TenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= TenDaysAgo && x.InstructionTime < NineDaysAgo).Sum(x => x.Minutes);
+            ViewBag.NineDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= NineDaysAgo && x.InstructionTime < EightDaysAgo).Sum(x => x.Minutes);
+            ViewBag.EightDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= EightDaysAgo && x.InstructionTime < SevenDaysAgo).Sum(x => x.Minutes);
+            ViewBag.SevenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= SevenDaysAgo && x.InstructionTime < SixDaysAgo).Sum(x => x.Minutes);
+            ViewBag.SixDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= SixDaysAgo && x.InstructionTime < FiveDaysAgo).Sum(x => x.Minutes);
+            ViewBag.FiveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= FiveDaysAgo && x.InstructionTime < FourDaysAgo).Sum(x => x.Minutes);
+            ViewBag.FourDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= FourDaysAgo && x.InstructionTime < ThreeDaysAgo).Sum(x => x.Minutes);
+            ViewBag.ThreeDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= ThreeDaysAgo && x.InstructionTime < TwoDaysAgo).Sum(x => x.Minutes);
+            ViewBag.TwoDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= TwoDaysAgo && x.InstructionTime < Yesterday).Sum(x => x.Minutes);
+            ViewBag.Yesterday = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= Yesterday && x.InstructionTime < Today).Sum(x => x.Minutes);
+            ViewBag.Today = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= Today).Sum(x => x.Minutes);
             // end of the sections where we build the chart data
 
             List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).ToList(); // Finds all of the teachers minutes
@@ -134,8 +135,8 @@ namespace PEMinutes.Controllers
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int EnteredBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == EnteredBadgeNumber && i.Timestamp > lastDayLastMonth).OrderByDescending(i => i.Timestamp).ToList(); // Finds the minutes for the signed in teacher for the current month
-            var Approved = db.EnteredPeMinutes.Where(i => i.BadgeNumber == EnteredBadgeNumber && i.SubstituteName != null && i.Timestamp > lastDayLastMonth).Count();
+            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == EnteredBadgeNumber && i.InstructionTime > lastDayLastMonth).OrderByDescending(i => i.InstructionTime).ToList(); // Finds the minutes for the signed in teacher for the current month
+            var Approved = db.EnteredPeMinutes.Where(i => i.BadgeNumber == EnteredBadgeNumber && i.SubstituteName != null && i.InstructionTime > lastDayLastMonth).Count();
             ViewBag.Approved = Approved;
             ViewBag.CurrentMonthMinuteCount = TeachersPeMinutes.Count();
             ViewBag.PercentApproved = ((float)Approved / TeachersPeMinutes.Count()).ToString("0.00%");
@@ -169,7 +170,7 @@ namespace PEMinutes.Controllers
         // POST: Teacher/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime,InstructionTime")] EnteredPeMinute enteredPeMinute)
+        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,SubstituteName,IsApproved,ApprovedBy,ApproveTime,InstructionTime")] EnteredPeMinute enteredPeMinute)
         {
             if (ModelState.IsValid)
             {
@@ -188,6 +189,7 @@ namespace PEMinutes.Controllers
                 enteredPeMinute.BadgeNumber = BadgeNumber;
                 enteredPeMinute.Timestamp   = DateTime.Now;
 
+
                 // Apply the modifications and then save to the database
                 db.EnteredPeMinutes.Add(enteredPeMinute);
                 db.SaveChanges();
@@ -204,7 +206,7 @@ namespace PEMinutes.Controllers
             int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             ViewBag.School = SelectedTeacher.Organization_Name;
-            List<SubMinute> SubMinutesForApproval = db.SubMinutes.Where(i => i.BadgeNumber == TeacherBadgeNumber && i.IsApproved == null).OrderByDescending(i => i.Timestamp).ToList();
+            List<SubMinute> SubMinutesForApproval = db.SubMinutes.Where(i => i.BadgeNumber == TeacherBadgeNumber && i.IsApproved == null).OrderByDescending(i => i.InstructionTime).ToList();
             return View(SubMinutesForApproval);
         }
 
@@ -230,7 +232,7 @@ namespace PEMinutes.Controllers
 
         // POST: Checkout 
         [HttpPost]
-        public ActionResult MoveSubToTeacher(string SelectedSubstituteName, int SelectedMinutes, string SelectedActivity, DateTime SelectedTimestamp, EnteredPeMinute enteredPeMinute)
+        public ActionResult MoveSubToTeacher(string SelectedSubstituteName, int SelectedMinutes, string SelectedActivity, DateTime SelectedInstructionTime, EnteredPeMinute enteredPeMinute)
         {
             var EnteredBadgeString = User.Identity.Name;
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
@@ -239,7 +241,7 @@ namespace PEMinutes.Controllers
             enteredPeMinute.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             enteredPeMinute.Minutes = SelectedMinutes;
             enteredPeMinute.Activity = SelectedActivity;
-            enteredPeMinute.Timestamp = SelectedTimestamp;
+            enteredPeMinute.InstructionTime = SelectedInstructionTime;
             enteredPeMinute.SubstituteName = SelectedSubstituteName;
             int BadgeNumber = Int32.Parse(SelectedTeacher.BADGE_NUM);  // convert string to int
             enteredPeMinute.BadgeNumber = BadgeNumber;
@@ -268,7 +270,21 @@ namespace PEMinutes.Controllers
             {
                 return HttpNotFound();
             }
-            return View(enteredPeMinute);
+            TeacherEditViewModel tevm = new TeacherEditViewModel();
+            tevm.ID = enteredPeMinute.ID;
+            tevm.Minutes = enteredPeMinute.Minutes;
+            tevm.InstructionTime = enteredPeMinute.InstructionTime;
+            tevm.Activity = enteredPeMinute.Activity;
+            tevm.TeacherName = enteredPeMinute.TeacherName;
+            tevm.SubstituteName = enteredPeMinute.SubstituteName;
+            tevm.ApprovedBy = enteredPeMinute.ApprovedBy;
+            tevm.BadgeNumber = enteredPeMinute.BadgeNumber;
+            tevm.Grade = enteredPeMinute.Grade;
+            tevm.IsApproved = enteredPeMinute.IsApproved;
+            tevm.School = enteredPeMinute.School;
+            tevm.Timestamp = enteredPeMinute.Timestamp;
+            tevm.ApprovedTime = enteredPeMinute.ApproveTime;
+            return View(tevm);
         }
 
         // POST: Teacher/Edit/5
@@ -278,6 +294,9 @@ namespace PEMinutes.Controllers
         {
             if (ModelState.IsValid)
             {
+                enteredPeMinute.IsApproved = 1;
+                enteredPeMinute.ApprovedBy = enteredPeMinute.TeacherName;
+                enteredPeMinute.ApproveTime = DateTime.Now;
                 db.Entry(enteredPeMinute).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
