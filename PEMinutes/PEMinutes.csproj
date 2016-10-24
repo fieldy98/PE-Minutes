@@ -370,6 +370,8 @@
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\daterangepicker.css" />
+    <Content Include="Content\demo.css" />
+    <Content Include="Content\paper-bootstrap-wizard.css" />
     <Content Include="Content\paper-dashboard.css" />
     <Content Include="Content\themify-icons.css" />
     <Content Include="EF\PEMinutes.Context.tt">
@@ -522,6 +524,7 @@
     <Content Include="Scripts\jquery-2.2.4.min.js" />
     <Content Include="Scripts\jquery-2.2.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.bootstrap.wizard.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -532,6 +535,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\paper-bootstrap-wizard.js" />
     <Content Include="Scripts\paper-dashboard.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
