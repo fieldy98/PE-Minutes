@@ -43,5 +43,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="PEMinutesTeacherCounts">
+      <EntityTypeMapping TypeName="RenExtractModel.PEMinutesTeacherCount">
+        <MappingFragment StoreEntitySet="PEMinutesTeacherCount">
+          <ScalarProperty Name="TEACHER" ColumnName="TEACHER" />
+          <ScalarProperty Name="Organization_Name" ColumnName="Organization_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

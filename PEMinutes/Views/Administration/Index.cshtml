@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
+﻿@model PEMinutes.ViewModels.AdministrationViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -13,6 +13,7 @@
     {
         @Html.Partial("~/Views/Shared/_AdministrationTopNav.cshtml")
     }
+    @Model.SchoolName
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -29,7 +30,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="header">
                             <div class="content">
@@ -40,75 +41,39 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            School
+                                            School Name
                                         </th>
                                         <th>
-                                            Minutes
+                                            Meeting Requirements
+                                        </th>
+                                        <th>
+                                            Number of Teachers
+                                        </th>
+                                        <th>
+                                            Percentage Meeting Requirements
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.GroupBy(x => x.School))
+                                    @foreach (var item in Model.TeachCount)
                                     {
-                                        var sum = ((float)item.Sum(x => x.Minutes) / (item.Count() * 200)).ToString("0.00%");
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Key)
+                                                @Html.DisplayFor(modelItem => item.SchoolName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => sum)
+                                                @Html.DisplayFor(modelItem => item.CountTeacher)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.MeetReq)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Percent)
                                             </td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="card" id="BehindTeachers">
-                        <div class="header">
-                            <div class="content">
-                                <h4 class="title">Behind Teachers</h4>
-                                <p class="category">Number of teachers behind at each school</p>
-                            </div>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            School
-                                        </th>
-                                        <th>
-                                            Teachers
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var school in Model.Where(x => x.Timestamp >= ViewBag.lastweek && x.Timestamp < ViewBag.CurrentWeek).GroupBy(x => x.School))
-                                    {
-                                        var count = 0;
-                                        foreach (var item in school.GroupBy(x => x.TeacherName))
-                                        {
-                                            var sum = item.Sum(x => x.Minutes);
-                                            if (item.Sum(x => x.Minutes) < 100)
-                                            {
-                                                count++;
-
-                                            }
-                                        }
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => school.Key)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => count)
-                                            </td>
-                                        </tr>
-                                    }
-
-                                </tbody>
-                            </table>
-
                         </div>
                     </div>
                 </div>
@@ -121,9 +86,9 @@
                     $(document).ready(function () {
                         var data = {
                             // A labels array that can contain any sort of values
-                            labels: @Html.Raw(Json.Encode(@ViewBag.SchoolNames)),
+                            labels: @Html.Raw(Json.Encode(Model.TeachCount.Select(x=>x.SchoolName))),
                             // Our series array that contains series objects or in this case series data arrays
-                            series: [@Html.Raw(Json.Encode(@ViewBag.SchoolMinutes))]
+                            series: [@Html.Raw(Json.Encode(Model.TeachCount.Select(x=>x.Percent)))]
                         }
 
                         // Create a new line chart object where as first parameter we pass in a selector

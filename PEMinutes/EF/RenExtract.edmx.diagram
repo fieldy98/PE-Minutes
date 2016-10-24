@@ -8,6 +8,7 @@
         <EntityTypeShape EntityType="RenExtractModel.SchoolTeachersWithADLogin" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RenExtractModel.SchoolToPrincipal" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="RenExtractModel.MinutesAdmin" Width="1.5" PointX="5.75" PointY="0.875" />
+        <EntityTypeShape EntityType="RenExtractModel.PEMinutesTeacherCount" Width="1.5" PointX="8" PointY="0.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

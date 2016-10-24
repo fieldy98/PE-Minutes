@@ -185,6 +185,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PEMinutes.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EF\PEMinutesTeacherCount.cs">
+      <DependentUpon>RenExtract.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\RenExtract.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -214,6 +217,7 @@
     </Compile>
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AdministrationViewModel.cs" />
     <Compile Include="ViewModels\PrincipalViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

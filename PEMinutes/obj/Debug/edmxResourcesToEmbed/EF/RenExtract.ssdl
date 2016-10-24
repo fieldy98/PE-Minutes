@@ -12,6 +12,15 @@ warning 6002: The table/view 'RenExtract.dbo.MinutesAdmins' does not have a prim
     <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <!--Errors Found During Generation:
+warning 6002: The table/view 'RenExtract.dbo.PEMinutesTeacherCount' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="PEMinutesTeacherCount">
+    <Key>
+      <PropertyRef Name="Organization_Name" />
+    </Key>
+    <Property Name="Organization_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="TEACHER" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
 warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="SchoolTeachersWithADLogin">
     <Key>
@@ -63,6 +72,12 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     [MinutesAdmins].[LAST_NAME] AS [LAST_NAME], 
     [MinutesAdmins].[BADGE_NUM] AS [BADGE_NUM]
     FROM [dbo].[MinutesAdmins] AS [MinutesAdmins]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="PEMinutesTeacherCount" EntityType="Self.PEMinutesTeacherCount" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [PEMinutesTeacherCount].[Organization_Name] AS [Organization_Name], 
+    [PEMinutesTeacherCount].[TEACHER] AS [TEACHER]
+    FROM [dbo].[PEMinutesTeacherCount] AS [PEMinutesTeacherCount]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="SchoolTeachersWithADLogin" EntityType="Self.SchoolTeachersWithADLogin" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 

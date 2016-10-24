@@ -22,7 +22,7 @@ namespace PEMinutes.Controllers
             DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
             lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
             DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
-            var lastweek = DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(-7);
+            var lastweek = now.AddDays(-14);
             ViewBag.lastweek = lastweek;  // used to find falling behind teachers
             ViewBag.CurrentWeek = CurrentWeek; // used to find falling behind teachers
 
@@ -31,7 +31,10 @@ namespace PEMinutes.Controllers
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedAdmin.FIRST_NAME + " " + SelectedAdmin.LAST_NAME; ;
 
-            var AdminView = db.EnteredPeMinutes.Where(x => x.InstructionTime >= lastweek.Date && x.InstructionTime < now.Date).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
+            var AdminView = db.EnteredPeMinutes.Where(x => x.InstructionTime >= lastweek.Date && x.InstructionTime < now.Date && x.School.Contains("Elem")).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
+
+            ViewBag.Berkshire = ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name.Contains("Berkshire") && x.COURSE_TITLE.Contains("PS") == false && x.COURSE_TITLE.Contains("Kind") == false).Count();
+
             // Graph tracking minutes per teacher
             var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.InstructionTime >= lastweek.Date && x.InstructionTime < now.Date).OrderBy(x => x.School)
                                     let MonthSchoolNames = MonthMinutes
@@ -41,11 +44,42 @@ namespace PEMinutes.Controllers
                                         CompletedMinutesDateLabel = CompletedMinutes.Key.a, // This provides a list of dates that have minutes entered in for them
                                         CompletedMinutesSum = ((float)CompletedMinutes.Sum(x => x.Minutes) /(200 * CompletedMinutes.Count())) * 100 // This is a summation of all minutes put in for a particular day
         };
+            AdministrationViewModel avm = new AdministrationViewModel();
+            PEMinutesTeacherCount ptc = new PEMinutesTeacherCount();
+            EnteredPeMinute epm = new EnteredPeMinute();
 
+            List<TeacherCount> TeachCount = new List<TeacherCount>();
+            List<PEMinutesTeacherCount> NumberTeachers = ren.PEMinutesTeacherCounts.Where(x=>x.Organization_Name.Contains("Elem")).ToList();
+
+            avm.SchoolName = ren.PEMinutesTeacherCounts.FirstOrDefault(x=>x.Organization_Name.Contains("Elem")).Organization_Name;
+
+            foreach (var item in NumberTeachers)
+            {
+                TeacherCount tc = new TeacherCount();
+                tc.SchoolName = item.Organization_Name;
+                tc.CountTeacher = item.TEACHER;
+                var count = 0;
+                foreach (var teach in AdminView.Where(x => x.School == item.Organization_Name).GroupBy(x => x.TeacherName))
+                {
+                    var sum = teach.Sum(x => x.Minutes);
+                    if (sum >= 100)
+                    {
+                        count++;
+
+                    }
+                }
+                tc.MeetReq = count;
+
+
+                tc.Percent = (float)count / item.TEACHER;
+                avm.TeachCount.Add(tc);
+            }
 
             ViewBag.SchoolNames = AdminTrackMinutes.Select(x => x.CompletedMinutesDateLabel).ToArray(); // x.CompletedMinutesDateLabe.a is needed because if we leave .a off it will give a result of "a":"Date"
             ViewBag.SchoolMinutes = AdminTrackMinutes.Select(x => x.CompletedMinutesSum).ToArray();
-            return View(AdminView);
+            avm.TeachCount = avm.TeachCount.ToList();
+            return View(avm);
+
         }
 
         public ActionResult Reports(int timeFrame, int divisor)

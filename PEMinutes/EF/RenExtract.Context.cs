@@ -28,5 +28,6 @@ namespace PEMinutes.EF
         public virtual DbSet<SchoolTeachersWithADLogin> SchoolTeachersWithADLogins { get; set; }
         public virtual DbSet<SchoolToPrincipal> SchoolToPrincipals { get; set; }
         public virtual DbSet<MinutesAdmin> MinutesAdmins { get; set; }
+        public virtual DbSet<PEMinutesTeacherCount> PEMinutesTeacherCounts { get; set; }
     }
 }

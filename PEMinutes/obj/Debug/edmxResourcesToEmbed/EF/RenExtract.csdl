@@ -34,6 +34,7 @@
     <EntitySet Name="SchoolTeachersWithADLogins" EntityType="Self.SchoolTeachersWithADLogin" />
     <EntitySet Name="SchoolToPrincipals" EntityType="RenExtractModel.SchoolToPrincipal" />
     <EntitySet Name="MinutesAdmins" EntityType="RenExtractModel.MinutesAdmin" />
+    <EntitySet Name="PEMinutesTeacherCounts" EntityType="RenExtractModel.PEMinutesTeacherCount" />
   </EntityContainer>
   <EntityType Name="SchoolToPrincipal">
     <Key>
@@ -54,5 +55,12 @@
     <Property Name="FIRST_NAME" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
     <Property Name="LAST_NAME" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
     <Property Name="BADGE_NUM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="PEMinutesTeacherCount">
+    <Key>
+      <PropertyRef Name="Organization_Name" />
+    </Key>
+    <Property Name="Organization_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="TEACHER" Type="Int32" />
   </EntityType>
 </Schema>
