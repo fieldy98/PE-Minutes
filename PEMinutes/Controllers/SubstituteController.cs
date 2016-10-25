@@ -4,6 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Web.Mvc;
 using PEMinutes.EF;
+using PEMinutes.Models;
+using PEMinutes.ViewModels;
 
 namespace PEMinutes.Controllers
 {
@@ -14,11 +16,20 @@ namespace PEMinutes.Controllers
 
         public ActionResult Index()
         {
-            var schools = ren.SchoolTeachersWithADLogins.Where(x=>x.Organization_Name.Contains("Elemen")); // Limiting the dropdown to only elementary schools
-            return View(schools);
+            var schools = ren.PEMinutesTeacherCounts.Where(x=>x.Organization_Name.Contains("Elemen")); // Limiting the dropdown to only elementary schools
+            SubstituteViewModel svm = new SubstituteViewModel();
+            List<SchList> SchoolList = new List<SchList>();
+            foreach (var item in schools)
+            {
+                SchList sl = new SchList();
+                sl.SchoolName = item.Organization_Name;
+                svm.SchoolList.Add(sl);
+            }
+            svm.SchoolList = svm.SchoolList.ToList();
+            return View(svm);
         }
 
-        public ActionResult Create(string selectedbadge)
+        public ActionResult Create()
         {
             
             return View();
@@ -28,12 +39,15 @@ namespace PEMinutes.Controllers
         // This is how the SubMinutes are created
         [HttpPost]
         
-        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, string selectedbadge)
+        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, SimplerAESModel EncryptedBadge, string selectedbadge)
         {
             if (ModelState.IsValid)
             {
-                int BadgeNumber = Int32.Parse(selectedbadge);  // convert string to int
-                SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == selectedbadge); //Finding the teacher that matches the selected badge number
+
+
+                string DecryptedBadge = EncryptedBadge.Decrypt(selectedbadge);
+                int BadgeNumber = Int32.Parse(DecryptedBadge);  // convert string to int
+                SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == DecryptedBadge); //Finding the teacher that matches the selected badge number
 
                 // Build variable with information not gathered from user.
                 sub.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
@@ -50,12 +64,22 @@ namespace PEMinutes.Controllers
             return View(sub);
         }
         // This loads the _GetTeachers Partial
-        public ActionResult _GetTeachers(string SelectedSchool)
+        public ActionResult _GetTeachers(SimplerAESModel DecryptedBadge, string SelectedSchool)
         {
+            SubstituteViewModel svm = new SubstituteViewModel();
             // This is the query for selecting teachers from the selected school and they are put into a list for the dropdown
-            List<SchoolTeachersWithADLogin> SelectedSchoolTeachers = ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == SelectedSchool && i.COURSE_TITLE.Contains("PS") == false && i.COURSE_TITLE.Contains("Kind") == false).OrderBy(i => i.TeacherLastName).ToList();
-           
-            return PartialView(SelectedSchoolTeachers);
+            List<SchoolTeachersWithADLogin> SelectedTeachers = ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == SelectedSchool && i.COURSE_TITLE.Contains("PS") == false && i.COURSE_TITLE.Contains("Kind") == false).OrderBy(i => i.TeacherLastName).ToList();
+            List<TeachList> TeacherList = new List<TeachList>();
+            foreach (var item in SelectedTeachers)
+            {
+                TeachList tl = new TeachList();
+                tl.SchoolName = item.Organization_Name;
+                tl.TeacherName = item.TeacherLastName + ", " + item.TeacherFirstName;
+                tl.BadgeNumber = DecryptedBadge.Encrypt(item.BADGE_NUM);
+                svm.TeacherList.Add(tl);
+            }
+            svm.TeacherList = svm.TeacherList.ToList();
+            return PartialView(svm);
         }
     }
 }

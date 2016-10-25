@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PEMinutes.EF.SchoolTeachersWithADLogin>
+﻿@model PEMinutes.ViewModels.SubstituteViewModel
 
 @{
     ViewBag.Title = "Substitute PE Minutes";   
@@ -16,9 +16,9 @@
                     @*Dropdown list of schools in the district*@
                     <select id="SelectASchool" class="form-control">
                         <option value="">Where are you?</option>
-                        @foreach (var item in Model.OrderBy(x => x.Organization_Name).Select(x => x.Organization_Name).Distinct())
+                        @foreach (var item in Model.SchoolList)
                         {
-                            <option value="@item">@item</option>
+                            <option value="@item.SchoolName">@item.SchoolName</option>
                         }
                     </select>
                 </div>

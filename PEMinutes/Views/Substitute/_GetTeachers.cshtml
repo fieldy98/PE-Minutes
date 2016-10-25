@@ -1,10 +1,10 @@
-﻿@model IEnumerable<PEMinutes.EF.SchoolTeachersWithADLogin>
+﻿@model PEMinutes.ViewModels.SubstituteViewModel
 
 @* Dropdown list of teachers based on the selected school. The onchange will take you to the create page*@
 <select id="MyTeachers" class="form-control" onchange="LoadSubMinutesCreate($(this));">
     <option value="">Who are you substituting for?</option>
-    @foreach (var item in Model)
+    @foreach (var item in Model.TeacherList)
     {
-        <option value="@item.BADGE_NUM" data-badge="@item.BADGE_NUM">@item.TeacherLastName, @item.TeacherFirstName</option>
+        <option value="@item.BadgeNumber" data-badge="@item.BadgeNumber">@item.TeacherName</option>
     }
 </select>
