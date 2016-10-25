@@ -17,7 +17,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card">
+                    <div class="card" style="padding-bottom:30px;">
                         <div class="header">
                             <div class="col-sm-4">
                                 <h4 class="title">This Weeks Minutes</h4>
@@ -27,10 +27,10 @@
                                     @using (Html.BeginForm())
                                     {
                                         <div class="form-group">
-                                            @Html.TextBox("SelectedDate", Model.Date, new { @class = "form-control" })
+                                            @Html.TextBox("SelectedDate", Model.Date, new { id = "adminsearch", @class = "form-control" })
                                         </div>
                                         <div class="form-group">
-                                            <input type="submit" value="Search" class="btn btn-default" />
+                                            <input type="submit" value="Search" class="btn btn-info" style="margin-left: 20px;" />
                                         </div>
                                         
                                     }
@@ -114,39 +114,22 @@
             // that is resolving to our chart container element. The Second parameter
             // is the actual data object.
             new Chartist.Bar('.ct-chart', data);
+
+            // Add 'active' class to the sidebar indicating page location
             jQuery('#Dashboard').addClass('active');
 
 
-            function BackADay() {
-                var SelectedDate = $('#CurrentDate').val();
-                $.ajax({
-                    type: 'GET',
-                    url: '@Url.Action("TotalGraph", "Administration")',
-                    data: { SelectedDate: SelectedDate },
-                    success: function (data) {
-                        //$("#SelectDate").html(data);
-                        alert("success");
-                    },
-                    error: function (data) {
-                        alert("error");
-                    }
-                })
-
-            };
-
-
-
+            // Date picker on graph. 
+            $('#adminsearch').datetimepicker({
+                format: 'MM/DD/YYYY',
+                daysOfWeekDisabled: [0, 6]
+            
+            });
         });
     </script>
 
 
 
-
-    <script type="text/javascript">
-        $(function () {
-            $('#instruction').datetimepicker();
-        });
-    </script>
 
 
 
