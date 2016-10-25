@@ -48,6 +48,7 @@ namespace PEMinutes.Controllers
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+            
             ViewBag.School = SelectedTeacher.Organization_Name;
             ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();
             ViewBag.Approved = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.ApprovedBy != null && i.InstructionTime > lastDayLastMonth).Count();
@@ -83,21 +84,21 @@ namespace PEMinutes.Controllers
             var Yesterday = DateTime.Now.AddDays(-1).Date;
             var Today = DateTime.Today.Date;
 
-            ViewBag.FourteenDays = FourteenDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.ThirteenDays = ThirteenDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.TwelveDays = TwelveDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.ElevenDays = ElevenDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.TenDays = TenDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.NineDays = NineDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.EightDays = EightDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.SevenDays = SevenDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.SixDays = SixDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.FiveDays = FiveDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.FourDays = FourDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.ThreeDays = ThreeDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.TwoDays = TwoDaysAgo.ToString("MMM dd,yyyy");
-            ViewBag.Yester = Yesterday.ToString("MMM dd,yyyy");
-            ViewBag.Now = Today.ToString("MMM dd,yyyy");
+            ViewBag.FourteenDays = FourteenDaysAgo.ToString("MMM dd");
+            ViewBag.ThirteenDays = ThirteenDaysAgo.ToString("MMM dd");
+            ViewBag.TwelveDays = TwelveDaysAgo.ToString("MMM dd");
+            ViewBag.ElevenDays = ElevenDaysAgo.ToString("MMM dd");
+            ViewBag.TenDays = TenDaysAgo.ToString("MMM dd");
+            ViewBag.NineDays = NineDaysAgo.ToString("MMM dd");
+            ViewBag.EightDays = EightDaysAgo.ToString("MMM dd");
+            ViewBag.SevenDays = SevenDaysAgo.ToString("MMM dd");
+            ViewBag.SixDays = SixDaysAgo.ToString("MMM dd");
+            ViewBag.FiveDays = FiveDaysAgo.ToString("MMM dd");
+            ViewBag.FourDays = FourDaysAgo.ToString("MMM dd");
+            ViewBag.ThreeDays = ThreeDaysAgo.ToString("MMM dd");
+            ViewBag.TwoDays = TwoDaysAgo.ToString("MMM dd");
+            ViewBag.Yester = Yesterday.ToString("MMM dd");
+            ViewBag.Now = Today.ToString("MMM dd");
             ViewBag.FourteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= FourteenDaysAgo && x.InstructionTime < ThirteenDaysAgo).Sum(x => x.Minutes);
             ViewBag.ThirteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= ThirteenDaysAgo && x.InstructionTime < TwelveDaysAgo).Sum(x => x.Minutes);
             ViewBag.TwelveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= TwelveDaysAgo && x.InstructionTime < ElevenDaysAgo).Sum(x => x.Minutes);
@@ -148,6 +149,10 @@ namespace PEMinutes.Controllers
         // GET: Teacher/Details/5
         public ActionResult Details(int? id)
         {
+            var EnteredBadgeString = User.Identity.Name;
+            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            int EnteredBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -180,7 +185,6 @@ namespace PEMinutes.Controllers
                 // Associate Badge => Staff
                 SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
 
-
                 // Build variable with information not gathered from user.
                 var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
                 enteredPeMinute.TeacherName = TeacherNameVariable;
@@ -188,7 +192,6 @@ namespace PEMinutes.Controllers
                 enteredPeMinute.Grade       = SelectedTeacher.COURSE_TITLE;
                 enteredPeMinute.BadgeNumber = BadgeNumber;
                 enteredPeMinute.Timestamp   = DateTime.Now;
-
 
                 // Apply the modifications and then save to the database
                 db.EnteredPeMinutes.Add(enteredPeMinute);
@@ -206,6 +209,8 @@ namespace PEMinutes.Controllers
             int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             ViewBag.School = SelectedTeacher.Organization_Name;
+
+            // Get Teachers minutes that need approval from the SubMinutes Table.
             List<SubMinute> SubMinutesForApproval = db.SubMinutes.Where(i => i.BadgeNumber == TeacherBadgeNumber && i.IsApproved == null).OrderByDescending(i => i.InstructionTime).ToList();
             return View(SubMinutesForApproval);
         }
@@ -261,6 +266,10 @@ namespace PEMinutes.Controllers
         // Edit Minutes
         public ActionResult Edit(int? id)
         {
+            var EnteredBadgeString = User.Identity.Name;
+            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            int EnteredBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

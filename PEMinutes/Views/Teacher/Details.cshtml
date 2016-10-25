@@ -14,120 +14,130 @@
         @Html.Partial("~/Views/Shared/_TeacherTopNav.cshtml")
     }
     <div class="content">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
-                <div>
-                    <dl class="dl-horizontal">
-                        <dt>
-                            Teacher:
-                        </dt>
+                <div class="card">
+                    <div class="content">
+                        <div class="header">
+                            <h4 class="title">Details</h4>
+                            <p class="category">
+                                Details
+                            </p>
+                        </div>
+                        <div>
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    Teacher:
+                                </dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.TeacherName)
-                        </dd>
+                                <dd>
+                                    @Html.DisplayFor(model => model.TeacherName)
+                                </dd>
 
-                        <dt>
-                            Minutes:
-                        </dt>
+                                <dt>
+                                    Minutes:
+                                </dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.Minutes)
-                        </dd>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Minutes)
+                                </dd>
 
-                        <dt>
-                            Badge Number:
-                        </dt>
+                                <dt>
+                                    Badge Number:
+                                </dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.BadgeNumber)
-                        </dd>
+                                <dd>
+                                    @Html.DisplayFor(model => model.BadgeNumber)
+                                </dd>
 
-                        <dt>
-                            School:
-                        </dt>
+                                <dt>
+                                    School:
+                                </dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.School)
-                        </dd>
+                                <dd>
+                                    @Html.DisplayFor(model => model.School)
+                                </dd>
 
-                        <dt>
-                            Grade:
-                        </dt>
+                                <dt>
+                                    Grade:
+                                </dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.Grade)
-                        </dd>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Grade)
+                                </dd>
 
-                        <dt>
-                            Activity:
-                        </dt>
+                                <dt>
+                                    Activity:
+                                </dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.Activity)
-                        </dd>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Activity)
+                                </dd>
 
-                        <dt>
-                            Time:
-                        </dt>
+                                <dt>
+                                    Time:
+                                </dt>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.Timestamp)
-                        </dd>
-                        @if (Model.SubstituteName != null)
-                        {
+                                <dd>
+                                    @Html.DisplayFor(model => model.Timestamp)
+                                </dd>
+                                @if (Model.SubstituteName != null)
+                                {
 
-                            <dt>
-                                Substitute Name:
-                            </dt>
+                                    <dt>
+                                        Substitute Name:
+                                    </dt>
 
-                            <dd>
-                                @Html.DisplayFor(model => model.SubstituteName)
-                            </dd>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.SubstituteName)
+                                    </dd>
 
-                            <dt>
-                                Approved:
-                            </dt>
+                                    <dt>
+                                        Approved:
+                                    </dt>
 
-                            if (Model.IsApproved == 1)
-                            {
-                                <dd>Yes</dd>
+                                    if (Model.IsApproved == 1)
+                                    {
+                                        <dd>Yes</dd>
 
-                            }
-                            else
-                            {
-                                <dd>Needs Approval</dd>
-                            }
+                                    }
+                                    else
+                                    {
+                                        <dd>Needs Approval</dd>
+                                    }
 
-                            <dt>
-                                Approved By:
-                            </dt>
+                                    <dt>
+                                        Approved By:
+                                    </dt>
 
-                            <dd>
-                                @Html.DisplayFor(model => model.ApprovedBy)
-                            </dd>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.ApprovedBy)
+                                    </dd>
 
-                            <dt>
-                                Approved At:
-                            </dt>
+                                    <dt>
+                                        Approved At:
+                                    </dt>
 
-                            <dd>
-                                @Html.DisplayFor(model => model.ApproveTime)
-                            </dd>
-                        }
+                                    <dd>
+                                        @Html.DisplayFor(model => model.ApproveTime)
+                                    </dd>
+                                }
 
 
-                    </dl>
-                </div>
-                <hr />
-                <div class="btn-group" style="padding-bottom: 20px;">
-                    @Html.ActionLink("Back", "Manage", null, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Delete", "Delete", new { id = Model.ID }, new { @class = "btn btn-danger" })
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn btn-default" })
+                            </dl>
+                        </div>
+                        <hr />
+                        <div class="btn-group" style="padding-bottom: 20px;">
+                            @Html.ActionLink("Back", "Manage", null, new { @class = "btn btn-default" })
+                            @Html.ActionLink("Delete", "Delete", new { id = Model.ID }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn btn-default" })
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@section Scripts {
-    <script>jQuery('#Reports').addClass('active');</script>
-}
+    @section Scripts {
+        <script>jQuery('#Reports').addClass('active');</script>
+    }
