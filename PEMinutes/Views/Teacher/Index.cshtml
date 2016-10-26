@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
+﻿@model PEMinutes.ViewModels.TeacherIndexViewModel
 
 @{
     ViewBag.Title = "Dashboard";
@@ -30,8 +30,8 @@
                                 </div>
                                 <div class="col-xs-7">
                                     <div class="numbers">
-                                        <p>Minutes this Week</p>
-                                        @ViewBag.CurrentWeekMinutes  @*This will display the current weeks minutes for the logged in user*@
+                                        <p>Ten Day Minutes Total</p>
+                                        @Model.Minutes  @*This will display the current weeks minutes for the logged in user*@
                                     </div>
                                 </div>
                             </div>
@@ -70,8 +70,8 @@
                 <div class="col-sm-12 col-md-12 col-lg-10">
                     <div class="card">
                         <div class="header">
-                            <h4 class="title">Last Two Weeks</h4>
-                            <p class="category">Minutes over the last two weeks</p>
+                            <h4 class="title">Overview</h4>
+                            <p class="category">Minutes over the last ten school days</p>
                         </div>
                         <div class="content">
                             <div class="ct-chart"></div> @*The graph of the last 2 weeks minutes*@
@@ -88,42 +88,10 @@
             // building the 'data' variable
             var data = {
                 // A labels to display the last two weeks of dates
-                labels: [
-                    @Html.Raw(Json.Encode(@ViewBag.FourteenDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.ThirteenDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.TwelveDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.ElevenDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.TenDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.NineDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.EightDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.SevenDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.SixDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.FiveDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.FourDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.ThreeDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.TwoDays)),
-                    @Html.Raw(Json.Encode(@ViewBag.Yester)),
-                    @Html.Raw(Json.Encode(@ViewBag.Now))
-                ],
+                labels: @Html.Raw(Json.Encode(Model.MinCount.Select(x => x.Date))),
                 // Our series array that contains the minutes
                 // for the teacher over the last two weeks
-                series: [[
-                    @Html.Raw(Json.Encode(@ViewBag.FourteenDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.ThirteenDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.TwelveDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.ElevenDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.TenDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.NineDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.EightDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.SevenDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.SixDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.FiveDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.FourDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.ThreeDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.TwoDaysAgo)),
-                    @Html.Raw(Json.Encode(@ViewBag.Yesterday)),
-                    @Html.Raw(Json.Encode(@ViewBag.Today))
-                ]]
+                series: [@Html.Raw(Json.Encode(Model.MinCount.Select(x=>x.Minutes)))]
             }
 
             // Create a new line chart object where as first parameter we pass in a selector

@@ -21,12 +21,8 @@ namespace PEMinutes.Controllers
         public ActionResult Index()
         {
             DateTime now = DateTime.Now;
+            DateTime lastweek = DateTime.Now.AddDays(-14);
             DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
-            lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
-            DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
-            var lastweek = DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(-7);
-            ViewBag.lastweek = lastweek;  // used to find falling behind teachers
-            ViewBag.CurrentWeek = CurrentWeek; // used to find falling behind teachers
             
             var EnteredBadgeString = User.Identity.Name;
             SchoolToPrincipal SelectedPrincipal = ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
@@ -34,22 +30,60 @@ namespace PEMinutes.Controllers
             var SelectedSchool = SelectedPrincipal.ORGANIZATION_NAME;
             ViewBag.Name = SelectedPrincipal.Principal;
 
-            var PrincipalView = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastDayLastMonth && x.School == SelectedSchool ).OrderBy(x=>x.TeacherName); // select all minutes from the school the principal belongs to
-            // Graph tracking minutes per teacher
-            var AdminTrackMinutes = from MonthMinutes in db.EnteredPeMinutes.Where(x => x.InstructionTime > CurrentWeek && x.School == SelectedSchool).OrderByDescending(x=>x.Minutes)
-                                    let MonthTeacherNames = MonthMinutes
-                                    group MonthMinutes by new { a = MonthTeacherNames.TeacherName} into CompletedMinutes
-                                    select new
-                                    {
-                                        CompletedMinutesDateLabel = CompletedMinutes.Key, // This provides a list of dates that have minutes entered in for them
-                                        CompletedMinutesSum = CompletedMinutes.Sum(x=>x.Minutes) // This is a summation of all minutes put in for a particular day
-                                    };
+            var PrincipalView = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.School == SelectedSchool ).Select(x=>x.TeacherName).Distinct(); // select all minutes from the school the principal belongs to
 
-            ViewBag.TeachersNames = AdminTrackMinutes.Select(x => x.CompletedMinutesDateLabel.a).ToArray(); // x.CompletedMinutesDateLabe.a is needed because if we leave .a off it will give a result of "a":"Date"
-            ViewBag.TeachersMinutes = AdminTrackMinutes.Select(x => x.CompletedMinutesSum).ToArray();
+            PrincipalIndexViewModel pivm = new PrincipalIndexViewModel();
+            EnteredPeMinute epm = new EnteredPeMinute();
+
+            List<MeetingReq> MeetReq = new List<MeetingReq>();
+            List<NotMeetingReq> NotReq = new List<NotMeetingReq>();
+            List<Graphing> Graph = new List<Graphing>();
+
+            foreach (var item in PrincipalView)
+            {
+                MeetingReq mr = new MeetingReq();
+                
+                var sumMinutes = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.TeacherName == item).Sum(x => x.Minutes);
+                if(sumMinutes >= 200)
+                {
+                    mr.TeacherName = item;
+                    mr.Minutes = sumMinutes;
+                    pivm.MeetReq.Add(mr);
+                }
+                    
+                
+            }
+
+            foreach (var item in PrincipalView)
+            {
+                NotMeetingReq nmr = new NotMeetingReq();
+
+                var sumMinutes = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.TeacherName == item).Sum(x => x.Minutes);
+                if (sumMinutes < 200)
+                {
+                    nmr.TeacherName = item;
+                    nmr.Minutes = sumMinutes;
+                    pivm.NotReq.Add(nmr);
+                }
+
+                
+            }
+
+            foreach (var item in PrincipalView)
+            {
+                Graphing g = new Graphing();
+
+                var sumMinutes = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.TeacherName == item).Sum(x => x.Minutes);
+                    g.TeacherName = item;
+                    g.Minutes = sumMinutes;
+                    pivm.Graph.Add(g);
+            }
+            pivm.MeetReq = pivm.MeetReq.ToList();
+            pivm.NotReq = pivm.NotReq.ToList();
+            pivm.Graph = pivm.Graph.ToList();
             // end of the data for the graph in admin view
-                        
-            return View(PrincipalView);
+
+            return View(pivm);
         }
 
         // GET: /Principal/Reports

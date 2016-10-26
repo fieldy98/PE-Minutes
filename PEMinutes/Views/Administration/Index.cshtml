@@ -21,7 +21,7 @@
                         <div class="header">
                             <div class="col-sm-4">
                                 <h4 class="title">School Progress</h4>
-                                <p class="category">Percentage of teachers meeting requirements</p>
+                                <p class="category">Percentage of teachers meeting requirements in the last two weeks</p>
                             </div>
                                 <form class="form-inline pull-right">
                                     @using (Html.BeginForm())
@@ -151,7 +151,8 @@
                     ],
                     buttons: [
                        'excel', 'pdf'
-                    ]
+                    ],
+                    "bPaginate": false
                 });
                 $("#Overview_filter").addClass("pull-right");
             });

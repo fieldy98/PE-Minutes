@@ -10,6 +10,26 @@ namespace PEMinutes.ViewModels
     {
 
     }
+    
+    public class TeacherIndexViewModel
+    {
+        public string TeacherName { get; set; }
+        public int? Minutes { get; set; }
+        public string Date { get; set; }
+        public List<MinuteCount> MinCount { get; set; }
+        public TeacherIndexViewModel()
+        {
+            MinCount = new List<MinuteCount>();
+        }
+    }
+
+    public class MinuteCount
+    {
+        public string Date { get; set; }
+        public int? Minutes { get; set; }
+
+    }
+}
 
     public class TeacherCreateViewModel
     {
@@ -43,4 +63,3 @@ namespace PEMinutes.ViewModels
 
 
     }
-}

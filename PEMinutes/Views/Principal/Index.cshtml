@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
+﻿@model PEMinutes.ViewModels.PrincipalIndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -19,8 +19,8 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="header">
-                            <h4 class="title">This Weeks Minutes</h4>
-                            <p class="category">Minutes for each teacher</p>
+                            <h4 class="title">Overview</h4>
+                            <p class="category">Minutes for each teacher over the last ten school days</p>
                         </div>
                         <div class="content">
                             <div class="ct-chart"></div> @*The graph of the last 2 weeks minutes*@
@@ -33,30 +33,34 @@
                             <div class="card">
                                 <div class="header">
                                     <div class="content">
-                                        <h4 class="title">Monthly Minutes</h4>
-                                        <p class="category">Total Minutes for the Month</p>
+                                        <h4 class="title">Teachers Meeting Requirements</h4>
+                                        <p class="category">Teachers that are meeting the requirements over the last ten school days</p>
                                     </div>
-                                    <table class="table">
-                                        <tr>
-                                            <th>
-                                                Teacher
-                                            </th>
-                                            <th>
-                                                Minutes
-                                            </th>
-                                        </tr>
-                                        @foreach (var item in Model.GroupBy(x => x.TeacherName))
-                                        {
-                                            var sum = item.Sum(x => x.Minutes);
+                                    <table class="table" id="MeetReq">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Key)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => sum)
-                                                </td>
+                                                <th>
+                                                    Teacher
+                                                </th>
+                                                <th>
+                                                    Minutes
+                                                </th>
                                             </tr>
-                                        }
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.MeetReq)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.TeacherName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Minutes)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        
 
                                     </table>
                                 </div>
@@ -66,34 +70,34 @@
                             <div class="card">
                                 <div class="header">
                                     <div class="content">
-                                        <h4 class="title">Bottom Minutes</h4>
-                                        <p class="category">Teachers who did not meet requirements last week</p>
+                                        <h4 class="title">Teachers Falling Behind</h4>
+                                        <p class="category">Teachers who did not meet requirements over the last ten school days</p>
                                     </div>
-                                    <table class="table">
-                                        <tr>
-                                            <th>
-                                                Teacher
-                                            </th>
-                                            <th>
-                                                Minutes
-                                            </th>
-                                        </tr>
-                                        @foreach (var item in Model.Where(x => x.Timestamp >= ViewBag.lastweek && x.Timestamp < ViewBag.CurrentWeek).GroupBy(x => x.TeacherName))
-                                        {
-                                            var sum = item.Sum(x => x.Minutes);
-                                            if (item.Sum(x => x.Minutes) < 100)
+                                    <table class="table" id="NotReq">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Teacher
+                                                </th>
+                                                <th>
+                                                    Minutes
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.NotReq)
                                             {
                                                 <tr>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.Key)
+                                                        @Html.DisplayFor(modelItem => item.TeacherName)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => sum)
+                                                        @Html.DisplayFor(modelItem => item.Minutes)
                                                     </td>
                                                 </tr>
                                             }
-
-                                        }
+                                        </tbody>
+                                        
 
                                     </table>
                                 </div>
@@ -104,13 +108,26 @@
             </div>
             </div>
             @section Scripts{
+                @*
+                    Call DataTables Dependencies
+                *@
+                <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+                <script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
+                <script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+                <script src="~/Scripts/DataTables/buttons.bootstrap.min.js"></script>
+                <script src="~/Scripts/DataTables/buttons.html5.min.js"></script>
+                <script src="http://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+                <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+                <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+                <script src="http://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+
                 <script>
                     $(document).ready(function () {
                         var data = {
                             // A labels array that can contain any sort of values
-                            labels: @Html.Raw(Json.Encode(@ViewBag.TeachersNames)),
+                            labels: @Html.Raw(Json.Encode(Model.Graph.Select(x=>x.TeacherName))),
                             // Our series array that contains series objects or in this case series data arrays
-                            series: [@Html.Raw(Json.Encode(@ViewBag.TeachersMinutes))]
+                            series: [@Html.Raw(Json.Encode(Model.Graph.Select(x=>x.Minutes)))]
                         }
 
                         // Create a new line chart object where as first parameter we pass in a selector
@@ -119,6 +136,37 @@
                         new Chartist.Bar('.ct-chart', data);
 
                         jQuery('#Dashboard').addClass('active');
+                    });
+                </script>
+
+                <script>
+                    $(document).ready(function () {
+                        $('#MeetReq').DataTable({
+                            dom: 'Bfrtip',
+                            lengthMenu: [
+                        [20],
+                        ['Show all']
+                            ],
+                            buttons: [
+                               'excel', 'pdf'
+                            ],
+                            "bPaginate": false
+                        });
+                        $("#MeetReq_filter").addClass("pull-right");
+                    });
+                    $(document).ready(function () {
+                        $('#NotReq').DataTable({
+                            dom: 'Bfrtip',
+                            lengthMenu: [
+                        [20],
+                        ['Show all']
+                            ],
+                            buttons: [
+                               'excel', 'pdf'
+                            ],
+                            "bPaginate": false
+                        });
+                        $("#NotReq_filter").addClass("pull-right");
                     });
                 </script>
             }

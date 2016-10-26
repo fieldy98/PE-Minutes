@@ -39,108 +39,58 @@ namespace PEMinutes.Controllers
         // Landing Page
         public ActionResult Index()
         {
-            DateTime now = DateTime.Now;
-
-            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
-            lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
-
             var EnteredBadgeString = User.Identity.Name; 
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-            
-            ViewBag.School = SelectedTeacher.Organization_Name;
-            ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();
-            ViewBag.Approved = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.ApprovedBy != null && i.InstructionTime > lastDayLastMonth).Count();
 
-            DateTime CurrentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
-            var CurrentWeekMinutes = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= CurrentWeek).Sum(x => x.Minutes);
-            if (CurrentWeekMinutes == null)
+            ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();  // tells teacher how many entries need approval
+
+            DateTime now = DateTime.Now;
+            DateTime end = DateTime.Now.AddDays(-14);
+
+            TeacherIndexViewModel tivm = new TeacherIndexViewModel();
+            EnteredPeMinute epm = new EnteredPeMinute();
+            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.InstructionTime >= end.Date && i.InstructionTime < now.Date).ToList(); // Finds all of the teachers minutes for the last 2 weeks
+
+            List<MinuteCount> MinCount = new List<MinuteCount>();
+
+            for (int i = -14; i < 0; i++)  // for loop to create the MinCount list that tells us how many minutes per day and the date
             {
-                ViewBag.CurrentWeekMinutes = 0;
+                MinuteCount mc = new MinuteCount();
+                DateTime startday = DateTime.Today.AddDays(i);
+                DateTime nextday = DateTime.Today.AddDays(i + 1);
+                mc.Date = startday.ToShortDateString();
+                foreach(var item in db.EnteredPeMinutes.Where(x => x.InstructionTime >= startday && x.InstructionTime < nextday)) // finding the entry in enteredpeminutes for the given day
+                {
+                    mc.Minutes = item.Minutes;
+                }
+                
+                
+                tivm.MinCount.Add(mc);
             }
-            else
-            {
-                ViewBag.CurrentWeekMinutes = CurrentWeekMinutes;
-            }
+            tivm.Minutes = TeachersPeMinutes.Sum(x=>x.Minutes);
+            tivm.MinCount = tivm.MinCount.ToList();
 
-            var ThisMonth = DateTime.Today.ToString("MMMM");
-            ViewBag.ThisMonth = ThisMonth;
-
-            // this is a hard coded entry for the teachrs chart so that they can visually see if they missed a day. The other method that is used for admin view will skip the non entered days on the label and the teachers wont be able to see what they missed easily
-            var FourteenDaysAgo = DateTime.Now.AddDays(-14).Date;
-            var ThirteenDaysAgo = DateTime.Now.AddDays(-13).Date;
-            var TwelveDaysAgo = DateTime.Now.AddDays(-12).Date;
-            var ElevenDaysAgo = DateTime.Now.AddDays(-11).Date;
-            var TenDaysAgo = DateTime.Now.AddDays(-10).Date;
-            var NineDaysAgo = DateTime.Now.AddDays(-9).Date;
-            var EightDaysAgo = DateTime.Now.AddDays(-8).Date;
-            var SevenDaysAgo = DateTime.Now.AddDays(-7).Date;
-            var SixDaysAgo = DateTime.Now.AddDays(-6).Date;
-            var FiveDaysAgo = DateTime.Now.AddDays(-5).Date;
-            var FourDaysAgo = DateTime.Now.AddDays(-4).Date;
-            var ThreeDaysAgo = DateTime.Now.AddDays(-3).Date;
-            var TwoDaysAgo = DateTime.Now.AddDays(-2).Date;
-            var Yesterday = DateTime.Now.AddDays(-1).Date;
-            var Today = DateTime.Today.Date;
-
-            ViewBag.FourteenDays = FourteenDaysAgo.ToString("MMM dd");
-            ViewBag.ThirteenDays = ThirteenDaysAgo.ToString("MMM dd");
-            ViewBag.TwelveDays = TwelveDaysAgo.ToString("MMM dd");
-            ViewBag.ElevenDays = ElevenDaysAgo.ToString("MMM dd");
-            ViewBag.TenDays = TenDaysAgo.ToString("MMM dd");
-            ViewBag.NineDays = NineDaysAgo.ToString("MMM dd");
-            ViewBag.EightDays = EightDaysAgo.ToString("MMM dd");
-            ViewBag.SevenDays = SevenDaysAgo.ToString("MMM dd");
-            ViewBag.SixDays = SixDaysAgo.ToString("MMM dd");
-            ViewBag.FiveDays = FiveDaysAgo.ToString("MMM dd");
-            ViewBag.FourDays = FourDaysAgo.ToString("MMM dd");
-            ViewBag.ThreeDays = ThreeDaysAgo.ToString("MMM dd");
-            ViewBag.TwoDays = TwoDaysAgo.ToString("MMM dd");
-            ViewBag.Yester = Yesterday.ToString("MMM dd");
-            ViewBag.Now = Today.ToString("MMM dd");
-            ViewBag.FourteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= FourteenDaysAgo && x.InstructionTime < ThirteenDaysAgo).Sum(x => x.Minutes);
-            ViewBag.ThirteenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= ThirteenDaysAgo && x.InstructionTime < TwelveDaysAgo).Sum(x => x.Minutes);
-            ViewBag.TwelveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= TwelveDaysAgo && x.InstructionTime < ElevenDaysAgo).Sum(x => x.Minutes);
-            ViewBag.ElevenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= ElevenDaysAgo && x.InstructionTime < TenDaysAgo).Sum(x => x.Minutes);
-            ViewBag.TenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= TenDaysAgo && x.InstructionTime < NineDaysAgo).Sum(x => x.Minutes);
-            ViewBag.NineDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= NineDaysAgo && x.InstructionTime < EightDaysAgo).Sum(x => x.Minutes);
-            ViewBag.EightDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= EightDaysAgo && x.InstructionTime < SevenDaysAgo).Sum(x => x.Minutes);
-            ViewBag.SevenDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= SevenDaysAgo && x.InstructionTime < SixDaysAgo).Sum(x => x.Minutes);
-            ViewBag.SixDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= SixDaysAgo && x.InstructionTime < FiveDaysAgo).Sum(x => x.Minutes);
-            ViewBag.FiveDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= FiveDaysAgo && x.InstructionTime < FourDaysAgo).Sum(x => x.Minutes);
-            ViewBag.FourDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= FourDaysAgo && x.InstructionTime < ThreeDaysAgo).Sum(x => x.Minutes);
-            ViewBag.ThreeDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= ThreeDaysAgo && x.InstructionTime < TwoDaysAgo).Sum(x => x.Minutes);
-            ViewBag.TwoDaysAgo = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= TwoDaysAgo && x.InstructionTime < Yesterday).Sum(x => x.Minutes);
-            ViewBag.Yesterday = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= Yesterday && x.InstructionTime < Today).Sum(x => x.Minutes);
-            ViewBag.Today = db.EnteredPeMinutes.Where(x => x.BadgeNumber == BadgeNumber && x.InstructionTime >= Today).Sum(x => x.Minutes);
-            // end of the sections where we build the chart data
-
-            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber).ToList(); // Finds all of the teachers minutes
-
-            return View(TeachersPeMinutes);
+            return View(tivm);
         }
         
 
         public ActionResult Manage()
         {
             DateTime now = DateTime.Now;
+            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
 
             var ThisMonth = DateTime.Today.ToString("MMMM");
             ViewBag.ThisMonth = ThisMonth;
-
-            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
-            lastDayLastMonth = lastDayLastMonth.AddDays(-1);  // selecting last month because I want to make sure that it is everything in the current month
 
             var EnteredBadgeString = User.Identity.Name;
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             int EnteredBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
             ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+
             List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == EnteredBadgeNumber && i.InstructionTime > lastDayLastMonth).OrderByDescending(i => i.InstructionTime).ToList(); // Finds the minutes for the signed in teacher for the current month
-            var Approved = db.EnteredPeMinutes.Where(i => i.BadgeNumber == EnteredBadgeNumber && i.SubstituteName != null && i.InstructionTime > lastDayLastMonth).Count();
-            ViewBag.Approved = Approved;
             ViewBag.CurrentMonthMinuteCount = TeachersPeMinutes.Count();
-            ViewBag.PercentApproved = ((float)Approved / TeachersPeMinutes.Count()).ToString("0.00%");
             ViewBag.TotalMonthMins = TeachersPeMinutes.Sum(x => x.Minutes);
             return View(TeachersPeMinutes);
         }
