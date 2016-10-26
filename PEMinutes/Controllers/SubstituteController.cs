@@ -39,7 +39,7 @@ namespace PEMinutes.Controllers
         // This is how the SubMinutes are created
         [HttpPost]
         
-        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, SimplerAESModel EncryptedBadge, string selectedbadge)
+        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, SimplerAESModel EncryptedBadge, string selectedbadge)
         {
             if (ModelState.IsValid)
             {

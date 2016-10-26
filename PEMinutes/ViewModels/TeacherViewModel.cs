@@ -17,7 +17,7 @@ namespace PEMinutes.ViewModels
         public int? Minutes { get; set; }
         [Required]
         public DateTime InstructionTime { get; set; }
-        [Required]
+        
         public string Activity { get; set; }
 
     }

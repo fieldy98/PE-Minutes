@@ -36,7 +36,7 @@
                                                     @Html.DisplayNameFor(model => model.Activity)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.Timestamp)
+                                                    Time
                                                 </th>
                                                 <th></th>
                                             </tr>
@@ -55,7 +55,7 @@
                                                     @Html.DisplayFor(modelItem => item.Activity)
                                                 </td>
                                                 <td id="Timestamp" class="col-lg-2">
-                                                    @Html.DisplayFor(modelItem => item.Timestamp)
+                                                    @Html.DisplayFor(modelItem => item.InstructionTime)
                                                 </td>
                                                 <td style="display:none" id="SubID">
                                                     @Html.DisplayFor(modelItem => item.ID)
@@ -88,11 +88,11 @@
                                     var SelectedSubstituteName = $("#SubstituteName").html();
                                     var SelectedMinutes = $("#Minutes").html();
                                     var SelectedActivity = $("#Activity").html();
-                                    var SelectedTimestamp = $("#Timestamp").html();
+                                    var SelectedInstructionTime = $("#Timestamp").html();
                                     $.ajax({
                                         type: 'POST',
                                         url: '@Url.Action("MoveSubToTeacher", "Teacher")',
-                                        data: { SelectedSubstituteName: SelectedSubstituteName, SelectedMinutes: SelectedMinutes, SelectedActivity: SelectedActivity, SelectedTimestamp: SelectedTimestamp },
+                                        data: { SelectedSubstituteName: SelectedSubstituteName, SelectedMinutes: SelectedMinutes, SelectedActivity: SelectedActivity, SelectedInstructionTime: SelectedInstructionTime },
                                         success: function (data) {
 
                                         },

@@ -224,7 +224,6 @@ namespace PEMinutes.Controllers
             SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
             var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             var Minute = db.SubMinutes.FirstOrDefault(x => x.ID == SelectedID);
-
             Minute.IsApproved = 1;
             Minute.ApprovedBy = TeacherNameVariable;
             Minute.ApproveTime = DateTime.Now;
@@ -235,7 +234,7 @@ namespace PEMinutes.Controllers
         }
 
 
-        // POST: Checkout 
+        // POST: MoveSubToTeacher
         [HttpPost]
         public ActionResult MoveSubToTeacher(string SelectedSubstituteName, int SelectedMinutes, string SelectedActivity, DateTime SelectedInstructionTime, EnteredPeMinute enteredPeMinute)
         {
@@ -246,7 +245,11 @@ namespace PEMinutes.Controllers
             enteredPeMinute.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
             enteredPeMinute.Minutes = SelectedMinutes;
             enteredPeMinute.Activity = SelectedActivity;
+            enteredPeMinute.Timestamp = DateTime.Now;
+
             enteredPeMinute.InstructionTime = SelectedInstructionTime;
+
+
             enteredPeMinute.SubstituteName = SelectedSubstituteName;
             int BadgeNumber = Int32.Parse(SelectedTeacher.BADGE_NUM);  // convert string to int
             enteredPeMinute.BadgeNumber = BadgeNumber;

@@ -42,7 +42,7 @@ body{
 }
 
 
-.col-centered{
-    float: none;
-    margin: 0 auto;
+.dt-buttons {
+  float: right !important;
+  padding-left: 30px;
 }
