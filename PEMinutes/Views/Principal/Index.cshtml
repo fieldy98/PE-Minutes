@@ -23,7 +23,7 @@
                             <p class="category">Minutes for each teacher over the last ten school days</p>
                         </div>
                         <div class="content">
-                            <div class="ct-chart"></div> @*The graph of the last 2 weeks minutes*@
+                            <div id="TeacherGraph" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
                         </div>
                     </div>
                 </div>
@@ -60,8 +60,6 @@
                                                 </tr>
                                             }
                                         </tbody>
-                                        
-
                                     </table>
                                 </div>
                             </div>
@@ -97,8 +95,6 @@
                                                 </tr>
                                             }
                                         </tbody>
-                                        
-
                                     </table>
                                 </div>
                             </div>
@@ -112,35 +108,64 @@
                     Call DataTables Dependencies
                 *@
                 <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-                <script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
                 <script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+                <script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
                 <script src="~/Scripts/DataTables/buttons.bootstrap.min.js"></script>
-                <script src="~/Scripts/DataTables/buttons.html5.min.js"></script>
                 <script src="http://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
                 <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
                 <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
                 <script src="http://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
-
+                @* Chart *@
+                <script src="~/Scripts/highcharts/4.2.0/highcharts.js"></script>
                 <script>
-                    $(document).ready(function () {
-                        var data = {
-                            // A labels array that can contain any sort of values
-                            labels: @Html.Raw(Json.Encode(Model.Graph.Select(x=>x.TeacherName))),
-                            // Our series array that contains series objects or in this case series data arrays
-                            series: [@Html.Raw(Json.Encode(Model.Graph.Select(x=>x.Minutes)))]
-                        }
+                    $(function () {
+                        Highcharts.chart('TeacherGraph', {
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: null
+                            },
+                            xAxis: {
+                                categories: @Html.Raw(Json.Encode(Model.Graph.Select(x=>x.TeacherName))),
+                                crosshair: true
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: '# of Minutes'
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr>' +
+                                    '<td style="padding:0"><b>{point.y} Minutes</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            series: [{
+                                showInLegend: false,  
+                                data: @Html.Raw(Json.Encode(Model.Graph.Select(x => x.Minutes))),
 
-                        // Create a new line chart object where as first parameter we pass in a selector
-                        // that is resolving to our chart container element. The Second parameter
-                        // is the actual data object.
-                        new Chartist.Bar('.ct-chart', data);
-
-                        jQuery('#Dashboard').addClass('active');
+                            }]
+                        });
                     });
                 </script>
 
+
                 <script>
                     $(document).ready(function () {
+                        jQuery('#Dashboard').addClass('active');
                         $('#MeetReq').DataTable({
                             dom: 'Bfrtip',
                             lengthMenu: [
@@ -153,8 +178,6 @@
                             "bPaginate": false
                         });
                         $("#MeetReq_filter").addClass("pull-right");
-                    });
-                    $(document).ready(function () {
                         $('#NotReq').DataTable({
                             dom: 'Bfrtip',
                             lengthMenu: [

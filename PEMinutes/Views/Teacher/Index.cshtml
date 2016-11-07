@@ -74,7 +74,7 @@
                             <p class="category">Minutes over the last ten school days</p>
                         </div>
                         <div class="content">
-                            <div class="ct-chart"></div> @*The graph of the last 2 weeks minutes*@
+                            <div id="MyMinutes" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
                         </div>
                     </div>
                 </div>
@@ -83,23 +83,54 @@
     </div>
 </div>
 @section Scripts{
-    <script>
-        $(document).ready(function () {
-            // building the 'data' variable
-            var data = {
-                // A labels to display the last two weeks of dates
-                labels: @Html.Raw(Json.Encode(Model.MinCount.Select(x => x.Date))),
-                // Our series array that contains the minutes
-                // for the teacher over the last two weeks
-                series: [@Html.Raw(Json.Encode(Model.MinCount.Select(x=>x.Minutes)))]
-            }
 
-            // Create a new line chart object where as first parameter we pass in a selector
-            // that is resolving to our chart container element. The Second parameter
-            // is the actual 'data' object.
-            new Chartist.Bar('.ct-chart', data);
-        });
-    </script>
+<script src="~/Scripts/highcharts/4.2.0/highcharts.js"></script>
+<script>
+                    $(function () {
+                        Highcharts.chart('MyMinutes', {
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: null
+                            },
+                            xAxis: {
+                                categories: @Html.Raw(Json.Encode(Model.MinCount.Select(x => x.Date))),
+                                crosshair: true
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: '# of Minutes'
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr>' +
+                                    '<td style="padding:0"><b>{point.y:.1f} Minutes </b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            series: [{
+                                showInLegend: false,
+                                data: @Html.Raw(Json.Encode(Model.MinCount.Select(x=>x.Minutes)))
+
+                            }]
+                        });
+                    });
+</script>
+
+
 
 <script>jQuery('#Dashboard').addClass('active');</script>
 }
