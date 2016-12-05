@@ -76,7 +76,9 @@
         @Scripts.Render("~/bundles/jqueryval")
         <script type="text/javascript">
             $(function () {
-                $('#instruction').datetimepicker();
+                $('#instruction').datetimepicker({
+                    daysOfWeekDisabled: [0, 6],
+                });
             });
         </script>
         <script>jQuery('#Reports').addClass('active');</script>

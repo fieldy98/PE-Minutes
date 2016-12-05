@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 
 namespace PEMinutes.ViewModels
 {
-    public class TeacherViewModel
-    {
 
-    }
-    
+
     public class TeacherIndexViewModel
     {
         public string TeacherName { get; set; }
@@ -29,7 +24,6 @@ namespace PEMinutes.ViewModels
         public int? Minutes { get; set; }
 
     }
-}
 
     public class TeacherCreateViewModel
     {
@@ -37,14 +31,14 @@ namespace PEMinutes.ViewModels
         public int? Minutes { get; set; }
         [Required]
         public DateTime InstructionTime { get; set; }
-        
+
         public string Activity { get; set; }
 
     }
 
     public class TeacherEditViewModel
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         [Required]
         public int? Minutes { get; set; }
         [Required]
@@ -63,3 +57,4 @@ namespace PEMinutes.ViewModels
 
 
     }
+}

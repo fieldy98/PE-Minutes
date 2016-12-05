@@ -28,31 +28,29 @@ namespace PEMinutes.Controllers
         public ActionResult Login(Models.User user)
         {
             // Checks with the 'User' model and runs the users input through the IsValid method.
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(user);
+            if (user.IsAdmin(user.StaffBadgeNumber))
             {
-                if (user.IsAdmin(user.StaffBadgeNumber))
-                {
-                    // If a match is found, create a cookie and return the Principal homepage
-                    FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
-                    return RedirectToAction("Index", "Administration");
-                }
-                else if (user.IsPrincipal(user.StaffBadgeNumber))
-                {
-                    // If a match is found, create a cookie and return the Principal homepage
-                    FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
-                    return RedirectToAction("Index", "Principal");
-                }
-                else if (user.IsTeacher(user.StaffBadgeNumber))
-                {
-                    // If a match is found, create a cookie and return the teacher homepage
-                    FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
-                    return RedirectToAction("Index", "Teacher");
-                }
-                else
-                {
-                    // If no match found, report error.
-                    ModelState.AddModelError("", "No staff member found with that Badge Number.");
-                }
+                // If a match is found, create a cookie and return the Principal homepage
+                FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
+                return RedirectToAction("Index", "Administration");
+            }
+            else if (user.IsPrincipal(user.StaffBadgeNumber))
+            {
+                // If a match is found, create a cookie and return the Principal homepage
+                FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
+                return RedirectToAction("Index", "Principal");
+            }
+            else if (user.IsTeacher(user.StaffBadgeNumber))
+            {
+                // If a match is found, create a cookie and return the teacher homepage
+                FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
+                return RedirectToAction("Index", "Teacher");
+            }
+            else
+            {
+                // If no match found, report error.
+                ModelState.AddModelError("", "No staff member found with that Badge Number.");
             }
             return View(user);
         }

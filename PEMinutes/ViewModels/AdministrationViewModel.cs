@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using PEMinutes.ViewModels;
-using System.Web.Mvc;
-using PEMinutes.EF;
+﻿using System.Collections.Generic;
 
 namespace PEMinutes.ViewModels
 {

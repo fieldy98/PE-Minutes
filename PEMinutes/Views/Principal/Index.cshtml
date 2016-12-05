@@ -19,8 +19,22 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="header">
-                            <h4 class="title">Overview</h4>
-                            <p class="category">Minutes for each teacher over the last ten school days</p>
+                            <div class="col-sm-4">
+                                <h4 class="title">Overview</h4>
+                                <p class="category">Minutes for each teacher over the last ten school days</p>
+                            </div>
+                        <form class="form-inline pull-right">
+                            @using (Html.BeginForm())
+                            {
+                                <div class="form-group">
+                                    @Html.TextBox("SelectedDate", Model.Date, new { id = "principalsearch", @class = "form-control" })
+                                </div>
+                                        <div class="form-group">
+                                            <input type="submit" value="Search" class="btn btn-info" style="margin-left: 20px;" />
+                                        </div>
+
+                            }
+                        </form>
                         </div>
                         <div class="content">
                             <div id="TeacherGraph" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
@@ -34,7 +48,7 @@
                                 <div class="header">
                                     <div class="content">
                                         <h4 class="title">Teachers Meeting Requirements</h4>
-                                        <p class="category">Teachers that are meeting the requirements over the last ten school days</p>
+                                        <p class="category">Teachers that are meeting the requirements over the last two weeks</p>
                                     </div>
                                     <table class="table" id="MeetReq">
                                         <thead>
@@ -107,6 +121,7 @@
                 @*
                     Call DataTables Dependencies
                 *@
+<script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
                 <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
                 <script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
                 <script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
@@ -192,4 +207,14 @@
                         $("#NotReq_filter").addClass("pull-right");
                     });
                 </script>
+<script type="text/javascript">
+        $(function () {
+            $('#principalsearch').datetimepicker({
+
+                daysOfWeekDisabled: [0, 6],
+                format:'MM/DD/YYYY'
+
+            });
+        });
+</script>
             }

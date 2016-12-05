@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -22,7 +20,7 @@ namespace PEMinutes.Controllers
     {
         public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
         {
-            int diff = dt.DayOfWeek - startOfWeek;
+            var diff = dt.DayOfWeek - startOfWeek;
             if (diff < 0)
             {
                 diff += 7;
@@ -32,82 +30,67 @@ namespace PEMinutes.Controllers
     }
     public class TeacherController : Controller
     {
-        private RenExtractEntities ren = new RenExtractEntities();
-        private PEMinutesEntities db = new PEMinutesEntities();
+        private readonly RenExtractEntities _ren = new RenExtractEntities();
+        private readonly PEMinutesEntities _db = new PEMinutesEntities();
 
         // GET: Teacher
-        // Landing Page
         public ActionResult Index()
         {
-            var EnteredBadgeString = User.Identity.Name; 
-            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+            var enteredBadgeString = User.Identity.Name; 
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var badgeNumber = int.Parse(enteredBadgeString);  // convert string to int
+            ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
+            ViewBag.NeedsApproval = _db.SubMinutes.Count(i => i.BadgeNumber == badgeNumber && i.IsApproved == null);  // tells teacher how many entries need approval
+            var now = DateTime.Now.AddDays(1);
+            var end = DateTime.Now.AddDays(-13);
+            var tivm = new TeacherIndexViewModel();
+            var teachersPeMinutes = _db.EnteredPeMinutes.Where(i => i.BadgeNumber == badgeNumber && i.InstructionTime >= end.Date && i.InstructionTime < now.Date).ToList(); // Finds all of the teachers minutes for the last 2 weeks
 
-            ViewBag.NeedsApproval = db.SubMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.IsApproved == null).Count();  // tells teacher how many entries need approval
-
-            DateTime now = DateTime.Now;
-            DateTime end = DateTime.Now.AddDays(-14);
-
-            TeacherIndexViewModel tivm = new TeacherIndexViewModel();
-            EnteredPeMinute epm = new EnteredPeMinute();
-            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == BadgeNumber && i.InstructionTime >= end.Date && i.InstructionTime < now.Date).ToList(); // Finds all of the teachers minutes for the last 2 weeks
-
-            List<MinuteCount> MinCount = new List<MinuteCount>();
-
-            for (int i = -14; i < 0; i++)  // for loop to create the MinCount list that tells us how many minutes per day and the date
+            for (var i = -13; i < 1; i++)  // for loop to create the MinCount list that tells us how many minutes per day and the date
             {
-                MinuteCount mc = new MinuteCount();
-                DateTime startday = DateTime.Today.AddDays(i);
-                DateTime nextday = DateTime.Today.AddDays(i + 1);
+                var mc = new MinuteCount();
+                var startday = DateTime.Today.AddDays(i);
+                var nextday = DateTime.Today.AddDays(i + 1);
                 mc.Date = startday.ToShortDateString();
-                foreach(var item in db.EnteredPeMinutes.Where(x => x.InstructionTime >= startday && x.InstructionTime < nextday)) // finding the entry in enteredpeminutes for the given day
+                foreach(var item in _db.EnteredPeMinutes.Where(x => x.BadgeNumber == badgeNumber && x.InstructionTime >= startday && x.InstructionTime < nextday)) // finding the entry in enteredpeminutes for the given day
                 {
                     mc.Minutes = item.Minutes;
                 }
-                
-                
                 tivm.MinCount.Add(mc);
             }
-            tivm.Minutes = TeachersPeMinutes.Sum(x=>x.Minutes);
+            tivm.Minutes = teachersPeMinutes.Sum(x=>x.Minutes);
             tivm.MinCount = tivm.MinCount.ToList();
-
             return View(tivm);
         }
-        
 
+        // GET: Teacher/Manage
         public ActionResult Manage()
         {
-            DateTime now = DateTime.Now;
-            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
+            var thirtyDaysAgo = DateTime.Now.AddDays(-30);
+            var thisMonth = DateTime.Today.ToString("MMMM");
+            ViewBag.ThisMonth = thisMonth;
+            var enteredBadgeString = User.Identity.Name;
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var enteredBadgeNumber = int.Parse(enteredBadgeString);  // convert string to int
+            ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
 
-            var ThisMonth = DateTime.Today.ToString("MMMM");
-            ViewBag.ThisMonth = ThisMonth;
-
-            var EnteredBadgeString = User.Identity.Name;
-            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int EnteredBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-
-            List<EnteredPeMinute> TeachersPeMinutes = db.EnteredPeMinutes.Where(i => i.BadgeNumber == EnteredBadgeNumber && i.InstructionTime > lastDayLastMonth).OrderByDescending(i => i.InstructionTime).ToList(); // Finds the minutes for the signed in teacher for the current month
-            ViewBag.CurrentMonthMinuteCount = TeachersPeMinutes.Count();
-            ViewBag.TotalMonthMins = TeachersPeMinutes.Sum(x => x.Minutes);
-            return View(TeachersPeMinutes);
+            var teachersPeMinutes = _db.EnteredPeMinutes.Where(i => i.BadgeNumber == enteredBadgeNumber && i.InstructionTime > thirtyDaysAgo).OrderByDescending(i => i.InstructionTime).ToList(); // Finds the minutes for the signed in teacher for the current month
+            ViewBag.CurrentMonthMinuteCount = teachersPeMinutes.Count();
+            ViewBag.TotalMonthMins = teachersPeMinutes.Sum(x => x.Minutes);
+            return View(teachersPeMinutes);
         }
-
 
         // GET: Teacher/Details/5
         public ActionResult Details(int? id)
         {
-            var EnteredBadgeString = User.Identity.Name;
-            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int EnteredBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+            var enteredBadgeString = User.Identity.Name;
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EnteredPeMinute enteredPeMinute = db.EnteredPeMinutes.Find(id);
+            var enteredPeMinute = _db.EnteredPeMinutes.Find(id);
             if (enteredPeMinute == null)
             {
                 return HttpNotFound();
@@ -127,91 +110,80 @@ namespace PEMinutes.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,SubstituteName,IsApproved,ApprovedBy,ApproveTime,InstructionTime")] EnteredPeMinute enteredPeMinute)
         {
-            if (ModelState.IsValid)
-            {
-                var EnteredBadgeString = User.Identity.Name;
-                int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
+            if (!ModelState.IsValid) return View(enteredPeMinute);
+            var enteredBadgeString = User.Identity.Name;
+            var badgeNumber = int.Parse(enteredBadgeString);  // convert string to int
 
-                // Associate Badge => Staff
-                SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
+            // Associate Badge => Staff
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
 
-                // Build variable with information not gathered from user.
-                var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-                enteredPeMinute.TeacherName = TeacherNameVariable;
-                enteredPeMinute.School      = SelectedTeacher.Organization_Name;
-                enteredPeMinute.Grade       = SelectedTeacher.COURSE_TITLE;
-                enteredPeMinute.BadgeNumber = BadgeNumber;
-                enteredPeMinute.Timestamp   = DateTime.Now;
+            // Build variable with information not gathered from user.
+            var teacherNameVariable = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
+            enteredPeMinute.TeacherName = teacherNameVariable;
+            enteredPeMinute.School      = selectedTeacher.Organization_Name;
+            enteredPeMinute.Grade       = selectedTeacher.COURSE_TITLE;
+            enteredPeMinute.BadgeNumber = badgeNumber;
+            enteredPeMinute.Timestamp   = DateTime.Now;
 
-                // Apply the modifications and then save to the database
-                db.EnteredPeMinutes.Add(enteredPeMinute);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(enteredPeMinute);
+            // Apply the modifications and then save to the database
+            _db.EnteredPeMinutes.Add(enteredPeMinute);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Teacher/Approve
         public ActionResult Approve()
         {
-            var EnteredBadgeString = User.Identity.Name;
-            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-            ViewBag.School = SelectedTeacher.Organization_Name;
+            var enteredBadgeString = User.Identity.Name;
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var teacherBadgeNumber = int.Parse(enteredBadgeString);  // convert string to int
+            ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
+            ViewBag.School = selectedTeacher.Organization_Name;
 
             // Get Teachers minutes that need approval from the SubMinutes Table.
-            List<SubMinute> SubMinutesForApproval = db.SubMinutes.Where(i => i.BadgeNumber == TeacherBadgeNumber && i.IsApproved == null).OrderByDescending(i => i.InstructionTime).ToList();
-            return View(SubMinutesForApproval);
+            var subMinutesForApproval = _db.SubMinutes.Where(i => i.BadgeNumber == teacherBadgeNumber && i.IsApproved == null).OrderByDescending(i => i.InstructionTime).ToList();
+            return View(subMinutesForApproval);
         }
 
         // POST: Approve
         [HttpPost]
-        public ActionResult Approve(int SelectedID)
+        public ActionResult Approve(int selectedId)
         {
-            var EnteredBadgeString = User.Identity.Name;
-            int TeacherBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-            var Minute = db.SubMinutes.FirstOrDefault(x => x.ID == SelectedID);
-            Minute.IsApproved = 1;
-            Minute.ApprovedBy = TeacherNameVariable;
-            Minute.ApproveTime = DateTime.Now;
-            db.Entry(Minute).State = EntityState.Modified;
-            db.SaveChanges();
+            var enteredBadgeString = User.Identity.Name;
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var teacherNameVariable = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
+            var minute = _db.SubMinutes.FirstOrDefault(x => x.ID == selectedId);
+            minute.IsApproved = 1;
+            minute.ApprovedBy = teacherNameVariable;
+            minute.ApproveTime = DateTime.Now;
+            _db.Entry(minute).State = EntityState.Modified;
+            _db.SaveChanges();
 
             return Json(new { success = true });
         }
 
-
         // POST: MoveSubToTeacher
         [HttpPost]
-        public ActionResult MoveSubToTeacher(string SelectedSubstituteName, int SelectedMinutes, string SelectedActivity, DateTime SelectedInstructionTime, EnteredPeMinute enteredPeMinute)
+        public ActionResult MoveSubToTeacher(string selectedSubstituteName, int selectedMinutes, string selectedActivity, DateTime selectedInstructionTime, EnteredPeMinute enteredPeMinute)
         {
-            var EnteredBadgeString = User.Identity.Name;
-            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            var TeacherNameVariable = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-
-            enteredPeMinute.TeacherName = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
-            enteredPeMinute.Minutes = SelectedMinutes;
-            enteredPeMinute.Activity = SelectedActivity;
+            var enteredBadgeString = User.Identity.Name;
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var teacherNameVariable = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
+            enteredPeMinute.TeacherName = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
+            enteredPeMinute.Minutes = selectedMinutes;
+            enteredPeMinute.Activity = selectedActivity;
             enteredPeMinute.Timestamp = DateTime.Now;
-
-            enteredPeMinute.InstructionTime = SelectedInstructionTime;
-
-
-            enteredPeMinute.SubstituteName = SelectedSubstituteName;
-            int BadgeNumber = Int32.Parse(SelectedTeacher.BADGE_NUM);  // convert string to int
-            enteredPeMinute.BadgeNumber = BadgeNumber;
-            enteredPeMinute.School = SelectedTeacher.Organization_Name;
-            enteredPeMinute.Grade = SelectedTeacher.COURSE_TITLE;
-            
+            enteredPeMinute.InstructionTime = selectedInstructionTime;
+            enteredPeMinute.SubstituteName = selectedSubstituteName;
+            var badgeNumber = int.Parse(selectedTeacher.BADGE_NUM);  // convert string to int
+            enteredPeMinute.BadgeNumber = badgeNumber;
+            enteredPeMinute.School = selectedTeacher.Organization_Name;
+            enteredPeMinute.Grade = selectedTeacher.COURSE_TITLE;
             enteredPeMinute.IsApproved = 1;
-            enteredPeMinute.ApprovedBy = TeacherNameVariable;
+            enteredPeMinute.ApprovedBy = teacherNameVariable;
             enteredPeMinute.ApproveTime = DateTime.Now;
-            db.EnteredPeMinutes.Add(enteredPeMinute);
-            db.SaveChanges();
-
+            _db.EnteredPeMinutes.Add(enteredPeMinute);
+            _db.SaveChanges();
             return Json(new { success = true });
         }
 
@@ -219,33 +191,34 @@ namespace PEMinutes.Controllers
         // Edit Minutes
         public ActionResult Edit(int? id)
         {
-            var EnteredBadgeString = User.Identity.Name;
-            SchoolTeachersWithADLogin SelectedTeacher = ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int EnteredBadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-            ViewBag.Name = SelectedTeacher.TeacherFirstName + " " + SelectedTeacher.TeacherLastName;
+            var enteredBadgeString = User.Identity.Name;
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EnteredPeMinute enteredPeMinute = db.EnteredPeMinutes.Find(id);
+            var enteredPeMinute = _db.EnteredPeMinutes.Find(id);
             if (enteredPeMinute == null)
             {
                 return HttpNotFound();
             }
-            TeacherEditViewModel tevm = new TeacherEditViewModel();
-            tevm.ID = enteredPeMinute.ID;
-            tevm.Minutes = enteredPeMinute.Minutes;
-            tevm.InstructionTime = enteredPeMinute.InstructionTime;
-            tevm.Activity = enteredPeMinute.Activity;
-            tevm.TeacherName = enteredPeMinute.TeacherName;
-            tevm.SubstituteName = enteredPeMinute.SubstituteName;
-            tevm.ApprovedBy = enteredPeMinute.ApprovedBy;
-            tevm.BadgeNumber = enteredPeMinute.BadgeNumber;
-            tevm.Grade = enteredPeMinute.Grade;
-            tevm.IsApproved = enteredPeMinute.IsApproved;
-            tevm.School = enteredPeMinute.School;
-            tevm.Timestamp = enteredPeMinute.Timestamp;
-            tevm.ApprovedTime = enteredPeMinute.ApproveTime;
+            var tevm = new TeacherEditViewModel                     // Building the list 
+            {
+                Id = enteredPeMinute.ID,
+                Minutes = enteredPeMinute.Minutes,
+                InstructionTime = enteredPeMinute.InstructionTime,
+                Activity = enteredPeMinute.Activity,
+                TeacherName = enteredPeMinute.TeacherName,
+                SubstituteName = enteredPeMinute.SubstituteName,
+                ApprovedBy = enteredPeMinute.ApprovedBy,
+                BadgeNumber = enteredPeMinute.BadgeNumber,
+                Grade = enteredPeMinute.Grade,
+                IsApproved = enteredPeMinute.IsApproved,
+                School = enteredPeMinute.School,
+                Timestamp = enteredPeMinute.Timestamp,
+                ApprovedTime = enteredPeMinute.ApproveTime
+            };
             return View(tevm);
         }
 
@@ -254,16 +227,13 @@ namespace PEMinutes.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime,InstructionTime")] EnteredPeMinute enteredPeMinute)
         {
-            if (ModelState.IsValid)
-            {
-                enteredPeMinute.IsApproved = 1;
-                enteredPeMinute.ApprovedBy = enteredPeMinute.TeacherName;
-                enteredPeMinute.ApproveTime = DateTime.Now;
-                db.Entry(enteredPeMinute).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(enteredPeMinute);
+            if (!ModelState.IsValid) return View(enteredPeMinute);
+            enteredPeMinute.IsApproved = 1;                             // If the minute is entered by the teacher it does not need approval, so set 1.
+            enteredPeMinute.ApprovedBy = enteredPeMinute.TeacherName;
+            enteredPeMinute.ApproveTime = DateTime.Now;
+            _db.Entry(enteredPeMinute).State = EntityState.Modified;
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Teacher/Delete/5
@@ -273,7 +243,7 @@ namespace PEMinutes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EnteredPeMinute enteredPeMinute = db.EnteredPeMinutes.Find(id);
+            var enteredPeMinute = _db.EnteredPeMinutes.Find(id);      // Find the record to delete by its id
             if (enteredPeMinute == null)
             {
                 return HttpNotFound();
@@ -286,41 +256,11 @@ namespace PEMinutes.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            EnteredPeMinute enteredPeMinute = db.EnteredPeMinutes.Find(id);
-            db.EnteredPeMinutes.Remove(enteredPeMinute);
-            db.SaveChanges();
+            var enteredPeMinute = _db.EnteredPeMinutes.Find(id);
+            _db.EnteredPeMinutes.Remove(enteredPeMinute);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
     }
 }
-
-
-
-
-
-
-
-//public JsonResult IdentifyTeacher(string EnteredBadge)
-//{
-//    var teacherbadge = ren.SchoolTeachersWithADLogins.Where(x => x.BADGE_NUM == EnteredBadge).FirstOrDefault();
-//    if (EnteredBadge == teacherbadge.BADGE_NUM)
-//    {
-//        return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-//    }
-//    else
-//    {
-//        return Json(new { success = false }, JsonRequestBehavior.AllowGet);
-//    }
-//}
-
 

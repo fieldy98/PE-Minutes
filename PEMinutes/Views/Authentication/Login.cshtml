@@ -6,7 +6,7 @@
 <div class="container">
     @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-signin" }))
     {
-        <h2 class="form-signin-heading text-center">Sign In</h2>
+        <h2 class="form-signin-heading text-center">Log In</h2>
         @Html.ValidationSummary(true, "Login failed. Check your login details.");
         @Html.TextBoxFor(u => u.StaffBadgeNumber, new { placeholder = "Badge Number", @class = "form-control", style = "margin-top: 30px;" })
         @Html.ValidationMessageFor(model => model.StaffBadgeNumber, "", new { @class = "text-danger" })

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using PEMinutes.ViewModels;
@@ -12,96 +9,75 @@ namespace PEMinutes.Controllers
 {
     public class PrincipalController : Controller
     {
-        private PEMinutesEntities db = new PEMinutesEntities();
-        private RenExtractEntities ren = new RenExtractEntities();
-
-
+        private readonly PEMinutesEntities _db = new PEMinutesEntities();
+        private readonly RenExtractEntities _ren = new RenExtractEntities();
 
         // GET: /Principal/Index
-        public ActionResult Index()
+        public ActionResult Index(string selectedDate)
         {
-            DateTime now = DateTime.Now;
-            DateTime lastweek = DateTime.Now.AddDays(-14);
-            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month, 1);
-            
-            var EnteredBadgeString = User.Identity.Name;
-            SchoolToPrincipal SelectedPrincipal = ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-            var SelectedSchool = SelectedPrincipal.ORGANIZATION_NAME;
-            ViewBag.Name = SelectedPrincipal.Principal;
-
-            var PrincipalView = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.School == SelectedSchool ).Select(x=>x.TeacherName).Distinct(); // select all minutes from the school the principal belongs to
-
-            PrincipalIndexViewModel pivm = new PrincipalIndexViewModel();
-            EnteredPeMinute epm = new EnteredPeMinute();
-
-            List<MeetingReq> MeetReq = new List<MeetingReq>();
-            List<NotMeetingReq> NotReq = new List<NotMeetingReq>();
-            List<Graphing> Graph = new List<Graphing>();
-
-            foreach (var item in PrincipalView)
+            var now = DateTime.Now;
+            if (!string.IsNullOrEmpty(selectedDate))
             {
-                MeetingReq mr = new MeetingReq();
-                
-                var sumMinutes = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.TeacherName == item).Sum(x => x.Minutes);
-                if(sumMinutes >= 200)
-                {
-                    mr.TeacherName = item;
-                    mr.Minutes = sumMinutes;
-                    pivm.MeetReq.Add(mr);
-                }
-                    
-                
+                var date = Convert.ToDateTime(selectedDate);
+                now = date.Date;
+            }
+            var lastweek = now.AddDays(-14);
+            var enteredBadgeString = User.Identity.Name;
+            var selectedPrincipal = _ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedSchool = selectedPrincipal.ORGANIZATION_NAME;
+            ViewBag.Name = selectedPrincipal.Principal;
+            var principalView = _db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.School == selectedSchool ).Select(x=>x.TeacherName).Distinct(); // select all minutes from the school the principal belongs to
+            var pivm = new PrincipalIndexViewModel();
+
+            foreach (var item in principalView)
+            {
+                var mr = new MeetingReq();
+                var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.InstructionTime < now.Date && x.TeacherName == item).Sum(x => x.Minutes);
+                if (!(sumMinutes >= 200)) continue;
+                mr.TeacherName = item;
+                mr.Minutes = sumMinutes;
+                pivm.MeetReq.Add(mr);
             }
 
-            foreach (var item in PrincipalView)
+            foreach (var item in principalView)
             {
-                NotMeetingReq nmr = new NotMeetingReq();
+                var nmr = new NotMeetingReq();
 
-                var sumMinutes = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.TeacherName == item).Sum(x => x.Minutes);
-                if (sumMinutes < 200)
-                {
-                    nmr.TeacherName = item;
-                    nmr.Minutes = sumMinutes;
-                    pivm.NotReq.Add(nmr);
-                }
-
-                
+                var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.TeacherName == item).Sum(x => x.Minutes);
+                if (!(sumMinutes < 200)) continue;
+                nmr.TeacherName = item;
+                nmr.Minutes = sumMinutes;
+                pivm.NotReq.Add(nmr);
             }
 
-            foreach (var item in PrincipalView)
+            foreach (var item in principalView)
             {
-                Graphing g = new Graphing();
-
-                var sumMinutes = db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.TeacherName == item).Sum(x => x.Minutes);
+                var g = new Graphing();
+                var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > lastweek && x.TeacherName == item).Sum(x => x.Minutes);
                     g.TeacherName = item;
                     g.Minutes = sumMinutes;
                     pivm.Graph.Add(g);
             }
+
+            pivm.Date = now.ToShortDateString();
             pivm.MeetReq = pivm.MeetReq.ToList();
             pivm.NotReq = pivm.NotReq.ToList();
             pivm.Graph = pivm.Graph.ToList();
             // end of the data for the graph in admin view
-
             return View(pivm);
         }
 
         // GET: /Principal/Reports
         public ActionResult Reports()
         {
-            var EnteredBadgeString = User.Identity.Name;
-            SchoolToPrincipal SelectedPrincipal = ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == EnteredBadgeString);
-            int BadgeNumber = Int32.Parse(EnteredBadgeString);  // convert string to int
-            var SelectedSchool = SelectedPrincipal.ORGANIZATION_NAME;
-            ViewBag.Name = SelectedPrincipal.Principal;
-
-            DateTime PastTenDays = DateTime.Now.AddDays(-11);
-
-            var SchoolReport = db.EnteredPeMinutes.Where( x => x.School == SelectedSchool && x.InstructionTime > PastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
-
-            return View(SchoolReport);
+            var enteredBadgeString = User.Identity.Name;
+            var selectedPrincipal = _ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedSchool = selectedPrincipal.ORGANIZATION_NAME;
+            ViewBag.Name = selectedPrincipal.Principal;
+            var pastTenDays = DateTime.Now.AddDays(-11);
+            var schoolReport = _db.EnteredPeMinutes.Where( x => x.School == selectedSchool && x.InstructionTime > pastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
+            return View(schoolReport);
         }
-
 
         // GET: Principal/Details/5
         public ActionResult Details(int? id)
@@ -110,125 +86,12 @@ namespace PEMinutes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EnteredPeMinute enteredPeMinute = db.EnteredPeMinutes.Find(id);
+            var enteredPeMinute = _db.EnteredPeMinutes.Find(id);
             if (enteredPeMinute == null)
             {
                 return HttpNotFound();
             }
             return View(enteredPeMinute);
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // DISABLED 
-        //// GET: Principal/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Principal/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.EnteredPeMinutes.Add(enteredPeMinute);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(enteredPeMinute);
-        //}
-
-        //// GET: Principal/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    EnteredPeMinute enteredPeMinute = db.EnteredPeMinutes.Find(id);
-        //    if (enteredPeMinute == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(enteredPeMinute);
-        //}
-
-        //// POST: Principal/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] EnteredPeMinute enteredPeMinute)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(enteredPeMinute).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(enteredPeMinute);
-        //}
-
-        //// GET: Principal/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    EnteredPeMinute enteredPeMinute = db.EnteredPeMinutes.Find(id);
-        //    if (enteredPeMinute == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(enteredPeMinute);
-        //}
-
-        //// POST: Principal/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    EnteredPeMinute enteredPeMinute = db.EnteredPeMinutes.Find(id);
-        //    db.EnteredPeMinutes.Remove(enteredPeMinute);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

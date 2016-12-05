@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using PEMinutes.EF;
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
 
 namespace PEMinutes.ViewModels
 {
@@ -13,6 +8,7 @@ namespace PEMinutes.ViewModels
         public int? Minutes { get; set; }
         public List<MeetingReq> MeetReq { get; set; }
         public List<NotMeetingReq> NotReq { get; set; }
+        public string Date { get; set; }
         public List<Graphing> Graph { get; set; }
         public PrincipalIndexViewModel()
         {
