@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using PEMinutes.ViewModels;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using PEMinutes.EF;
 
 namespace PEMinutes.Controllers
@@ -15,21 +17,20 @@ namespace PEMinutes.Controllers
         // GET: Administration
         public ActionResult Index(string selectedDate)
         {
-            var startDay = DateTime.Now;
-            if(!string.IsNullOrEmpty(selectedDate))
+            var startDay = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+            if (!string.IsNullOrEmpty(selectedDate))
             {
                 var date = Convert.ToDateTime(selectedDate);
                 startDay = date.Date;
             }
-            
-            var currentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
+
             var lastweek = startDay.AddDays(-14);
-            ViewBag.lastweek = lastweek;  // used to find falling behind teachers
-            ViewBag.CurrentWeek = currentWeek; // used to find falling behind teachers
+            
+            var TenEntryDaysBack  = _db.EnteredPeMinutes.Where(x=>x.InstructionTime <= startDay).Select(x=>x.InstructionTime).DistinctBy(x=>x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
             var enteredBadgeString = User.Identity.Name;
             var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
-            var adminView = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= lastweek.Date && x.InstructionTime < startDay.Date && x.School.Contains("Elem")).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
+            var adminView = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= TenEntryDaysBack && x.InstructionTime <= startDay && x.School.Contains("Elem")).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
             var avm = new AdministrationViewModel();
             var numberTeachers = _ren.PEMinutesTeacherCounts.Where(x=>x.Organization_Name.Contains("Elem")).ToList();
 
