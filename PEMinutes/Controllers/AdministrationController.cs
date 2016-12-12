@@ -32,19 +32,23 @@ namespace PEMinutes.Controllers
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
             var adminView = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= TenEntryDaysBack && x.InstructionTime <= startDay && x.School.Contains("Elem")).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
             var avm = new AdministrationViewModel();
-            var numberTeachers = _ren.PEMinutesTeacherCounts.Where(x=>x.Organization_Name.Contains("Elem")).ToList();
+            var numberTeachers = _ren.PEMinutesTeacherCounts.Where(x=>x.Organization_Name.Contains("Elem")).OrderBy(x => x.Organization_Name).ToList();
+
+
+
+
+
+
 
             foreach (var item in numberTeachers)
             {
                 var tc = new TeacherCount();
-                var schoolfullname = item.Organization_Name;
-                tc.CountTeacher = item.TEACHER;
-                var schoolname = schoolfullname.Substring(0, schoolfullname.Length - 18);
-                tc.SchoolName = schoolname;
+                tc.TotalTeachers = item.TEACHER;
+                tc.ShortSchoolName = item.Organization_Name.Substring(0, item.Organization_Name.Length - 18);
                 var count = 0;
-                foreach (var teach in adminView.Where(x => x.School == item.Organization_Name).GroupBy(x => x.TeacherName))
+                foreach (var teacher in adminView.Where(x => x.School == item.Organization_Name).GroupBy(x => x.BadgeNumber))
                 {
-                    var sum = teach.Sum(x => x.Minutes);
+                    var sum = teacher.Sum(x => x.Minutes);
                     if (sum >= 200)
                     {
                         count++;
@@ -52,7 +56,7 @@ namespace PEMinutes.Controllers
                     }
                 }
                 tc.MeetReq = count;
-                tc.Percent = ((float)count / item.TEACHER) *100;
+                tc.Percent = (((float)count / item.TEACHER) * 100);
                 avm.TeachCount.Add(tc);
             }
             avm.Date = startDay.ToShortDateString();
@@ -62,8 +66,10 @@ namespace PEMinutes.Controllers
         }
         public ActionResult Reports(int timeFrame, int divisor)
         {
-            var now = DateTime.Now;
-            var selectedTimeFrame = now.AddDays(timeFrame);
+
+            
+            var startDay = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+            var selectedTimeFrame = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(timeFrame).LastOrDefault().Value.Date;
             var currentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
             var lastweek = DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(-7);
             ViewBag.lastweek = lastweek;  // used to find falling behind teachers
@@ -72,7 +78,7 @@ namespace PEMinutes.Controllers
             var enteredBadgeString = User.Identity.Name;
             var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
-            var adminView = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= selectedTimeFrame.Date && x.InstructionTime < now.Date).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
+            var adminView = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= selectedTimeFrame.Date && x.InstructionTime < startDay).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
             return View(adminView);
         }
 

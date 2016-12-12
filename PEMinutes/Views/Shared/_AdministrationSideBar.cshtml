@@ -12,15 +12,15 @@
             </li>
             <li id="LastTen">
                 <i class="ti-time"></i>
-                @Html.ActionLink("Last 10 Days", "Reports", "Administration", new { timeFrame = -14, divisor = 200 }, null)
+                @Html.ActionLink("Last 10 Days", "Reports", "Administration", new { timeFrame = 10, divisor = 200 }, null)
             </li>
             <li id="LastFive">
                 <i class="ti-time"></i>
-                @Html.ActionLink("Last 5 Days", "Reports", "Administration", new { timeFrame = -7, divisor = 100 }, null)
+                @Html.ActionLink("Last 5 Days", "Reports", "Administration", new { timeFrame = 5, divisor = 100 }, null)
             </li>
             <li id="Yesterday">
                 <i class="ti-time"></i>
-                @Html.ActionLink("Yesterday", "Reports", "Administration", new { timeFrame = -1, divisor = 20 }, null)
+                @Html.ActionLink("Yesterday", "Reports", "Administration", new { timeFrame = 1, divisor = 20 }, null)
             </li>
         </ul>
     </div>
