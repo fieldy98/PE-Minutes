@@ -51,6 +51,7 @@ namespace PEMinutes.Controllers
                 }
                 tc.MeetReq = count;
                 tc.Percent = ((float)count / item.TEACHER) *100;
+                tc.Percent = (float)Math.Round((double)tc.Percent, 2);
                 avm.TeachCount.Add(tc);
             }
             avm.Date = startDay.ToShortDateString();

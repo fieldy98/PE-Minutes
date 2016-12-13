@@ -30,16 +30,14 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.TeacherName)
+                                            Teacher
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Minutes)
+                                            <div class="hidden-xs">Minutes</div>
+                                            <div class="visible-xs">#</div>
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Activity)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Timestamp)
+                                            Time
                                         </th>
                                     </tr>
                                 </thead>
@@ -52,9 +50,6 @@
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Minutes)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Activity)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Timestamp)
@@ -113,14 +108,8 @@
             ['Show all']
                 ],
                 buttons: [
-                    {
-                        extend: 'excelHtml5',
-                        title: 'PEMinutesPrinReport' + '_' + timestamp
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        title: 'PEMinutePrincipalReport' + '_' + timestamp
-                    }
+                    
+                        'excel', 'pdf'
                 ]
             });
             // Pull Search Field to the right

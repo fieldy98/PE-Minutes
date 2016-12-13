@@ -31,16 +31,18 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                Teacher Name
+                                                Name
                                             </th>
                                             <th>
                                                 School
                                             </th>
                                             <th>
-                                                Total Minutes
+                                                <div class="hidden-xs">Total Minutes</div>
+                                                <div class="visible-xs">#</div>
                                             </th>
                                             <th>
-                                                Percentage of Goal
+                                                <div class="hidden-xs">Percentage</div>
+                                                <div class="visible-xs">%</div>
                                             </th>
                                         </tr>
                                     </thead>
@@ -91,13 +93,12 @@
                                                 School
                                             </th>
                                             <th>
-                                                Date of Instruction
+                                                <div class="hidden-xs">Date of Instruction</div>
+                                                <div class="visible-xs">Date</div>
                                             </th>
                                             <th>
-                                                Minutes
-                                            </th>
-                                            <th>
-                                                Activity
+                                                <div class="hidden-xs">Minutes</div>
+                                                <div class="visible-xs">#</div>
                                             </th>
                                         </tr>
                                     </thead>
@@ -116,9 +117,6 @@
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Minutes)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Activity)
                                                 </td>
                                             </tr>
                                         }

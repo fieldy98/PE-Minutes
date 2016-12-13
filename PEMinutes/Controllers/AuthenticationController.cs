@@ -41,12 +41,12 @@ namespace PEMinutes.Controllers
                 FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
                 return RedirectToAction("Index", "Principal");
             }
-            else if (user.IsTeacher(user.StaffBadgeNumber))
-            {
-                // If a match is found, create a cookie and return the teacher homepage
-                FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
-                return RedirectToAction("Index", "Teacher");
-            }
+            //else if (user.IsTeacher(user.StaffBadgeNumber))
+            //{
+            //    // If a match is found, create a cookie and return the teacher homepage
+            //    FormsAuthentication.SetAuthCookie(user.StaffBadgeNumber, true);
+            //    return RedirectToAction("Index", "Teacher");
+            //}
             else
             {
                 // If no match found, report error.
