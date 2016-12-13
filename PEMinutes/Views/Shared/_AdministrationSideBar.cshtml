@@ -1,27 +1,26 @@
 ﻿<div class="sidebar" data-background-color="black" data-active-color="danger">
     <div class="sidebar-wrapper">
-        <div class="logo">
-            <a class="simple-text">
-                Minutes
-            </a>
+        <div class="col-sm-12">
+            <div class="logo">
+                <a class="simple-text">
+
+                    <img style="max-width:100%" src="~/Resources/PBVUSDLOGO.png" />Minutes<br />
+
+
+                </a>
+            </div>
         </div>
-        <ul class="nav">
-            <li id="Dashboard">
-                <i class="ti-stats-up"></i>
-                @Html.ActionLink("Dashboard", "Index", "Administration")
-            </li>
-            <li id="LastTen">
-                <i class="ti-time"></i>
-                @Html.ActionLink("Last 10 Days", "Reports", "Administration", new { timeFrame = 10, divisor = 200 }, null)
-            </li>
-            <li id="LastFive">
-                <i class="ti-time"></i>
-                @Html.ActionLink("Last 5 Days", "Reports", "Administration", new { timeFrame = 5, divisor = 100 }, null)
-            </li>
-            <li id="Yesterday">
-                <i class="ti-time"></i>
-                @Html.ActionLink("Yesterday", "Reports", "Administration", new { timeFrame = 1, divisor = 20 }, null)
-            </li>
-        </ul>
+        <div class="col-sm-12">
+            <ul class="nav">
+                <li id="Dashboard">
+                    <i class="ti-stats-up"></i>
+                    @Html.ActionLink("Dashboard", "Index", "Administration")
+                </li>
+                <li id="LastTen">
+                    <i class="ti-time"></i>
+                    @Html.ActionLink("Reports", "Reports", "Administration", new { divisor = 200 }, null)
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

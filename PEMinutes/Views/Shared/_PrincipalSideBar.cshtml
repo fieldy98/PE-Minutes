@@ -1,19 +1,26 @@
 ﻿<div class="sidebar" data-background-color="black" data-active-color="danger">
     <div class="sidebar-wrapper">
-        <div class="logo">
-            <a class="simple-text">
-                Minutes
-            </a>
+        <div class="col-sm-12">
+            <div class="logo">
+                <a class="simple-text">
+
+                    <img style="max-width:100%" src="~/Resources/PBVUSDLOGO.png" />Minutes<br />
+
+
+                </a>
+            </div>
         </div>
-        <ul class="nav">
-            <li id="Dashboard">
-                <i class="ti-stats-up"></i>
-                @Html.ActionLink("Dashboard", "Index", "Principal")
-            </li>
-            <li id="Reports">
-                <i class="ti-time"></i>
-                @Html.ActionLink("Reports", "Reports", "Principal")
-            </li>
-        </ul>
+        <div class="col-sm-12">
+            <ul class="nav">
+                <li id="Dashboard">
+                    <i class="ti-stats-up"></i>
+                    @Html.ActionLink("Dashboard", "Index", "Principal")
+                </li>
+                <li id="Reports">
+                    <i class="ti-time"></i>
+                    @Html.ActionLink("Reports", "Reports", "Principal")
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

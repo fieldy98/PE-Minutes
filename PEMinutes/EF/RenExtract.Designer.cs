@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'H:\Projects\Web_Applications\minutes.pbvusd.net\PEMinutes\EF\RenExtract.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\dwhite\Source\Repos\peminutes\PEMinutes\EF\RenExtract.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
