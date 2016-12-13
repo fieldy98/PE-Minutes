@@ -60,10 +60,10 @@ namespace PEMinutes.Controllers
             return View(avm);
 
         }
-        public ActionResult Reports(int timeFrame, int divisor)
+        public ActionResult Reports(int divisor)
         {
-            var now = DateTime.Now;
-            var selectedTimeFrame = now.AddDays(timeFrame);
+            var now = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+            var selectedTimeFrame = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= now).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
             var currentWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday); // Making each new week start on Monday.
             var lastweek = DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(-7);
             ViewBag.lastweek = lastweek;  // used to find falling behind teachers
