@@ -40,6 +40,7 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not
             <PropertyRef Name="LOGIN_NAME" />
             <PropertyRef Name="aId" />
           </Key>
+          <Property Name="JOB_TITLE" Type="nvarchar" MaxLength="50" />
           <Property Name="Organization_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="TYPE" Type="nvarchar" MaxLength="5" />
           <Property Name="ABBREV_NAME" Type="nvarchar" MaxLength="15" />
@@ -48,7 +49,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not
           <Property Name="PERIOD_BEGIN" Type="numeric" Precision="3" Scale="0" Nullable="false" />
           <Property Name="MAX_STUDENTS" Type="numeric" Precision="5" Scale="0" />
           <Property Name="SECTION_GU" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ROOM_SIMPLE" Type="nvarchar" MaxLength="50" />
           <Property Name="TeacherLastName" Type="nvarchar" MaxLength="60" Nullable="false" />
           <Property Name="TeacherFirstName" Type="nvarchar" MaxLength="60" Nullable="false" />
           <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
@@ -86,6 +86,7 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
           </EntitySet>
           <EntitySet Name="SchoolTeachersWithADLogin" EntityType="Self.SchoolTeachersWithADLogin" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [SchoolTeachersWithADLogin].[JOB_TITLE] AS [JOB_TITLE], 
     [SchoolTeachersWithADLogin].[Organization_Name] AS [Organization_Name], 
     [SchoolTeachersWithADLogin].[TYPE] AS [TYPE], 
     [SchoolTeachersWithADLogin].[ABBREV_NAME] AS [ABBREV_NAME], 
@@ -94,7 +95,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     [SchoolTeachersWithADLogin].[PERIOD_BEGIN] AS [PERIOD_BEGIN], 
     [SchoolTeachersWithADLogin].[MAX_STUDENTS] AS [MAX_STUDENTS], 
     [SchoolTeachersWithADLogin].[SECTION_GU] AS [SECTION_GU], 
-    [SchoolTeachersWithADLogin].[ROOM_SIMPLE] AS [ROOM_SIMPLE], 
     [SchoolTeachersWithADLogin].[TeacherLastName] AS [TeacherLastName], 
     [SchoolTeachersWithADLogin].[TeacherFirstName] AS [TeacherFirstName], 
     [SchoolTeachersWithADLogin].[BADGE_NUM] AS [BADGE_NUM], 
@@ -118,41 +118,11 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RenExtractModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="SchoolTeachersWithADLogin">
-          <Key>
-            <PropertyRef Name="Organization_Name" />
-            <PropertyRef Name="SCHOOL_YEAR" />
-            <PropertyRef Name="COURSE_TITLE" />
-            <PropertyRef Name="PERIOD_BEGIN" />
-            <PropertyRef Name="SECTION_GU" />
-            <PropertyRef Name="TeacherLastName" />
-            <PropertyRef Name="TeacherFirstName" />
-            <PropertyRef Name="PERSON_GU" />
-            <PropertyRef Name="LOGIN_NAME" />
-            <PropertyRef Name="aId" />
-          </Key>
-          <Property Name="Organization_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TYPE" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="ABBREV_NAME" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="SCHOOL_YEAR" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
-          <Property Name="COURSE_TITLE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PERIOD_BEGIN" Type="Decimal" Precision="3" Scale="0" Nullable="false" />
-          <Property Name="MAX_STUDENTS" Type="Decimal" Precision="5" Scale="0" />
-          <Property Name="SECTION_GU" Type="Guid" Nullable="false" />
-          <Property Name="ROOM_SIMPLE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TeacherLastName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TeacherFirstName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BADGE_NUM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="PERSON_GU" Type="Guid" Nullable="false" />
-          <Property Name="rn" Type="Int64" />
-          <Property Name="LOGIN_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="aId" Type="Int64" Nullable="false" />
-        </EntityType>
         <EntityContainer Name="RenExtractEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="SchoolTeachersWithADLogins" EntityType="Self.SchoolTeachersWithADLogin" />
           <EntitySet Name="SchoolToPrincipals" EntityType="RenExtractModel.SchoolToPrincipal" />
           <EntitySet Name="MinutesAdmins" EntityType="RenExtractModel.MinutesAdmin" />
           <EntitySet Name="PEMinutesTeacherCounts" EntityType="RenExtractModel.PEMinutesTeacherCount" />
+          <EntitySet Name="SchoolTeachersWithADLogins" EntityType="RenExtractModel.SchoolTeachersWithADLogin" />
         </EntityContainer>
         <EntityType Name="SchoolToPrincipal">
           <Key>
@@ -181,34 +151,42 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
           <Property Name="Organization_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="TEACHER" Type="Int32" />
         </EntityType>
+        <EntityType Name="SchoolTeachersWithADLogin">
+          <Key>
+            <PropertyRef Name="Organization_Name" />
+            <PropertyRef Name="SCHOOL_YEAR" />
+            <PropertyRef Name="COURSE_TITLE" />
+            <PropertyRef Name="PERIOD_BEGIN" />
+            <PropertyRef Name="SECTION_GU" />
+            <PropertyRef Name="TeacherLastName" />
+            <PropertyRef Name="TeacherFirstName" />
+            <PropertyRef Name="PERSON_GU" />
+            <PropertyRef Name="LOGIN_NAME" />
+            <PropertyRef Name="aId" />
+          </Key>
+          <Property Name="JOB_TITLE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Organization_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYPE" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ABBREV_NAME" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SCHOOL_YEAR" Type="Decimal" Nullable="false" Precision="4" Scale="0" />
+          <Property Name="COURSE_TITLE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PERIOD_BEGIN" Type="Decimal" Nullable="false" Precision="3" Scale="0" />
+          <Property Name="MAX_STUDENTS" Type="Decimal" Precision="5" Scale="0" />
+          <Property Name="SECTION_GU" Type="Guid" Nullable="false" />
+          <Property Name="TeacherLastName" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="TeacherFirstName" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="BADGE_NUM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PERSON_GU" Type="Guid" Nullable="false" />
+          <Property Name="rn" Type="Int64" />
+          <Property Name="LOGIN_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="aId" Type="Int64" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RenExtractModelStoreContainer" CdmEntityContainer="RenExtractEntities">
-          <EntitySetMapping Name="SchoolTeachersWithADLogins">
-            <EntityTypeMapping TypeName="RenExtractModel.SchoolTeachersWithADLogin">
-              <MappingFragment StoreEntitySet="SchoolTeachersWithADLogin">
-                <ScalarProperty Name="Organization_Name" ColumnName="Organization_Name" />
-                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-                <ScalarProperty Name="ABBREV_NAME" ColumnName="ABBREV_NAME" />
-                <ScalarProperty Name="SCHOOL_YEAR" ColumnName="SCHOOL_YEAR" />
-                <ScalarProperty Name="COURSE_TITLE" ColumnName="COURSE_TITLE" />
-                <ScalarProperty Name="PERIOD_BEGIN" ColumnName="PERIOD_BEGIN" />
-                <ScalarProperty Name="MAX_STUDENTS" ColumnName="MAX_STUDENTS" />
-                <ScalarProperty Name="SECTION_GU" ColumnName="SECTION_GU" />
-                <ScalarProperty Name="ROOM_SIMPLE" ColumnName="ROOM_SIMPLE" />
-                <ScalarProperty Name="TeacherLastName" ColumnName="TeacherLastName" />
-                <ScalarProperty Name="TeacherFirstName" ColumnName="TeacherFirstName" />
-                <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
-                <ScalarProperty Name="PERSON_GU" ColumnName="PERSON_GU" />
-                <ScalarProperty Name="rn" ColumnName="rn" />
-                <ScalarProperty Name="LOGIN_NAME" ColumnName="LOGIN_NAME" />
-                <ScalarProperty Name="aId" ColumnName="aId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SchoolToPrincipals">
             <EntityTypeMapping TypeName="RenExtractModel.SchoolToPrincipal">
               <MappingFragment StoreEntitySet="SchoolToPrincipal">
@@ -234,6 +212,28 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
               <MappingFragment StoreEntitySet="PEMinutesTeacherCount">
                 <ScalarProperty Name="TEACHER" ColumnName="TEACHER" />
                 <ScalarProperty Name="Organization_Name" ColumnName="Organization_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolTeachersWithADLogins">
+            <EntityTypeMapping TypeName="RenExtractModel.SchoolTeachersWithADLogin">
+              <MappingFragment StoreEntitySet="SchoolTeachersWithADLogin">
+                <ScalarProperty Name="aId" ColumnName="aId" />
+                <ScalarProperty Name="LOGIN_NAME" ColumnName="LOGIN_NAME" />
+                <ScalarProperty Name="rn" ColumnName="rn" />
+                <ScalarProperty Name="PERSON_GU" ColumnName="PERSON_GU" />
+                <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
+                <ScalarProperty Name="TeacherFirstName" ColumnName="TeacherFirstName" />
+                <ScalarProperty Name="TeacherLastName" ColumnName="TeacherLastName" />
+                <ScalarProperty Name="SECTION_GU" ColumnName="SECTION_GU" />
+                <ScalarProperty Name="MAX_STUDENTS" ColumnName="MAX_STUDENTS" />
+                <ScalarProperty Name="PERIOD_BEGIN" ColumnName="PERIOD_BEGIN" />
+                <ScalarProperty Name="COURSE_TITLE" ColumnName="COURSE_TITLE" />
+                <ScalarProperty Name="SCHOOL_YEAR" ColumnName="SCHOOL_YEAR" />
+                <ScalarProperty Name="ABBREV_NAME" ColumnName="ABBREV_NAME" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="Organization_Name" ColumnName="Organization_Name" />
+                <ScalarProperty Name="JOB_TITLE" ColumnName="JOB_TITLE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

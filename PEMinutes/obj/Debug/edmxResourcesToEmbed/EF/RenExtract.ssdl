@@ -35,6 +35,7 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not
       <PropertyRef Name="LOGIN_NAME" />
       <PropertyRef Name="aId" />
     </Key>
+    <Property Name="JOB_TITLE" Type="nvarchar" MaxLength="50" />
     <Property Name="Organization_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="TYPE" Type="nvarchar" MaxLength="5" />
     <Property Name="ABBREV_NAME" Type="nvarchar" MaxLength="15" />
@@ -43,7 +44,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not
     <Property Name="PERIOD_BEGIN" Type="numeric" Precision="3" Scale="0" Nullable="false" />
     <Property Name="MAX_STUDENTS" Type="numeric" Precision="5" Scale="0" />
     <Property Name="SECTION_GU" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="ROOM_SIMPLE" Type="nvarchar" MaxLength="50" />
     <Property Name="TeacherLastName" Type="nvarchar" MaxLength="60" Nullable="false" />
     <Property Name="TeacherFirstName" Type="nvarchar" MaxLength="60" Nullable="false" />
     <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
@@ -81,6 +81,7 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     </EntitySet>
     <EntitySet Name="SchoolTeachersWithADLogin" EntityType="Self.SchoolTeachersWithADLogin" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
+    [SchoolTeachersWithADLogin].[JOB_TITLE] AS [JOB_TITLE], 
     [SchoolTeachersWithADLogin].[Organization_Name] AS [Organization_Name], 
     [SchoolTeachersWithADLogin].[TYPE] AS [TYPE], 
     [SchoolTeachersWithADLogin].[ABBREV_NAME] AS [ABBREV_NAME], 
@@ -89,7 +90,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     [SchoolTeachersWithADLogin].[PERIOD_BEGIN] AS [PERIOD_BEGIN], 
     [SchoolTeachersWithADLogin].[MAX_STUDENTS] AS [MAX_STUDENTS], 
     [SchoolTeachersWithADLogin].[SECTION_GU] AS [SECTION_GU], 
-    [SchoolTeachersWithADLogin].[ROOM_SIMPLE] AS [ROOM_SIMPLE], 
     [SchoolTeachersWithADLogin].[TeacherLastName] AS [TeacherLastName], 
     [SchoolTeachersWithADLogin].[TeacherFirstName] AS [TeacherFirstName], 
     [SchoolTeachersWithADLogin].[BADGE_NUM] AS [BADGE_NUM], 

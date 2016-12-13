@@ -152,6 +152,15 @@
                             series: [{
                                 showInLegend: false,
                                 data: @Html.Raw(Json.Encode(Model.TeachCount.Select(x => x.Percent))),
+                                zones: [{
+                                    value: 50,
+                                    color: '#ff0000'
+                                }, {
+                                    value: 99,
+                                    color: '#ffa500'
+                                }, {
+                                    color: '#90ed7d'
+                                }],
 
                             }]
                         });

@@ -149,7 +149,12 @@
                                 min: 0,
                                 title: {
                                     text: '# of Minutes'
-                                }
+                                },
+                                    plotBands: [{ // visualize the weekend
+                                        from: 200,
+                                        to:300,
+                                        color: 'rgba(0,255,0,0.2)'
+                                    }]
                             },
                             tooltip: {
                                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
@@ -171,8 +176,15 @@
                             series: [{
                                 showInLegend: false,  
                                 data: @Html.Raw(Json.Encode(Model.Graph.Select(x => x.Minutes))),
+                                zones: [{
+                                    value: 199,
+                                    color: '#ff0000'
+                                },  {
+                                    color: '#90ed7d'
+                                }],
 
                             }]
+                            
                         });
                     });
                 </script>
