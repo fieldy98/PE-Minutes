@@ -6,6 +6,8 @@ namespace PEMinutes.ViewModels
     {
         public string TeacherName { get; set; }
         public int? Minutes { get; set; }
+        public string DateStart { get; set; }
+        public string DateEnd { get; set; }
         public List<MeetingReq> MeetReq { get; set; }
         public List<NotMeetingReq> NotReq { get; set; }
         public string Date { get; set; }

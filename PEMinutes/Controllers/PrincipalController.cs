@@ -63,6 +63,8 @@ namespace PEMinutes.Controllers
             }
 
             pivm.Date = now.ToShortDateString();
+            pivm.DateStart = TenEntryDaysBack.ToShortDateString();
+            pivm.DateEnd = now.ToShortDateString();
             pivm.MeetReq = pivm.MeetReq.ToList();
             pivm.NotReq = pivm.NotReq.ToList();
             pivm.Graph = pivm.Graph.ToList();

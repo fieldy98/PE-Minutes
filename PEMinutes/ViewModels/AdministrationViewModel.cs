@@ -9,6 +9,8 @@ namespace PEMinutes.ViewModels
         public string SchoolName { get; set; }
         public string OrgName { get; set; }
         public int? CountTeacher { get; set; }
+        public string DateStart { get; set; }
+        public string DateEnd { get; set; }
         public int? MeetReq { get; set; }
         public float? Percent { get; set; }
         public string Date { get; set; }

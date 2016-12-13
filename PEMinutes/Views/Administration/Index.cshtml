@@ -23,7 +23,7 @@
                         <div class="header">
                             <div class="col-sm-4">
                                 <h4 class="title">School Progress</h4>
-                                <p class="category">Percentage of teachers meeting requirements in the last two weeks</p>
+                                <p class="category">Percentage of teachers meeting requirements from @Model.DateStart through @Model.DateEnd</p>
                             </div>
                                 <form class="form-inline pull-right">
                                     @using (Html.BeginForm())
@@ -76,13 +76,13 @@
                                     {
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.SchoolName)
+                                                @Html.DisplayFor(modelItem => item.ShortSchoolName)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.MeetReq)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CountTeacher)
+                                                @Html.DisplayFor(modelItem => item.TotalTeachers)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Percent)%
@@ -123,7 +123,7 @@
                                 text: null
                             },
                             xAxis: {
-                                categories: @Html.Raw(Json.Encode(Model.TeachCount.Select(x=>x.SchoolName))),
+                                categories: @Html.Raw(Json.Encode(Model.TeachCount.Select(x=>x.ShortSchoolName))),
                                 crosshair: true
                             },
                             yAxis: {
@@ -154,12 +154,12 @@
                                 data: @Html.Raw(Json.Encode(Model.TeachCount.Select(x => x.Percent))),
                                 zones: [{
                                     value: 50,
-                                    color: '#ff0000'
+                                    color: '#ff8f5e'
                                 }, {
                                     value: 99,
-                                    color: '#ffa500'
+                                    color: '#ffe28c'
                                 }, {
-                                    color: '#90ed7d'
+                                    color: '#8ef3c5'
                                 }],
 
                             }]
@@ -189,6 +189,7 @@
         $(function () {
             $('#adminsearch').datetimepicker({
             
+                useCurrent: false,
                 daysOfWeekDisabled: [0, 6],
                 format:'MM/DD/YYYY'
             

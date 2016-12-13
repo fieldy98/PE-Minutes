@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using PEMinutes.ViewModels;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
@@ -24,7 +23,6 @@ namespace PEMinutes.Controllers
                 startDay = date.Date;
             }
 
-            var lastweek = startDay.AddDays(-14);
             
             var TenEntryDaysBack  = _db.EnteredPeMinutes.Where(x=>x.InstructionTime <= startDay).Select(x=>x.InstructionTime).DistinctBy(x=>x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
             var enteredBadgeString = User.Identity.Name;
@@ -38,9 +36,9 @@ namespace PEMinutes.Controllers
             {
                 var tc = new TeacherCount();
                 var schoolfullname = item.Organization_Name;
-                tc.CountTeacher = item.TEACHER;
+                tc.TotalTeachers = item.TEACHER;
                 var schoolname = schoolfullname.Substring(0, schoolfullname.Length - 18);
-                tc.SchoolName = schoolname;
+                tc.ShortSchoolName = schoolname;
                 var count = 0;
                 foreach (var teach in adminView.Where(x => x.School == item.Organization_Name).GroupBy(x => x.TeacherName))
                 {
@@ -56,6 +54,8 @@ namespace PEMinutes.Controllers
                 avm.TeachCount.Add(tc);
             }
             avm.Date = startDay.ToShortDateString();
+            avm.DateStart = TenEntryDaysBack.ToShortDateString();
+            avm.DateEnd = startDay.ToShortDateString();
             avm.TeachCount = avm.TeachCount.ToList();
             return View(avm);
 
