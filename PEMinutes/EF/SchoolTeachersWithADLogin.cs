@@ -17,7 +17,6 @@ namespace PEMinutes.EF
         public string JOB_TITLE { get; set; }
         public string Organization_Name { get; set; }
         public string TYPE { get; set; }
-        public string ROOM_SIMPLE { get; set; }
         public string ABBREV_NAME { get; set; }
         public decimal SCHOOL_YEAR { get; set; }
         public string COURSE_TITLE { get; set; }

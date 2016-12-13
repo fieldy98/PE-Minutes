@@ -43,7 +43,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not
           <Property Name="JOB_TITLE" Type="nvarchar" MaxLength="50" />
           <Property Name="Organization_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="TYPE" Type="nvarchar" MaxLength="5" />
-          <Property Name="ROOM_SIMPLE" Type="nvarchar" MaxLength="50" />
           <Property Name="ABBREV_NAME" Type="nvarchar" MaxLength="15" />
           <Property Name="SCHOOL_YEAR" Type="numeric" Precision="4" Scale="0" Nullable="false" />
           <Property Name="COURSE_TITLE" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -90,7 +89,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     [SchoolTeachersWithADLogin].[JOB_TITLE] AS [JOB_TITLE], 
     [SchoolTeachersWithADLogin].[Organization_Name] AS [Organization_Name], 
     [SchoolTeachersWithADLogin].[TYPE] AS [TYPE], 
-    [SchoolTeachersWithADLogin].[ROOM_SIMPLE] AS [ROOM_SIMPLE], 
     [SchoolTeachersWithADLogin].[ABBREV_NAME] AS [ABBREV_NAME], 
     [SchoolTeachersWithADLogin].[SCHOOL_YEAR] AS [SCHOOL_YEAR], 
     [SchoolTeachersWithADLogin].[COURSE_TITLE] AS [COURSE_TITLE], 
@@ -169,7 +167,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
           <Property Name="JOB_TITLE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Organization_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="TYPE" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="ROOM_SIMPLE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ABBREV_NAME" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="SCHOOL_YEAR" Type="Decimal" Nullable="false" Precision="4" Scale="0" />
           <Property Name="COURSE_TITLE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -234,7 +231,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
                 <ScalarProperty Name="COURSE_TITLE" ColumnName="COURSE_TITLE" />
                 <ScalarProperty Name="SCHOOL_YEAR" ColumnName="SCHOOL_YEAR" />
                 <ScalarProperty Name="ABBREV_NAME" ColumnName="ABBREV_NAME" />
-                <ScalarProperty Name="ROOM_SIMPLE" ColumnName="ROOM_SIMPLE" />
                 <ScalarProperty Name="TYPE" ColumnName="TYPE" />
                 <ScalarProperty Name="Organization_Name" ColumnName="Organization_Name" />
                 <ScalarProperty Name="JOB_TITLE" ColumnName="JOB_TITLE" />

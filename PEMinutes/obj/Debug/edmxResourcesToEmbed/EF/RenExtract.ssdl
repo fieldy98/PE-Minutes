@@ -38,7 +38,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not
     <Property Name="JOB_TITLE" Type="nvarchar" MaxLength="50" />
     <Property Name="Organization_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="TYPE" Type="nvarchar" MaxLength="5" />
-    <Property Name="ROOM_SIMPLE" Type="nvarchar" MaxLength="50" />
     <Property Name="ABBREV_NAME" Type="nvarchar" MaxLength="15" />
     <Property Name="SCHOOL_YEAR" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="COURSE_TITLE" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -85,7 +84,6 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     [SchoolTeachersWithADLogin].[JOB_TITLE] AS [JOB_TITLE], 
     [SchoolTeachersWithADLogin].[Organization_Name] AS [Organization_Name], 
     [SchoolTeachersWithADLogin].[TYPE] AS [TYPE], 
-    [SchoolTeachersWithADLogin].[ROOM_SIMPLE] AS [ROOM_SIMPLE], 
     [SchoolTeachersWithADLogin].[ABBREV_NAME] AS [ABBREV_NAME], 
     [SchoolTeachersWithADLogin].[SCHOOL_YEAR] AS [SCHOOL_YEAR], 
     [SchoolTeachersWithADLogin].[COURSE_TITLE] AS [COURSE_TITLE], 

@@ -49,7 +49,6 @@
     <Property Name="JOB_TITLE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Organization_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="TYPE" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-    <Property Name="ROOM_SIMPLE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ABBREV_NAME" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
     <Property Name="SCHOOL_YEAR" Type="Decimal" Nullable="false" Precision="4" Scale="0" />
     <Property Name="COURSE_TITLE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
