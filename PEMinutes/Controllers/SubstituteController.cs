@@ -32,18 +32,18 @@ namespace PEMinutes.Controllers
 
         // POST: Substitute/Create
         [HttpPost]
-        public ActionResult Create([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, SimplerAesModel encryptedBadge, string selectedbadge)
+        public ActionResult _identifyStaff([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, string selectedbadge)
         {
             if (!ModelState.IsValid) return View(sub);
-            var decryptedBadge = encryptedBadge.Decrypt(selectedbadge);
-            var badgeNumber = int.Parse(decryptedBadge);  // convert string to int
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == decryptedBadge); //Finding the teacher that matches the selected badge number
+            //var decryptedBadge = encryptedBadge.Decrypt(selectedbadge);
+            //var badgeNumber = int.Parse(decryptedBadge);  // convert string to int
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == selectedbadge); //Finding the teacher that matches the selected badge number
 
             // Build variable with information not gathered from user.
             sub.TeacherName = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             sub.School = selectedTeacher.Organization_Name;
             sub.Grade = selectedTeacher.COURSE_TITLE;
-            sub.BadgeNumber = badgeNumber;
+            sub.BadgeNumber = int.Parse(selectedbadge);
             sub.Timestamp = DateTime.Now;
 
             // Apply the modifications and then save to the database
@@ -52,7 +52,7 @@ namespace PEMinutes.Controllers
             return RedirectToAction("Index", "Authentication"); // takes the user back to the login page to choose subs or teacher
         }
         // This loads the _GetTeachers Partial
-        public ActionResult _GetTeachers(SimplerAesModel decryptedBadge, string selectedSchool)
+        public ActionResult _GetTeachers(string selectedSchool)
         {
             var svm = new SubstituteViewModel();
             // This is the query for selecting teachers from the selected school and they are put into a list for the dropdown
@@ -63,12 +63,23 @@ namespace PEMinutes.Controllers
                 {
                     SchoolName = item.Organization_Name,
                     TeacherName = item.TeacherLastName + ", " + item.TeacherFirstName,
-                    BadgeNumber = decryptedBadge.Encrypt(item.BADGE_NUM)
+                    BadgeNumber = item.BADGE_NUM
                 };
                 svm.TeacherList.Add(tl);
             }
             svm.TeacherList = svm.TeacherList.ToList();
             return PartialView(svm);
+        }
+        public ActionResult _identifyStaff(string selectedbadge)
+        {
+            //if (!ModelState.IsValid) return View(sub);
+            //var badgeNumber = int.Parse(decryptedBadge);  // convert string to int
+            var svm = new SubstituteViewModel();
+            // This is the query for selecting teachers from the selected school and they are put into a list for the dropdown
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(x => x.BADGE_NUM == selectedbadge);
+            svm.BadgeNumber = selectedTeacher.BADGE_NUM;
+            svm.SchoolName = selectedTeacher.Organization_Name;
+            return PartialView("partials/_create", svm);
         }
     }
 }
