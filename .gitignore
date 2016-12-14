@@ -21,6 +21,8 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+EF/*
+web.config
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -250,6 +252,3 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
-
-EF/
-web.config
