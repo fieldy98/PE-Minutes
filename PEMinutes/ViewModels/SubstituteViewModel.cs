@@ -6,7 +6,6 @@ namespace PEMinutes.ViewModels
     public class SubstituteViewModel
     {
         [Required]
-        
         public string SubstituteName { get; set; }
 
         [Required]
