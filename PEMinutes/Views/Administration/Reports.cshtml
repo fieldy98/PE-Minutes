@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
+﻿@model PEMinutes.ViewModels.AdministrationViewModel
 @{
     ViewBag.Title = "Reports";
 }
@@ -47,23 +47,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model.GroupBy(x=>x.TeacherName))
+                                        @foreach (var item in Model.Reports)
                                         {
-                                            var teacher = Model.FirstOrDefault(x=>x.TeacherName == item.Key);
-                                            var sum = item.Sum(x => x.Minutes);
-                                            var percent = ((float) sum / @ViewBag.Divisor).ToString("0.00%");
+
                                             <tr>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Key)
+                                                    @Html.DisplayFor(modelItem => item.TeacherName)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => teacher.School)
+                                                    @Html.DisplayFor(modelItem => item.SchoolName)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => sum)
+                                                    @Html.DisplayFor(modelItem => item.Minutes)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => percent)
+                                                    @Html.DisplayFor(modelItem => item.Percentage)
                                                 </td>
                                             </tr>
                                         }
@@ -103,14 +101,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model.OrderBy(x=>x.TeacherName))
+                                        @foreach (var item in Model.ListReports)
                                         {
                                             <tr>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.TeacherName)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.School)
+                                                    @Html.DisplayFor(modelItem => item.SchoolName)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.InstructionTime)
@@ -129,22 +127,22 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 
-    @section Scripts{
-@*
-    Call DataTables Dependencies
-*@
-<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-<script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
-<script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
-<script src="~/Scripts/DataTables/buttons.bootstrap.min.js"></script>
-<script src="~/Scripts/DataTables/buttons.html5.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-<script src="http://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
-        <script>
+@section Scripts{
+    @*
+        Call DataTables Dependencies
+    *@
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/DataTables/buttons.bootstrap.min.js"></script>
+    <script src="~/Scripts/DataTables/buttons.html5.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="http://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script>
             $('#myTabs a').click(function (e) {
                 e.preventDefault()
                 $(this).tab('show')
@@ -176,6 +174,6 @@
                 $("#Reports_filter").addClass("pull-right");
                 $("#Activities_filter").addClass("pull-right");
             });
-            
-        </script>
-    }
+
+    </script>
+}

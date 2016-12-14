@@ -16,10 +16,14 @@ namespace PEMinutes.ViewModels
         public string Date { get; set; }
         public List<TeacherSelectListEntry> MyTeachers { get; set; }
         public List<TeacherCount> TeachCount { get; set; }
+        public List<ReportView> Reports { get; set; }
+        public List<ReportList> ListReports { get; set; }
         public AdministrationViewModel()
         {
             MyTeachers = new List<TeacherSelectListEntry>();
             TeachCount = new List<TeacherCount>();
+            Reports = new List<ReportView>();
+            ListReports = new List<ReportList>();
         }
     }
 
@@ -46,6 +50,24 @@ namespace PEMinutes.ViewModels
         public int? TotalTeachers { get; set; }
         public int? MeetReq { get; set; }
         public float? Percent { get; set; }
+
+    }
+
+    public class ReportView
+    {
+        public string TeacherName { get; set; }
+        public string SchoolName { get; set; }
+        public string Percentage { get; set; }
+        public int? Minutes { get; set; }
+
+    }
+
+    public class ReportList
+    {
+        public string TeacherName { get; set; }
+        public string SchoolName { get; set; }
+        public string InstructionTime { get; set; }
+        public int? Minutes { get; set; }
 
     }
 }

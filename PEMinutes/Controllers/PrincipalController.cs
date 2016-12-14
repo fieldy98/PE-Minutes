@@ -29,7 +29,7 @@ namespace PEMinutes.Controllers
             }
             var TenEntryDaysBack = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= now).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
 
-            var principalView = _db.EnteredPeMinutes.Where(x => x.InstructionTime > TenEntryDaysBack && x.InstructionTime <= now && x.School == selectedSchool ).Select(x=>x.TeacherName).Distinct(); // select all minutes from the school the principal belongs to
+            var principalView = _db.EnteredPeMinutes.Where(x => x.InstructionTime > TenEntryDaysBack && x.InstructionTime <= now && x.School == selectedSchool).Select(x => x.TeacherName).Distinct(); // select all minutes from the school the principal belongs to
             var pivm = new PrincipalIndexViewModel();
 
             foreach (var item in principalView)
@@ -57,9 +57,9 @@ namespace PEMinutes.Controllers
             {
                 var g = new Graphing();
                 var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > TenEntryDaysBack && x.InstructionTime <= now && x.TeacherName == item).Sum(x => x.Minutes);
-                    g.TeacherName = item;
-                    g.Minutes = sumMinutes;
-                    pivm.Graph.Add(g);
+                g.TeacherName = item;
+                g.Minutes = sumMinutes;
+                pivm.Graph.Add(g);
             }
 
             pivm.Date = now.ToShortDateString();
@@ -75,14 +75,31 @@ namespace PEMinutes.Controllers
         // GET: /Principal/Reports
         public ActionResult Reports()
         {
+            PrincipalIndexViewModel pivm = new PrincipalIndexViewModel();
+
             var enteredBadgeString = User.Identity.Name;
             var selectedPrincipal = _ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var selectedSchool = selectedPrincipal.ORGANIZATION_NAME;
             ViewBag.Name = selectedPrincipal.Principal;
             var startDay = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
             var pastTenDays = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
-            var schoolReport = _db.EnteredPeMinutes.Where( x => x.School == selectedSchool && x.InstructionTime > pastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
-            return View(schoolReport);
+            var schoolReport = _db.EnteredPeMinutes.Where(x => x.School == selectedSchool && x.InstructionTime > pastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
+
+            foreach (var item in schoolReport)
+            {
+                PrinicipalReports pr = new PrinicipalReports();
+
+                pr.TeacherName = item.TeacherName;
+                pr.Minutes = item.Minutes;
+                var time = Convert.ToDateTime(item.InstructionTime);
+                pr.InstructionTime = time.ToShortDateString();
+
+                pivm.ListReports.Add(pr);
+            }
+
+            pivm.ListReports = pivm.ListReports.ToList();
+
+            return View(pivm);
         }
 
         // GET: Principal/Details/5
