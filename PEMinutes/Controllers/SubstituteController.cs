@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Mvc;
 using PEMinutes.EF;
-using PEMinutes.Models;
 using PEMinutes.ViewModels;
 
 namespace PEMinutes.Controllers
@@ -24,19 +23,20 @@ namespace PEMinutes.Controllers
             svm.SchoolList = svm.SchoolList.ToList();
             return View(svm);
         }
-        public ActionResult Create()
+        public ActionResult _identifyStaff(string selectedbadge)
         {
             
-            return View();
+            var svm = new SubstituteViewModel();
+            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(x => x.BADGE_NUM == selectedbadge);
+            svm.BadgeNumber = selectedTeacher.BADGE_NUM;
+            svm.SchoolName = selectedTeacher.Organization_Name;
+            return PartialView("partials/_create", svm);
         }
-
         // POST: Substitute/Create
         [HttpPost]
         public ActionResult _identifyStaff([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, string selectedbadge)
         {
             if (!ModelState.IsValid) return View(sub);
-            //var decryptedBadge = encryptedBadge.Decrypt(selectedbadge);
-            //var badgeNumber = int.Parse(decryptedBadge);  // convert string to int
             var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == selectedbadge); //Finding the teacher that matches the selected badge number
 
             // Build variable with information not gathered from user.
@@ -51,11 +51,9 @@ namespace PEMinutes.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index", "Authentication"); // takes the user back to the login page to choose subs or teacher
         }
-        // This loads the _GetTeachers Partial
         public ActionResult _GetTeachers(string selectedSchool)
         {
             var svm = new SubstituteViewModel();
-            // This is the query for selecting teachers from the selected school and they are put into a list for the dropdown
             var selectedTeachers = _ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == selectedSchool && i.COURSE_TITLE.Contains("PS") == false && i.COURSE_TITLE.Contains("Kind") == false).OrderBy(i => i.TeacherLastName).ToList();
             foreach (var item in selectedTeachers)
             {
@@ -68,18 +66,8 @@ namespace PEMinutes.Controllers
                 svm.TeacherList.Add(tl);
             }
             svm.TeacherList = svm.TeacherList.ToList();
-            return PartialView(svm);
+            return PartialView("partials/_getTeachers", svm);
         }
-        public ActionResult _identifyStaff(string selectedbadge)
-        {
-            //if (!ModelState.IsValid) return View(sub);
-            //var badgeNumber = int.Parse(decryptedBadge);  // convert string to int
-            var svm = new SubstituteViewModel();
-            // This is the query for selecting teachers from the selected school and they are put into a list for the dropdown
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(x => x.BADGE_NUM == selectedbadge);
-            svm.BadgeNumber = selectedTeacher.BADGE_NUM;
-            svm.SchoolName = selectedTeacher.Organization_Name;
-            return PartialView("partials/_create", svm);
-        }
+
     }
 }

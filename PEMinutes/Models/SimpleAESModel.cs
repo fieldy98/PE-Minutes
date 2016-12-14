@@ -5,6 +5,8 @@ using System.Text;
 
 namespace PEMinutes.Models
 {
+
+    // NOTE: Currently not being used
     public class SimplerAesModel
     {
         private static readonly byte[] Key = { 123, 217, 19, 11, 24, 26, 85, 45, 114, 184, 27, 162, 37, 112, 222, 209, 241, 24, 175, 144, 173, 53, 196, 29, 24, 26, 17, 218, 131, 236, 53, 209 };

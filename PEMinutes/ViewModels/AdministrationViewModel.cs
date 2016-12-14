@@ -35,14 +35,7 @@ namespace PEMinutes.ViewModels
         public int? CountTeacher { get; set; }
 
     }
-    //public class TeacherCount
-    //{
-    //    public string SchoolName { get; set; }
-    //    public int? CountTeacher { get; set; }
-    //    public int? MeetReq { get; set; }
-    //    public float? Percent { get; set; }
 
-    //}
     public class TeacherCount
     {
         public string ShortSchoolName { get; set; }

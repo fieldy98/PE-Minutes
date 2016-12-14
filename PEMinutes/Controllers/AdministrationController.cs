@@ -22,13 +22,11 @@ namespace PEMinutes.Controllers
                 var date = Convert.ToDateTime(selectedDate);
                 startDay = date.Date;
             }
-
-
-            var TenEntryDaysBack = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
+            var tenEntryDaysBack = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
             var enteredBadgeString = User.Identity.Name;
             var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
-            var adminView = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= TenEntryDaysBack && x.InstructionTime <= startDay && x.School.Contains("Elem")).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
+            var adminView = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= tenEntryDaysBack && x.InstructionTime <= startDay && x.School.Contains("Elem")).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
             var avm = new AdministrationViewModel();
             var numberTeachers = _ren.PEMinutesTeacherCounts.Where(x => x.Organization_Name.Contains("Elem")).ToList();
 
@@ -55,7 +53,7 @@ namespace PEMinutes.Controllers
                 avm.TeachCount.Add(tc);
             }
             avm.Date = startDay.ToShortDateString();
-            avm.DateStart = TenEntryDaysBack.ToShortDateString();
+            avm.DateStart = tenEntryDaysBack.ToShortDateString();
             avm.DateEnd = startDay.ToShortDateString();
             avm.TeachCount = avm.TeachCount.ToList();
             return View(avm);
@@ -69,28 +67,32 @@ namespace PEMinutes.Controllers
             var enteredBadgeString = User.Identity.Name;
             var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
-            var SumReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= selectedTimeFrame.Date && x.InstructionTime < now.Date).OrderBy(x => x.School).DistinctBy(x => x.TeacherName).ToList(); // select all minutes from the school the principal belongs to
-            var AllReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= selectedTimeFrame.Date && x.InstructionTime < now.Date).OrderBy(x => x.School).ToList();
+            var sumReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= selectedTimeFrame.Date && x.InstructionTime < now.Date).OrderBy(x => x.School).DistinctBy(x => x.TeacherName).ToList(); // select all minutes from the school the principal belongs to
+            var allReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= selectedTimeFrame.Date && x.InstructionTime < now.Date).OrderBy(x => x.School).ToList();
 
-            foreach (var item in SumReports)
+            foreach (var item in sumReports)
             {
-                ReportView rv = new ReportView();
+                ReportView rv = new ReportView
+                {
+                    TeacherName = item.TeacherName,
+                    SchoolName = item.School.Substring(0, item.School.Length - 18),
+                    Minutes = allReports.Where(x => x.TeacherName == item.TeacherName).Sum(x => x.Minutes)
+                };
 
-                rv.TeacherName = item.TeacherName;
-                rv.SchoolName = item.School.Substring(0, item.School.Length - 18);
-                rv.Minutes = AllReports.Where(x => x.TeacherName == item.TeacherName).Sum(x => x.Minutes);
                 rv.Percentage = ((float)rv.Minutes / 2) + "%";
 
                 avm.Reports.Add(rv);
             }
 
-            foreach (var item in AllReports)
+            foreach (var item in allReports)
             {
-                ReportList rl = new ReportList();
+                ReportList rl = new ReportList
+                {
+                    TeacherName = item.TeacherName,
+                    SchoolName = item.School.Substring(0, item.School.Length - 18),
+                    Minutes = item.Minutes
+                };
 
-                rl.TeacherName = item.TeacherName;
-                rl.SchoolName = item.School.Substring(0, item.School.Length - 18);
-                rl.Minutes = item.Minutes;
                 var time = Convert.ToDateTime(item.InstructionTime);
                 rl.InstructionTime = time.ToShortDateString();
 
