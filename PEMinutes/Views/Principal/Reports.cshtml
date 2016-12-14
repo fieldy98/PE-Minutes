@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PEMinutes.EF.EnteredPeMinute>
+﻿@model PEMinutes.ViewModels.PrincipalIndexViewModel
 @{
     ViewBag.Title = "Reports";
 }
@@ -15,7 +15,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                @if (Model.Count() > 0)
+                @if (Model.ListReports.Count() > 0)
                 {
                     <div class="card">
                         <div class="content">
@@ -42,7 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model)
+                                    @foreach (var item in Model.ListReports)
                                     {
                                         <tr>
                                             <td>
@@ -52,7 +52,7 @@
                                                 @Html.DisplayFor(modelItem => item.Minutes)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Timestamp)
+                                                @Html.DisplayFor(modelItem => item.InstructionTime)
                                             </td>
                                         </tr>
                                     }
@@ -108,7 +108,7 @@
             ['Show all']
                 ],
                 buttons: [
-                    
+
                         'excel', 'pdf'
                 ]
             });
