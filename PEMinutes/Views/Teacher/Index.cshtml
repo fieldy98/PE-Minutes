@@ -123,8 +123,10 @@
                             },
                             series: [{
                                 showInLegend: false,
-                                data: @Html.Raw(Json.Encode(Model.MinCount.Select(x=>x.Minutes)))
-
+                                data: @Html.Raw(Json.Encode(Model.MinCount.Select(x=>x.Minutes))),
+                                zones: [{
+                                    color: '#7CE4FE'
+                                }],
                             }]
                         });
                     });
