@@ -1,6 +1,6 @@
 ﻿<div class="sidebar" data-background-color="black" data-active-color="danger">
     <div class="sidebar-wrapper">
-        <div class="col-sm-12">
+        <div class="col-sm-offset-1 col-sm-10">
             <div class="logo">
                 <a class="simple-text">
 
@@ -20,7 +20,87 @@
                     <i class="ti-time"></i>
                     @Html.ActionLink("Reports", "Reports", "Administration")
                 </li>
+                <li>
+                    <i class="ti-home"></i>
+                    <a href="#schools" class="collapse" data-toggle="collapse" role="button" aria-haspopup="true" aria-expanded="false">Schools <span class="caret"></span></a>
+                    <div class="collapse" id="schools" aria-expanded="false" style="height:0px;">
+                        <ul class="nav">
+                            <li id="Berkshire">
+                                @Html.ActionLink("Berkshire", "SchoolView", new { schoolName = "Berkshire Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Buena Vista", "SchoolView", new { schoolName = "Buena Vista Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Castle", "SchoolView", new { schoolName = "Castle Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Hart", "SchoolView", new { schoolName = "Hart Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Laurelglen", "SchoolView", new { schoolName = "Laurelglen Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Loudon", "SchoolView", new { schoolName = "Loudon Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Lum", "SchoolView", new { schoolName = "Lum Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("McAuliffe", "SchoolView", new { schoolName = "McAuliffe Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Miller", "SchoolView", new { schoolName = "Miller Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Old River", "SchoolView", new { schoolName = "Old River Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Panama", "SchoolView", new { schoolName = "Panama Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Reagan", "SchoolView", new { schoolName = "Reagan Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Sandrini", "SchoolView", new { schoolName = "Sandrini Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Seibert", "SchoolView", new { schoolName = "Seibert Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Stine", "SchoolView", new { schoolName = "Stine Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Stockdale", "SchoolView", new { schoolName = "Stockdale Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Van Horn", "SchoolView", new { schoolName = "Van Horn Elementary School" })
+                            </li>
+                            <li id="Berkshire">
+                                @Html.ActionLink("Williams", "SchoolView", new { schoolName = "Williams Elementary School" })
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
-        </div>
+</div>
     </div>
 </div>
+
+<script>
+
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
+</script>
+<script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        $('.dropdown-toggle').dropdown()
+</script>

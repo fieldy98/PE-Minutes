@@ -667,6 +667,7 @@
     <Content Include="Views\Administration\Index.cshtml" />
     <Content Include="Views\Administration\Reports.cshtml" />
     <Content Include="Views\Substitute\partials\_create.cshtml" />
+    <Content Include="Views\Administration\SchoolView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

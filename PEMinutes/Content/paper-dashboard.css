@@ -283,7 +283,7 @@ hr {
 }
 .sidebar .logo,
 .off-canvas-sidebar .logo {
-  padding: 18px 0px;
+  padding: 1px 0px;
   margin: 0 20px;
 }
 .sidebar .logo p,
@@ -305,11 +305,11 @@ hr {
 }
 .sidebar .nav,
 .off-canvas-sidebar .nav {
-  margin-top: 20px;
+  margin-top: 0px;
 }
 .sidebar .nav li > a,
 .off-canvas-sidebar .nav li > a {
-  margin: 10px 0px;
+  margin: 0px 0px;
   padding-left: 25px;
   padding-right: 25px;
   opacity: .7;
@@ -2815,7 +2815,7 @@ textarea.form-control {
     font-weight: 600;
     font-size: 12px;
     line-height: 1.4em;
-    padding: 10px 0;
+    padding: 5px 0;
   }
   .off-canvas-sidebar .nav > li > a:hover, .off-canvas-sidebar .nav > li > a.active {
     color: #403D39;
@@ -2831,7 +2831,7 @@ textarea.form-control {
     top: 12px;
   }
   .off-canvas-sidebar .nav > li > a i {
-    font-size: 18px;
+    font-size: 12px;
     margin-right: 10px;
     line-height: 26px;
   }

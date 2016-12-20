@@ -1,0 +1,232 @@
+﻿@model PEMinutes.ViewModels.PrincipalIndexViewModel
+
+@{
+    ViewBag.Title = "School View";
+}
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("~/Views/Shared/_AdministrationSidebar.cshtml")
+
+}
+<div class="main-panel">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_AdministrationTopNav.cshtml")
+    }
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding-top: 20px; padding-bottom: 85px;">
+                        <div class="header">
+                            <div class="col-sm-4">
+                                <h4 class="title">Overview</h4>
+                                <p class="category">Minutes for each teacher from @Model.DateStart through @Model.DateEnd</p>
+                            </div>
+                            <form class="form-inline pull-right">
+                                @using (Html.BeginForm())
+                                {
+                                    <div class="form-group">
+                                        @Html.TextBox("SelectedDate", Model.Date, new { id = "administrationsearch", @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Search" class="btn btn-info" style="margin-left: 20px;" />
+                                    </div>
+
+                                }
+                            </form>
+                        </div>
+                        <div class="content">
+                            <div id="TeacherGraph" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="header">
+                            <div class="content">
+                                <h4 class="title">Teachers Meeting Requirements</h4>
+                                <p class="category">Teachers that are meeting the requirements over the last two weeks</p>
+                            </div>
+                            <table class="table" id="MeetReq">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Teacher
+                                        </th>
+                                        <th>
+                                            Minutes
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.MeetReq)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TeacherName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Minutes)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="header">
+                            <div class="content">
+                                <h4 class="title">Teachers Falling Behind</h4>
+                                <p class="category">Teachers who did not meet requirements over the last ten school days</p>
+                            </div>
+                            <table class="table" id="NotReq">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Teacher
+                                        </th>
+                                        <th>
+                                            Minutes
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.NotReq)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TeacherName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Minutes)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @*
+        Call DataTables Dependencies
+    *@
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/DataTables/buttons.bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="http://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    @* Chart *@
+    <script src="~/Scripts/highcharts/4.2.0/highcharts.js"></script>
+    <script>
+                    $(function () {
+                        Highcharts.chart('TeacherGraph', {
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: null
+                            },
+                            xAxis: {
+                                categories: @Html.Raw(Json.Encode(Model.Graph.Select(x=>x.TeacherName))),
+                                crosshair: true
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: '# of Minutes'
+                                },
+                                    plotBands: [{ // visualize the weekend
+                                        from: 200,
+                                        to:300,
+                                        color: 'rgba(142,243,197,0.2)'
+                                    }]
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr>' +
+                                    '<td style="padding:0"><b>{point.y} Minutes</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            series: [{
+                                showInLegend: false,
+                                data: @Html.Raw(Json.Encode(Model.Graph.Select(x => x.Minutes))),
+                                zones: [{
+                                    value: 199,
+                                    color: '#ff8f5e'
+                                },  {
+                                    color: '#8ef3c5'
+                                }],
+
+                            }]
+
+                        });
+                    });
+    </script>
+
+
+    <script>
+                    $(document).ready(function () {
+                        jQuery('#Dashboard').addClass('active');
+                        $('#MeetReq').DataTable({
+                            dom: 'Bfrtip',
+                            lengthMenu: [
+                        [20],
+                        ['Show all']
+                            ],
+                            buttons: [
+                               'excel', 'pdf'
+                            ],
+                            "bPaginate": false
+                        });
+                        $("#MeetReq_filter").addClass("pull-right");
+                        $('#NotReq').DataTable({
+                            dom: 'Bfrtip',
+                            lengthMenu: [
+                        [20],
+                        ['Show all']
+                            ],
+                            buttons: [
+                               'excel', 'pdf'
+                            ],
+                            "bPaginate": false
+                        });
+                        $("#NotReq_filter").addClass("pull-right");
+                    });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#administrationsearch').datetimepicker({
+                useCurrent: false,
+                daysOfWeekDisabled: [0, 6],
+                format:'MM/DD/YYYY'
+
+            });
+        });
+    </script>
+}
