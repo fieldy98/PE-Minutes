@@ -12,66 +12,110 @@
     {
         @Html.Partial("~/Views/Shared/_PrincipalTopNav.cshtml")
     }
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                @if (Model.ListReports.Count() > 0)
-                {
-                    <div class="card">
-                        <div class="content">
+    <div class="container-fluid" style="margin-top:20px">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#Percent" aria-controls="Percent Complete" role="tab" data-toggle="tab">Percent Complete</a></li>
+            <li role="presentation"><a href="#Activity" aria-controls="Activity" role="tab" data-toggle="tab">Activity</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="Percent">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
                             <div class="header">
-                                <h4 class="title">Minutes</h4>
-                                <p class="category">
-                                    Total Number
-                                </p>
-                            </div>
-                            <hr />
-                            <table class="table" id="ReportTable">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Teacher
-                                        </th>
-                                        <th>
-                                            <div class="hidden-xs">Minutes</div>
-                                            <div class="visible-xs">#</div>
-                                        </th>
-                                        <th>
-                                            Time
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.ListReports)
-                                    {
+                                <div class="content">
+                                    <h4 class="title">Percentage Report</h4>
+                                    <p class="category">Total Percentage for teacher</p>
+                                </div>
+                                <table class="table" id="PercentageReport">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.TeacherName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Minutes)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.InstructionTime)
-                                            </td>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                <div class="hidden-xs">Total Minutes</div>
+                                                <div class="visible-xs">#</div>
+                                            </th>
+                                            <th>
+                                                <div class="hidden-xs">Percentage</div>
+                                                <div class="visible-xs">%</div>
+                                            </th>
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Reports)
+                                        {
+
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.TeacherName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Minutes)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Percentage)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                }
-                else
-                {
-                    <p class="text-center">There are currently no minutes to generate the report. Please try again later</p>
-                }
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="Activity">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="header">
+                                <div class="content">
+                                    <h4 class="title">Activities Report</h4>
+                                    <p class="category">Total Activities List</p>
+                                </div>
+                                <table class="table" id="Activities">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                <div class="hidden-xs">Date of Instruction</div>
+                                                <div class="visible-xs">Date</div>
+                                            </th>
+                                            <th>
+                                                <div class="hidden-xs">Minutes</div>
+                                                <div class="visible-xs">#</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ListReports)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.TeacherName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.InstructionTime)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Minutes)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
 
 @section Scripts{
     @*
@@ -86,38 +130,38 @@
     <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
     <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
     <script src="http://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
-
-
-
     <script>
-        $(document).ready(function () {
-            //Setup Timestamp
-            var currentdate = new Date();
-            var timestamp =
-                +(currentdate.getMonth() + 1) + "-"
-                + currentdate.getDate() + "-"
-                + currentdate.getFullYear() + "_"
-                + currentdate.getHours() + "-"
-                + currentdate.getMinutes() + "-"
-                + currentdate.getSeconds();
-            // Setup DataTable
-            $('#ReportTable').DataTable({
-                dom: 'Bfrtip',
-                lengthMenu: [
-            [20],
-            ['Show all']
-                ],
-                buttons: [
-
-                        'excel', 'pdf'
-                ]
+            $('#myTabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
             });
-            // Pull Search Field to the right
-            $("#ReportTable_filter").addClass("pull-right");
 
-
-            jQuery('#Reports').addClass('active');
-        });
+            $(document).ready(function () {
+                $('#PercentageReport').DataTable({
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                [20],
+                ['Show all']
+                    ],
+                    buttons: [
+                       'excel', 'pdf'
+                    ]
+                });
+            });
+            $(document).ready(function () {
+                $('#Activities').DataTable({
+                    dom: 'Bfrtip',
+                    lengthMenu: [
+                [20],
+                ['Show all']
+                    ],
+                    buttons: [
+                       'excel', 'pdf'
+                    ]
+                });
+                $("#PercentageReport_filter").addClass("pull-right");
+                $("#Activities_filter").addClass("pull-right");
+            });
 
     </script>
 }

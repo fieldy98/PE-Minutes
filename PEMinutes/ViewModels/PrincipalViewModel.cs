@@ -8,17 +8,20 @@ namespace PEMinutes.ViewModels
         public int? Minutes { get; set; }
         public string DateStart { get; set; }
         public string DateEnd { get; set; }
+        public string School { get; set; }
         public List<MeetingReq> MeetReq { get; set; }
         public List<NotMeetingReq> NotReq { get; set; }
         public string Date { get; set; }
         public List<Graphing> Graph { get; set; }
         public List<PrinicipalReports> ListReports { get; set; }
+        public List<PrincipalSum> Reports { get; set; }
         public PrincipalIndexViewModel()
         {
             MeetReq = new List<MeetingReq>();
             NotReq = new List<NotMeetingReq>();
             Graph = new List<Graphing>();
             ListReports = new List<PrinicipalReports>();
+            Reports = new List<PrincipalSum>();
         }
     }
 
@@ -43,6 +46,14 @@ namespace PEMinutes.ViewModels
     {
         public string TeacherName { get; set; }
         public string InstructionTime { get; set; }
+        public int? Minutes { get; set; }
+
+    }
+
+    public class PrincipalSum
+    {
+        public string TeacherName { get; set; }
+        public string Percentage { get; set; }
         public int? Minutes { get; set; }
 
     }

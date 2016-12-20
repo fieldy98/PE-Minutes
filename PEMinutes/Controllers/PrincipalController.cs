@@ -27,15 +27,16 @@ namespace PEMinutes.Controllers
                 startDay = date.Date;
             }
             var tenEntryDaysBack = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
-            var principalView = _db.EnteredPeMinutes.Where(x => x.InstructionTime > tenEntryDaysBack && x.InstructionTime <= startDay && x.School == selectedSchool).Select(x => x.TeacherName).Distinct(); // select all minutes from the school the principal belongs to
+            var principalView = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();  // select all minutes from the school the principal belongs to
             var pivm = new PrincipalIndexViewModel();
 
             foreach (var item in principalView)
             {
                 var mr = new MeetingReq();
-                var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > tenEntryDaysBack && x.InstructionTime <= startDay && x.TeacherName == item).Sum(x => x.Minutes);
+                var name = item.TeacherFirstName + " " + item.TeacherLastName;
+                var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > tenEntryDaysBack && x.InstructionTime <= startDay && x.TeacherName == name).Sum(x => x.Minutes);
                 if (!(sumMinutes >= 200)) continue;
-                mr.TeacherName = item;
+                mr.TeacherName = name;
                 mr.Minutes = sumMinutes;
                 pivm.MeetReq.Add(mr);
             }
@@ -43,19 +44,23 @@ namespace PEMinutes.Controllers
             foreach (var item in principalView)
             {
                 var nmr = new NotMeetingReq();
-
-                var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > tenEntryDaysBack && x.InstructionTime <= startDay && x.TeacherName == item).Sum(x => x.Minutes);
-                if (!(sumMinutes < 200)) continue;
-                nmr.TeacherName = item;
+                var name = item.TeacherFirstName + " " + item.TeacherLastName;
+                var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > tenEntryDaysBack && x.InstructionTime <= startDay && x.TeacherName == name).Sum(x => x.Minutes);
+                if (!(sumMinutes < 200 || sumMinutes == null)) continue;
+                nmr.TeacherName = name;
                 nmr.Minutes = sumMinutes;
+                if (sumMinutes == null)
+                { nmr.Minutes = 0; }
                 pivm.NotReq.Add(nmr);
             }
+
 
             foreach (var item in principalView)
             {
                 var g = new Graphing();
-                var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > tenEntryDaysBack && x.InstructionTime <= startDay && x.TeacherName == item).Sum(x => x.Minutes);
-                g.TeacherName = item;
+                var name = item.TeacherFirstName + " " + item.TeacherLastName;
+                var sumMinutes = _db.EnteredPeMinutes.Where(x => x.InstructionTime > tenEntryDaysBack && x.InstructionTime <= startDay && x.TeacherName == name).Sum(x => x.Minutes);
+                g.TeacherName = name;
                 g.Minutes = sumMinutes;
                 pivm.Graph.Add(g);
             }
@@ -79,6 +84,7 @@ namespace PEMinutes.Controllers
             var selectedSchool = selectedPrincipal.ORGANIZATION_NAME;
             ViewBag.Name = selectedPrincipal.Principal;
             var startDay = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+            var teacherlist = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();
             var pastTenDays = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
             var schoolReport = _db.EnteredPeMinutes.Where(x => x.School == selectedSchool && x.InstructionTime > pastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
 
@@ -96,6 +102,23 @@ namespace PEMinutes.Controllers
                 pivm.ListReports.Add(pr);
             }
 
+            foreach (var item in teacherlist)
+            {
+                var name = item.TeacherFirstName + " " + item.TeacherLastName;
+                PrincipalSum rv = new PrincipalSum
+                {
+                    TeacherName = name,
+                    Minutes = schoolReport.Where(x => x.TeacherName == name).Sum(x => x.Minutes)
+                };
+                if (rv.Minutes == null)
+                { rv.Minutes = 0; }
+
+                rv.Percentage = ((float)rv.Minutes / 2) + "%";
+
+                pivm.Reports.Add(rv);
+            }
+
+            pivm.Reports = pivm.Reports.ToList();
             pivm.ListReports = pivm.ListReports.ToList();
 
             return View(pivm);

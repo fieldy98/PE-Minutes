@@ -28,6 +28,7 @@
                                 {
                                     <div class="form-group">
                                         @Html.TextBox("SelectedDate", Model.Date, new { id = "administrationsearch", @class = "form-control" })
+                                        @Html.HiddenFor(model => model.School)
                                     </div>
                                     <div class="form-group">
                                         <input type="submit" value="Search" class="btn btn-info" style="margin-left: 20px;" />
