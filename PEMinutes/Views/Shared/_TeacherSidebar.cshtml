@@ -13,20 +13,19 @@
         <div class="col-xs-12">
             <ul class="nav">
                 <li id="Dashboard">
-                    <i class="ti-stats-up"></i>
                     @Html.ActionLink("Dashboard", "Index", "Teacher")
                 </li>
                 <li id="CreateMinutes">
-                    <i class="ti-plus"></i>
                     @Html.ActionLink("New Minute", "Create", "Teacher")
                 </li>
                 <li id="Reports">
-                    <i class="ti-time"></i>
-                    @Html.ActionLink("Last 30 Days", "Manage", "Teacher")
+                    @Html.ActionLink("Last 60 Days", "Manage", "Teacher")
                 </li>
                 <li id="Approvals">
-                    <i class="ti-clipboard"></i>
                     @Html.ActionLink("Approvals", "Approve", "Teacher")
+                </li>
+                <li>
+                    @Html.ActionLink("Log Out", "Logout", new { Controller = "Authentication", action = "Logout" }, new { @class = "visible-sm visible-xs" })
                 </li>
             </ul>
         </div>

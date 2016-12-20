@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Mvc;
 using PEMinutes.EF;
 using PEMinutes.ViewModels;
+using Microsoft.Ajax.Utilities;
 
 //
 // OVERVIEW:
@@ -41,8 +42,8 @@ namespace PEMinutes.Controllers
             var badgeNumber = int.Parse(enteredBadgeString);  // convert string to int
             ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             ViewBag.NeedsApproval = _db.SubMinutes.Count(i => i.BadgeNumber == badgeNumber && i.IsApproved == null);  // tells teacher how many entries need approval
-            var now = DateTime.Now.AddDays(1);
-            var end = DateTime.Now.AddDays(-13);
+            var now = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+            var end = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= now).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
             var tivm = new TeacherIndexViewModel();
             var teachersPeMinutes = _db.EnteredPeMinutes.Where(i => i.BadgeNumber == badgeNumber && i.InstructionTime >= end.Date && i.InstructionTime < now.Date).OrderBy(x=>x.InstructionTime).ToList(); // Finds all of the teachers minutes for the last 2 weeks
 
@@ -69,13 +70,15 @@ namespace PEMinutes.Controllers
         {
             var thirtyDaysAgo = DateTime.Now.AddDays(-30);
             var thisMonth = DateTime.Today.ToString("MMMM");
+            var now = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+            var end = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= now).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(60).LastOrDefault().Value.Date;
             ViewBag.ThisMonth = thisMonth;
             var enteredBadgeString = User.Identity.Name;
             var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var enteredBadgeNumber = int.Parse(enteredBadgeString);  // convert string to int
             ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
 
-            var teachersPeMinutes = _db.EnteredPeMinutes.Where(i => i.BadgeNumber == enteredBadgeNumber && i.InstructionTime > thirtyDaysAgo).OrderByDescending(i => i.InstructionTime).ToList(); // Finds the minutes for the signed in teacher for the current month
+            var teachersPeMinutes = _db.EnteredPeMinutes.Where(i => i.BadgeNumber == enteredBadgeNumber && i.InstructionTime > end).OrderByDescending(i => i.InstructionTime).OrderBy(x=>x.InstructionTime).ToList(); // Finds the minutes for the signed in teacher for the current month
             ViewBag.CurrentMonthMinuteCount = teachersPeMinutes.Count();
             ViewBag.TotalMonthMins = teachersPeMinutes.Sum(x => x.Minutes);
             return View(teachersPeMinutes);
