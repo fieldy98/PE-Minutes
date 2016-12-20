@@ -18,74 +18,59 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-2 col-sm-12">
-                    
+                <div class="col-lg-3 col-md-4 col-sm-12">
+
                     <div class="card">
                         <div class="content">
                             <div class="row">
-                                <div class="col-xs-4">
-                                    <div class="icon-big icon-warning text-center">
-                                        <i class="ti-clipboard"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-7">
-                                    <div class="numbers">
-                                        <p>Ten Day Minutes Total</p>
-                                        @Model.Minutes  @*This will display the current weeks minutes for the logged in user*@
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="footer">
-                                    <hr />
-                                    <div class="stats">
-                                        <i class="ti-calendar"></i> @Html.ActionLink("View All Minutes", "Manage", "Teacher")
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="content">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <div class="icon-big icon-success text-center">
-                                        <i class="ti-pencil-alt2"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-7">
-                                    <div class="numbers">
-                                        <p>Sub Approvals</p>
-                                        @ViewBag.NeedsApproval @*This will display the minutes needing approvals*@
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="footer">
-                                <hr />
-                                <div class="stats">
-                                    <i class="ti-calendar"></i> @Html.ActionLink("View All Sub Approvals", "Approve", "Teacher")
-                                </div>
+                                <div id="MyMinutes" style="max-width: 75%; height:350px; margin: 0 auto"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-12 col-lg-10">
+                <div class="col-sm-12 col-md-8 col-lg-8">
                     <div class="card">
                         <div class="header">
                             <h4 class="title">Overview</h4>
                             <p class="category">Minutes over the last two weeks</p>
                         </div>
                         <div class="content">
-                            <div id="MyMinutes" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th class="col-sm-3">Date</th>
+                                        <th class="col-sm-3">Minutes</th>
+                                        <th class="col-sm-5 hidden-xs">Activity</th>
+                                        <th class="col-sm-1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(var item in Model.MinCount)
+                                    {
+                                        <tr>
+                                            <td class="col-sm-3">@item.Date</td>
+                                            <td class="col-sm-3">@item.Minutes</td>
+                                            <td class="col-sm-5 hidden-xs">@item.Activity</td>
+                                            <td class="col-sm-1">
+                                                @Html.ActionLink("View", "Details", new { id = item.ID }, new { @class = "btn btn-info btn-fill" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
+
         </div>
     </div>
 </div>
 @section Scripts{
 
-<script src="~/Scripts/highcharts/4.2.0/highcharts.js"></script>
-<script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+@*<script>
                     $(function () {
                         Highcharts.chart('MyMinutes', {
                             chart: {
@@ -130,7 +115,96 @@
                             }]
                         });
                     });
-</script>
+</script>*@
+
+    <script>
+        $(function () {
+
+            Highcharts.chart('MyMinutes', {
+
+                chart: {
+                    type: 'solidgauge',
+                    marginTop: 20
+                },
+                colors: ['#ff8f5e', '#ffe28c', '#8ef3c5'],
+
+                title: {
+                    align: 'center',
+                    verticalAlign: 'middle',
+                    y: 2,
+                    text: '<a href="@Url.Action("Manage", "Teacher")">@Model.Minutes<br>Minutes</a>',
+                    style: {
+                        fontSize: '24px'
+                    }
+                },
+
+
+                pane: {
+                    startAngle: 0,
+                    endAngle: 360,
+                    background: [{ // Track for Move
+                        outerRadius: '112%',
+                        innerRadius: '88%',
+                        backgroundColor: Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.3).get(),
+                        borderWidth: 0
+                    }]
+                },
+
+                yAxis: {
+                    min: 0,
+                    max: 100,
+                    lineWidth: 0,
+                    tickPositions: []
+                    
+                },
+
+                plotOptions: {
+                    solidgauge: {
+                        borderWidth: '34px',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        linecap: 'round',
+                        stickyTracking: false
+                    }
+                },
+                credits: false,
+                series: [{
+                    name: 'Percentage of Goal',
+                    borderColor: Highcharts.getOptions().colors[0],
+                    data: [{
+                        color: Highcharts.getOptions().colors[0],
+                        radius: '100%',
+                        innerRadius: '100%',
+                        y: @Model.Percentage,
+                    }]
+
+                }]
+            },
+
+            /**
+             * In the chart load callback, add icons on top of the circular shapes
+             */
+            function callback() {
+
+                // Move icon
+                this.renderer.path(['M', -8, 0, 'L', 8, 0, 'M', 0, -8, 'L', 8, 0, 0, 8])
+                    .attr({
+                        'stroke': '#303030',
+                        'stroke-linecap': 'round',
+                        'stroke-linejoin': 'round',
+                        'stroke-width': 2,
+                        'zIndex': 10
+                    })
+                    .translate(190, 26)
+                    .add(this.series[2].group);
+
+            });
+
+
+        });
+
+    </script>
 
 
 

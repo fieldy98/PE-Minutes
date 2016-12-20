@@ -44,20 +44,21 @@ namespace PEMinutes.Controllers
             var now = DateTime.Now.AddDays(1);
             var end = DateTime.Now.AddDays(-13);
             var tivm = new TeacherIndexViewModel();
-            var teachersPeMinutes = _db.EnteredPeMinutes.Where(i => i.BadgeNumber == badgeNumber && i.InstructionTime >= end.Date && i.InstructionTime < now.Date).ToList(); // Finds all of the teachers minutes for the last 2 weeks
+            var teachersPeMinutes = _db.EnteredPeMinutes.Where(i => i.BadgeNumber == badgeNumber && i.InstructionTime >= end.Date && i.InstructionTime < now.Date).OrderBy(x=>x.InstructionTime).ToList(); // Finds all of the teachers minutes for the last 2 weeks
 
-            for (var i = -13; i < 1; i++)  // for loop to create the MinCount list that tells us how many minutes per day and the date
+            foreach(var item in teachersPeMinutes)
             {
-                var mc = new MinuteCount();
-                var startday = DateTime.Today.AddDays(i);
-                var nextday = DateTime.Today.AddDays(i + 1);
-                mc.Date = startday.ToShortDateString();
-                foreach(var item in _db.EnteredPeMinutes.Where(x => x.BadgeNumber == badgeNumber && x.InstructionTime >= startday && x.InstructionTime < nextday)) // finding the entry in enteredpeminutes for the given day
-                {
-                    mc.Minutes = item.Minutes;
-                }
+                MinuteCount mc = new MinuteCount();
+
+                mc.Minutes = item.Minutes;
+                mc.Date = item.InstructionTime.Value.ToShortDateString();
+                mc.ID = item.ID;
+                mc.Activity = item.Activity;
                 tivm.MinCount.Add(mc);
             }
+
+            tivm.Percentage = (float)(teachersPeMinutes.Sum(x => x.Minutes) / 2);
+
             tivm.Minutes = teachersPeMinutes.Sum(x=>x.Minutes);
             tivm.MinCount = tivm.MinCount.ToList();
             return View(tivm);

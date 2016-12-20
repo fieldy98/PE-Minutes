@@ -11,6 +11,7 @@ namespace PEMinutes.ViewModels
         public string TeacherName { get; set; }
         public int? Minutes { get; set; }
         public string Date { get; set; }
+        public double Percentage { get; set; }
         public List<MinuteCount> MinCount { get; set; }
         public TeacherIndexViewModel()
         {
@@ -22,6 +23,8 @@ namespace PEMinutes.ViewModels
     {
         public string Date { get; set; }
         public int? Minutes { get; set; }
+        public int? ID { get; set; }
+        public string Activity { get; set; }
 
     }
 
