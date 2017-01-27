@@ -17,15 +17,13 @@ namespace PEMinutes.Controllers
         public ActionResult Index(string selectedDate)
         {
             var tday = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).Take(10);
-
-
             var startDay = tday.First().TeachableDays;
             if (!string.IsNullOrEmpty(selectedDate))
             {
                 var date = Convert.ToDateTime(selectedDate);
-                startDay = date.Date;
+                startDay = tday.FirstOrDefault(x => x.TeachableDays == date).TeachableDays;
             }
-            var tenEntryDaysBack = tday.ToList().Last().TeachableDays;
+            var tenEntryDaysBack = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
             var enteredBadgeString = User.Identity.Name;
             var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
@@ -66,13 +64,14 @@ namespace PEMinutes.Controllers
         public ActionResult SchoolView(string selectedDate, string schoolName)
         {
 
-            var startDay = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+            var tday = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).Take(10);
+            var startDay = tday.First().TeachableDays;
             if (!string.IsNullOrEmpty(selectedDate))
             {
                 var date = Convert.ToDateTime(selectedDate);
-                startDay = date.Date;
+                startDay = tday.FirstOrDefault(x => x.TeachableDays == date).TeachableDays;
             }
-            var tenEntryDaysBack = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
+            var tenEntryDaysBack = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
             var principalView = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == schoolName && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList(); // select all minutes from the school the principal belongs to
             var pivm = new PrincipalIndexViewModel();
 
@@ -122,14 +121,19 @@ namespace PEMinutes.Controllers
 
         public ActionResult Reports()
         {
+
+            var tday = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).Take(10);
+            var startDay = tday.First().TeachableDays;
+            var tenEntryDaysBack = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
+
+
+
             AdministrationViewModel avm = new AdministrationViewModel();
-            var now = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
-            var selectedTimeFrame = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= now).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
             var enteredBadgeString = User.Identity.Name;
             var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
-            var sumReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= selectedTimeFrame.Date && x.InstructionTime < now.Date).OrderBy(x => x.School).DistinctBy(x => x.TeacherName).ToList(); // select all minutes from the school the principal belongs to
-            var allReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= selectedTimeFrame.Date && x.InstructionTime < now.Date).OrderBy(x => x.School).ToList();
+            var sumReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= tenEntryDaysBack && x.InstructionTime < startDay).OrderBy(x => x.School).DistinctBy(x => x.TeacherName).ToList(); // select all minutes from the school the principal belongs to
+            var allReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= tenEntryDaysBack && x.InstructionTime < startDay).OrderBy(x => x.School).ToList();
 
             foreach (var item in sumReports)
             {

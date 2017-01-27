@@ -28,7 +28,7 @@ namespace PEMinutes.Controllers
                 var date = Convert.ToDateTime(selectedDate);
                 startDay = date.Date;
             }
-            var tenEntryDaysBack = tday.ToList().Last().TeachableDays;
+            var tenEntryDaysBack = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
             var principalView = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();  // select all minutes from the school the principal belongs to
             var pivm = new PrincipalIndexViewModel();
 
@@ -85,9 +85,11 @@ namespace PEMinutes.Controllers
             var selectedPrincipal = _ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var selectedSchool = selectedPrincipal.ORGANIZATION_NAME;
             ViewBag.Name = selectedPrincipal.Principal;
-            var startDay = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+
+            var tday = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).Take(10);
+            var startDay = tday.First().TeachableDays;
             var teacherlist = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();
-            var pastTenDays = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
+            var pastTenDays = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
             var schoolReport = _db.EnteredPeMinutes.Where(x => x.School == selectedSchool && x.InstructionTime > pastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
 
             foreach (var item in schoolReport)
