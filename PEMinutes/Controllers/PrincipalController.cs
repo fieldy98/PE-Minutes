@@ -20,13 +20,15 @@ namespace PEMinutes.Controllers
             var selectedPrincipal = _ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var selectedSchool = selectedPrincipal.ORGANIZATION_NAME;
             ViewBag.Name = selectedPrincipal.Principal;
-            var startDay = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+
+            var tday = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).Take(10);
+            var startDay = tday.First().TeachableDays; ;
             if (!string.IsNullOrEmpty(selectedDate))
             {
                 var date = Convert.ToDateTime(selectedDate);
                 startDay = date.Date;
             }
-            var tenEntryDaysBack = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
+            var tenEntryDaysBack = tday.ToList().Last().TeachableDays;
             var principalView = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();  // select all minutes from the school the principal belongs to
             var pivm = new PrincipalIndexViewModel();
 

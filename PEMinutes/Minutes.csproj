@@ -212,6 +212,9 @@
     <Compile Include="EF\SubMinute.cs">
       <DependentUpon>PEMinutes.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\TeachableDay.cs">
+      <DependentUpon>RenExtract.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -452,13 +455,6 @@
     <Content Include="EF\PEMinutes.edmx.diagram">
       <DependentUpon>PEMinutes.edmx</DependentUpon>
     </Content>
-    <EntityDeploy Include="EF\RenExtract.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RenExtract.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="EF\RenExtract.edmx.diagram">
-      <DependentUpon>RenExtract.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\fonts\themify.eot" />
     <Content Include="Content\fonts\themify.svg" />
     <Content Include="Content\fonts\themify.ttf" />
@@ -488,6 +484,13 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <EntityDeploy Include="EF\RenExtract.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>RenExtract.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="EF\RenExtract.edmx.diagram">
+      <DependentUpon>RenExtract.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\51-DBA.pubxml" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />

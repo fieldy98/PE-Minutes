@@ -65,6 +65,14 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     <Property Name="adLoginName" Type="varchar" MaxLength="100" />
     <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'RenExtract.dbo.TeachableDays' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TeachableDays">
+    <Key>
+      <PropertyRef Name="TeachableDays" />
+    </Key>
+    <Property Name="TeachableDays" Type="smalldatetime" Nullable="false" />
+  </EntityType>
   <EntityContainer Name="RenExtractModelStoreContainer">
     <EntitySet Name="MinutesAdmins" EntityType="Self.MinutesAdmins" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
@@ -107,6 +115,11 @@ warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a 
     [SchoolToPrincipal].[adLoginName] AS [adLoginName], 
     [SchoolToPrincipal].[BADGE_NUM] AS [BADGE_NUM]
     FROM [dbo].[SchoolToPrincipal] AS [SchoolToPrincipal]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TeachableDays" EntityType="Self.TeachableDays" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TeachableDays].[TeachableDays] AS [TeachableDays]
+    FROM [dbo].[TeachableDays] AS [TeachableDays]</DefiningQuery>
     </EntitySet>
   </EntityContainer>
 </Schema>

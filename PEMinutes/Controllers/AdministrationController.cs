@@ -16,13 +16,16 @@ namespace PEMinutes.Controllers
         // GET: Administration
         public ActionResult Index(string selectedDate)
         {
-            var startDay = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
+            var tday = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).Take(10);
+
+
+            var startDay = tday.First().TeachableDays;
             if (!string.IsNullOrEmpty(selectedDate))
             {
                 var date = Convert.ToDateTime(selectedDate);
                 startDay = date.Date;
             }
-            var tenEntryDaysBack = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= startDay).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(10).LastOrDefault().Value.Date;
+            var tenEntryDaysBack = tday.ToList().Last().TeachableDays;
             var enteredBadgeString = User.Identity.Name;
             var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
@@ -62,6 +65,7 @@ namespace PEMinutes.Controllers
 
         public ActionResult SchoolView(string selectedDate, string schoolName)
         {
+
             var startDay = _db.EnteredPeMinutes.Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).FirstOrDefault().Value.Date;
             if (!string.IsNullOrEmpty(selectedDate))
             {
