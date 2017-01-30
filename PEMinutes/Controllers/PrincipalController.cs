@@ -21,12 +21,12 @@ namespace PEMinutes.Controllers
             var selectedSchool = selectedPrincipal.ORGANIZATION_NAME;
             ViewBag.Name = selectedPrincipal.Principal;
 
-            var tday = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).Take(10);
-            var startDay = tday.First().TeachableDays; ;
+            // Find the first day teachable day by default
+            var startDay = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).First().TeachableDays;
             if (!string.IsNullOrEmpty(selectedDate))
             {
-                var date = Convert.ToDateTime(selectedDate);
-                startDay = date.Date;
+                // Use the input variable if selected
+                startDay = Convert.ToDateTime(selectedDate);
             }
             var tenEntryDaysBack = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
             var principalView = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();  // select all minutes from the school the principal belongs to

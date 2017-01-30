@@ -16,13 +16,14 @@ namespace PEMinutes.Controllers
         // GET: Administration
         public ActionResult Index(string selectedDate)
         {
-            var tday = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).Take(10);
-            var startDay = tday.First().TeachableDays;
+            // Find the first day teachable day by default
+            var startDay = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).First().TeachableDays; 
             if (!string.IsNullOrEmpty(selectedDate))
             {
-                var date = Convert.ToDateTime(selectedDate);
-                startDay = tday.FirstOrDefault(x => x.TeachableDays == date).TeachableDays;
+                // Use the input variable if selected
+                startDay = Convert.ToDateTime(selectedDate);
             }
+            // Take 10 teachable days back from the startDay
             var tenEntryDaysBack = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
             var enteredBadgeString = User.Identity.Name;
             var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
