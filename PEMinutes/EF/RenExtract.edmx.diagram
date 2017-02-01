@@ -5,11 +5,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="78e5aa5709f2498daf36a572ba70917b" Name="Diagram1">
-        <EntityTypeShape EntityType="RenExtractModel.MinutesAdmin" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RenExtractModel.PEMinutesTeacherCount" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RenExtractModel.SchoolTeachersWithADLogin" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RenExtractModel.SchoolToPrincipal" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RenExtractModel.TeachableDay" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="RenExtractModel.PEMinutesTeacherCount" Width="3.375" PointX="4" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RenExtractModel.TeachableDay" Width="1.5" PointX="1.875" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

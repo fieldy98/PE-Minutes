@@ -14,21 +14,22 @@ namespace PEMinutes.EF
     
     public partial class SchoolTeachersWithADLogin
     {
+        public int ID { get; set; }
         public string JOB_TITLE { get; set; }
         public string Organization_Name { get; set; }
         public string TYPE { get; set; }
         public string ABBREV_NAME { get; set; }
-        public decimal SCHOOL_YEAR { get; set; }
+        public string SCHOOL_YEAR { get; set; }
         public string COURSE_TITLE { get; set; }
-        public decimal PERIOD_BEGIN { get; set; }
-        public Nullable<decimal> MAX_STUDENTS { get; set; }
-        public System.Guid SECTION_GU { get; set; }
+        public string PERIOD_BEGIN { get; set; }
+        public string MAX_STUDENTS { get; set; }
+        public string SECTION_GU { get; set; }
         public string TeacherLastName { get; set; }
         public string TeacherFirstName { get; set; }
         public string BADGE_NUM { get; set; }
-        public System.Guid PERSON_GU { get; set; }
-        public Nullable<long> rn { get; set; }
+        public string PERSON_GU { get; set; }
+        public string rn { get; set; }
         public string LOGIN_NAME { get; set; }
-        public long aId { get; set; }
+        public string aId { get; set; }
     }
 }

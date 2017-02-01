@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="RenExtractModelStoreContainer" CdmEntityContainer="RenExtractEntities">
-    <EntitySetMapping Name="MinutesAdmins">
-      <EntityTypeMapping TypeName="RenExtractModel.MinutesAdmin">
-        <MappingFragment StoreEntitySet="MinutesAdmins">
-          <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
-          <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
-          <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="PEMinutesTeacherCounts">
       <EntityTypeMapping TypeName="RenExtractModel.PEMinutesTeacherCount">
         <MappingFragment StoreEntitySet="PEMinutesTeacherCount">
@@ -18,42 +9,9 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="SchoolTeachersWithADLogins">
-      <EntityTypeMapping TypeName="RenExtractModel.SchoolTeachersWithADLogin">
-        <MappingFragment StoreEntitySet="SchoolTeachersWithADLogin">
-          <ScalarProperty Name="JOB_TITLE" ColumnName="JOB_TITLE" />
-          <ScalarProperty Name="Organization_Name" ColumnName="Organization_Name" />
-          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-          <ScalarProperty Name="ABBREV_NAME" ColumnName="ABBREV_NAME" />
-          <ScalarProperty Name="SCHOOL_YEAR" ColumnName="SCHOOL_YEAR" />
-          <ScalarProperty Name="COURSE_TITLE" ColumnName="COURSE_TITLE" />
-          <ScalarProperty Name="PERIOD_BEGIN" ColumnName="PERIOD_BEGIN" />
-          <ScalarProperty Name="MAX_STUDENTS" ColumnName="MAX_STUDENTS" />
-          <ScalarProperty Name="SECTION_GU" ColumnName="SECTION_GU" />
-          <ScalarProperty Name="TeacherLastName" ColumnName="TeacherLastName" />
-          <ScalarProperty Name="TeacherFirstName" ColumnName="TeacherFirstName" />
-          <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
-          <ScalarProperty Name="PERSON_GU" ColumnName="PERSON_GU" />
-          <ScalarProperty Name="rn" ColumnName="rn" />
-          <ScalarProperty Name="LOGIN_NAME" ColumnName="LOGIN_NAME" />
-          <ScalarProperty Name="aId" ColumnName="aId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="SchoolToPrincipals">
-      <EntityTypeMapping TypeName="RenExtractModel.SchoolToPrincipal">
-        <MappingFragment StoreEntitySet="SchoolToPrincipal">
-          <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
-          <ScalarProperty Name="SchoolAddress" ColumnName="SchoolAddress" />
-          <ScalarProperty Name="Principal" ColumnName="Principal" />
-          <ScalarProperty Name="adLoginName" ColumnName="adLoginName" />
-          <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="TeachableDays">
       <EntityTypeMapping TypeName="RenExtractModel.TeachableDay">
-        <MappingFragment StoreEntitySet="TeachableDays">
+        <MappingFragment StoreEntitySet="TeachableDay">
           <ScalarProperty Name="TeachableDays" ColumnName="TeachableDays" />
         </MappingFragment>
       </EntityTypeMapping>

@@ -17,7 +17,7 @@ namespace PEMinutes.Controllers
         public ActionResult Index(string selectedDate)
         {
             var enteredBadgeString = User.Identity.Name;
-            var selectedPrincipal = _ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedPrincipal = _db.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var selectedSchool = selectedPrincipal.ORGANIZATION_NAME;
             ViewBag.Name = selectedPrincipal.Principal;
 
@@ -29,7 +29,7 @@ namespace PEMinutes.Controllers
                 startDay = Convert.ToDateTime(selectedDate);
             }
             var tenEntryDaysBack = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
-            var principalView = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();  // select all minutes from the school the principal belongs to
+            var principalView = _db.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();  // select all minutes from the school the principal belongs to
             var pivm = new PrincipalIndexViewModel();
 
             foreach (var item in principalView)
@@ -82,13 +82,13 @@ namespace PEMinutes.Controllers
         {
             PrincipalIndexViewModel pivm = new PrincipalIndexViewModel();
             var enteredBadgeString = User.Identity.Name;
-            var selectedPrincipal = _ren.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedPrincipal = _db.SchoolToPrincipals.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var selectedSchool = selectedPrincipal.ORGANIZATION_NAME;
             ViewBag.Name = selectedPrincipal.Principal;
 
             var tday = _ren.TeachableDays.OrderByDescending(x => x.TeachableDays).Take(10);
             var startDay = tday.First().TeachableDays;
-            var teacherlist = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();
+            var teacherlist = _db.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == selectedSchool && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList();
             var pastTenDays = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
             var schoolReport = _db.EnteredPeMinutes.Where(x => x.School == selectedSchool && x.InstructionTime > pastTenDays).OrderBy(x => x.Minutes); // select all minutes from the school the principal belongs to
 

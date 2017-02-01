@@ -7,6 +7,9 @@
       <Diagram DiagramId="a7afb272931e487bb28dd8c9f9b993ab" Name="Diagram1">
         <EntityTypeShape EntityType="PEMinutesModel.EnteredPeMinute" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PEMinutesModel.SubMinute" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PEMinutesModel.SchoolTeachersWithADLogin" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PEMinutesModel.MinutesAdmin" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="PEMinutesModel.SchoolToPrincipal" Width="2.375" PointX="2.75" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

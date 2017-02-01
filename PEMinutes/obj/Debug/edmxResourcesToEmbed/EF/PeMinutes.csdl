@@ -40,5 +40,50 @@
   <EntityContainer Name="PEMinutesEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="EnteredPeMinutes" EntityType="Self.EnteredPeMinute" />
     <EntitySet Name="SubMinutes" EntityType="Self.SubMinute" />
+    <EntitySet Name="SchoolTeachersWithADLogins" EntityType="PEMinutesModel.SchoolTeachersWithADLogin" />
+    <EntitySet Name="MinutesAdmins" EntityType="PEMinutesModel.MinutesAdmin" />
+    <EntitySet Name="SchoolToPrincipals" EntityType="PEMinutesModel.SchoolToPrincipal" />
   </EntityContainer>
+  <EntityType Name="SchoolTeachersWithADLogin">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JOB_TITLE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Organization_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ABBREV_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SCHOOL_YEAR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="COURSE_TITLE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="PERIOD_BEGIN" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MAX_STUDENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SECTION_GU" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TeacherLastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TeacherFirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BADGE_NUM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="PERSON_GU" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="rn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LOGIN_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="aId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="MinutesAdmin">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FIRST_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LAST_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BADGE_NUM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="SchoolToPrincipal">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ORGANIZATION_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SchoolAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Principal" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="adLoginName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BADGE_NUM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

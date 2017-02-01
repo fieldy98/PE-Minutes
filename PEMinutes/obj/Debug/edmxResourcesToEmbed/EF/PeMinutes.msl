@@ -40,5 +40,50 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="SchoolTeachersWithADLogins">
+      <EntityTypeMapping TypeName="PEMinutesModel.SchoolTeachersWithADLogin">
+        <MappingFragment StoreEntitySet="SchoolTeachersWithADLogin">
+          <ScalarProperty Name="aId" ColumnName="aId" />
+          <ScalarProperty Name="LOGIN_NAME" ColumnName="LOGIN_NAME" />
+          <ScalarProperty Name="rn" ColumnName="rn" />
+          <ScalarProperty Name="PERSON_GU" ColumnName="PERSON_GU" />
+          <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
+          <ScalarProperty Name="TeacherFirstName" ColumnName="TeacherFirstName" />
+          <ScalarProperty Name="TeacherLastName" ColumnName="TeacherLastName" />
+          <ScalarProperty Name="SECTION_GU" ColumnName="SECTION_GU" />
+          <ScalarProperty Name="MAX_STUDENTS" ColumnName="MAX_STUDENTS" />
+          <ScalarProperty Name="PERIOD_BEGIN" ColumnName="PERIOD_BEGIN" />
+          <ScalarProperty Name="COURSE_TITLE" ColumnName="COURSE_TITLE" />
+          <ScalarProperty Name="SCHOOL_YEAR" ColumnName="SCHOOL_YEAR" />
+          <ScalarProperty Name="ABBREV_NAME" ColumnName="ABBREV_NAME" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="Organization_Name" ColumnName="Organization_Name" />
+          <ScalarProperty Name="JOB_TITLE" ColumnName="JOB_TITLE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MinutesAdmins">
+      <EntityTypeMapping TypeName="PEMinutesModel.MinutesAdmin">
+        <MappingFragment StoreEntitySet="MinutesAdmins">
+          <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
+          <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+          <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SchoolToPrincipals">
+      <EntityTypeMapping TypeName="PEMinutesModel.SchoolToPrincipal">
+        <MappingFragment StoreEntitySet="SchoolToPrincipal">
+          <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
+          <ScalarProperty Name="adLoginName" ColumnName="adLoginName" />
+          <ScalarProperty Name="Principal" ColumnName="Principal" />
+          <ScalarProperty Name="SchoolAddress" ColumnName="SchoolAddress" />
+          <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

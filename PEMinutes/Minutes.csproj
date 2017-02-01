@@ -168,7 +168,7 @@
       <DependentUpon>PEMinutes.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\MinutesAdmin.cs">
-      <DependentUpon>RenExtract.tt</DependentUpon>
+      <DependentUpon>PEMinutes.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\PEMinutes.Context.cs">
       <AutoGen>True</AutoGen>
@@ -204,10 +204,10 @@
       <DependentUpon>RenExtract.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF\SchoolTeachersWithADLogin.cs">
-      <DependentUpon>RenExtract.tt</DependentUpon>
+      <DependentUpon>PEMinutes.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\SchoolToPrincipal.cs">
-      <DependentUpon>RenExtract.tt</DependentUpon>
+      <DependentUpon>PEMinutes.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\SubMinute.cs">
       <DependentUpon>PEMinutes.tt</DependentUpon>

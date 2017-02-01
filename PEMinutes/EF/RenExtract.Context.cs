@@ -25,10 +25,7 @@ namespace PEMinutes.EF
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<MinutesAdmin> MinutesAdmins { get; set; }
         public virtual DbSet<PEMinutesTeacherCount> PEMinutesTeacherCounts { get; set; }
-        public virtual DbSet<SchoolTeachersWithADLogin> SchoolTeachersWithADLogins { get; set; }
-        public virtual DbSet<SchoolToPrincipal> SchoolToPrincipals { get; set; }
         public virtual DbSet<TeachableDay> TeachableDays { get; set; }
     }
 }

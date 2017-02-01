@@ -14,6 +14,7 @@ namespace PEMinutes.EF
     
     public partial class MinutesAdmin
     {
+        public int ID { get; set; }
         public string FIRST_NAME { get; set; }
         public string LAST_NAME { get; set; }
         public string BADGE_NUM { get; set; }

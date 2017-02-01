@@ -2,15 +2,6 @@
 <Schema Namespace="RenExtractModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <!--Errors Found During Generation:
 warning 6002: The table/view 'RenExtract.dbo.MinutesAdmins' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-  <EntityType Name="MinutesAdmins">
-    <Key>
-      <PropertyRef Name="FIRST_NAME" />
-      <PropertyRef Name="LAST_NAME" />
-    </Key>
-    <Property Name="FIRST_NAME" Type="nvarchar" MaxLength="60" Nullable="false" />
-    <Property Name="LAST_NAME" Type="nvarchar" MaxLength="60" Nullable="false" />
-    <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
-  </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'RenExtract.dbo.PEMinutesTeacherCount' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="PEMinutesTeacherCount">
@@ -22,104 +13,27 @@ warning 6002: The table/view 'RenExtract.dbo.PEMinutesTeacherCount' does not hav
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'RenExtract.dbo.SchoolTeachersWithADLogin' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-  <EntityType Name="SchoolTeachersWithADLogin">
-    <Key>
-      <PropertyRef Name="Organization_Name" />
-      <PropertyRef Name="SCHOOL_YEAR" />
-      <PropertyRef Name="COURSE_TITLE" />
-      <PropertyRef Name="PERIOD_BEGIN" />
-      <PropertyRef Name="SECTION_GU" />
-      <PropertyRef Name="TeacherLastName" />
-      <PropertyRef Name="TeacherFirstName" />
-      <PropertyRef Name="PERSON_GU" />
-      <PropertyRef Name="LOGIN_NAME" />
-      <PropertyRef Name="aId" />
-    </Key>
-    <Property Name="JOB_TITLE" Type="nvarchar" MaxLength="50" />
-    <Property Name="Organization_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="TYPE" Type="nvarchar" MaxLength="5" />
-    <Property Name="ABBREV_NAME" Type="nvarchar" MaxLength="15" />
-    <Property Name="SCHOOL_YEAR" Type="numeric" Precision="4" Scale="0" Nullable="false" />
-    <Property Name="COURSE_TITLE" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="PERIOD_BEGIN" Type="numeric" Precision="3" Scale="0" Nullable="false" />
-    <Property Name="MAX_STUDENTS" Type="numeric" Precision="5" Scale="0" />
-    <Property Name="SECTION_GU" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="TeacherLastName" Type="nvarchar" MaxLength="60" Nullable="false" />
-    <Property Name="TeacherFirstName" Type="nvarchar" MaxLength="60" Nullable="false" />
-    <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
-    <Property Name="PERSON_GU" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="rn" Type="bigint" />
-    <Property Name="LOGIN_NAME" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="aId" Type="bigint" Nullable="false" />
-  </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'RenExtract.dbo.SchoolToPrincipal' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-  <EntityType Name="SchoolToPrincipal">
-    <Key>
-      <PropertyRef Name="ORGANIZATION_NAME" />
-      <PropertyRef Name="Principal" />
-    </Key>
-    <Property Name="ORGANIZATION_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="SchoolAddress" Type="nvarchar" MaxLength="146" />
-    <Property Name="Principal" Type="nvarchar" MaxLength="121" Nullable="false" />
-    <Property Name="adLoginName" Type="varchar" MaxLength="100" />
-    <Property Name="BADGE_NUM" Type="nvarchar" MaxLength="10" />
-  </EntityType>
   <!--Errors Found During Generation:
-warning 6002: The table/view 'RenExtract.dbo.TeachableDays' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-  <EntityType Name="TeachableDays">
+warning 6002: The table/view 'RenExtract.dbo.TeachableDay' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TeachableDay">
     <Key>
       <PropertyRef Name="TeachableDays" />
     </Key>
     <Property Name="TeachableDays" Type="smalldatetime" Nullable="false" />
   </EntityType>
   <EntityContainer Name="RenExtractModelStoreContainer">
-    <EntitySet Name="MinutesAdmins" EntityType="Self.MinutesAdmins" store:Type="Views" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [MinutesAdmins].[FIRST_NAME] AS [FIRST_NAME], 
-    [MinutesAdmins].[LAST_NAME] AS [LAST_NAME], 
-    [MinutesAdmins].[BADGE_NUM] AS [BADGE_NUM]
-    FROM [dbo].[MinutesAdmins] AS [MinutesAdmins]</DefiningQuery>
-    </EntitySet>
     <EntitySet Name="PEMinutesTeacherCount" EntityType="Self.PEMinutesTeacherCount" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [PEMinutesTeacherCount].[Organization_Name] AS [Organization_Name], 
     [PEMinutesTeacherCount].[TEACHER] AS [TEACHER]
     FROM [dbo].[PEMinutesTeacherCount] AS [PEMinutesTeacherCount]</DefiningQuery>
     </EntitySet>
-    <EntitySet Name="SchoolTeachersWithADLogin" EntityType="Self.SchoolTeachersWithADLogin" store:Type="Views" store:Schema="dbo">
+    <EntitySet Name="TeachableDay" EntityType="Self.TeachableDay" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
-    [SchoolTeachersWithADLogin].[JOB_TITLE] AS [JOB_TITLE], 
-    [SchoolTeachersWithADLogin].[Organization_Name] AS [Organization_Name], 
-    [SchoolTeachersWithADLogin].[TYPE] AS [TYPE], 
-    [SchoolTeachersWithADLogin].[ABBREV_NAME] AS [ABBREV_NAME], 
-    [SchoolTeachersWithADLogin].[SCHOOL_YEAR] AS [SCHOOL_YEAR], 
-    [SchoolTeachersWithADLogin].[COURSE_TITLE] AS [COURSE_TITLE], 
-    [SchoolTeachersWithADLogin].[PERIOD_BEGIN] AS [PERIOD_BEGIN], 
-    [SchoolTeachersWithADLogin].[MAX_STUDENTS] AS [MAX_STUDENTS], 
-    [SchoolTeachersWithADLogin].[SECTION_GU] AS [SECTION_GU], 
-    [SchoolTeachersWithADLogin].[TeacherLastName] AS [TeacherLastName], 
-    [SchoolTeachersWithADLogin].[TeacherFirstName] AS [TeacherFirstName], 
-    [SchoolTeachersWithADLogin].[BADGE_NUM] AS [BADGE_NUM], 
-    [SchoolTeachersWithADLogin].[PERSON_GU] AS [PERSON_GU], 
-    [SchoolTeachersWithADLogin].[rn] AS [rn], 
-    [SchoolTeachersWithADLogin].[LOGIN_NAME] AS [LOGIN_NAME], 
-    [SchoolTeachersWithADLogin].[aId] AS [aId]
-    FROM [dbo].[SchoolTeachersWithADLogin] AS [SchoolTeachersWithADLogin]</DefiningQuery>
-    </EntitySet>
-    <EntitySet Name="SchoolToPrincipal" EntityType="Self.SchoolToPrincipal" store:Type="Views" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [SchoolToPrincipal].[ORGANIZATION_NAME] AS [ORGANIZATION_NAME], 
-    [SchoolToPrincipal].[SchoolAddress] AS [SchoolAddress], 
-    [SchoolToPrincipal].[Principal] AS [Principal], 
-    [SchoolToPrincipal].[adLoginName] AS [adLoginName], 
-    [SchoolToPrincipal].[BADGE_NUM] AS [BADGE_NUM]
-    FROM [dbo].[SchoolToPrincipal] AS [SchoolToPrincipal]</DefiningQuery>
-    </EntitySet>
-    <EntitySet Name="TeachableDays" EntityType="Self.TeachableDays" store:Type="Views" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [TeachableDays].[TeachableDays] AS [TeachableDays]
-    FROM [dbo].[TeachableDays] AS [TeachableDays]</DefiningQuery>
+    [TeachableDay].[TeachableDays] AS [TeachableDays]
+    FROM [dbo].[TeachableDay] AS [TeachableDay]</DefiningQuery>
     </EntitySet>
   </EntityContainer>
 </Schema>

@@ -14,6 +14,7 @@ namespace PEMinutes.EF
     
     public partial class SchoolToPrincipal
     {
+        public int ID { get; set; }
         public string ORGANIZATION_NAME { get; set; }
         public string SchoolAddress { get; set; }
         public string Principal { get; set; }

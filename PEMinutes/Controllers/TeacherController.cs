@@ -38,7 +38,7 @@ namespace PEMinutes.Controllers
         public ActionResult Index()
         {
             var enteredBadgeString = User.Identity.Name; 
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var badgeNumber = int.Parse(enteredBadgeString);  // convert string to int
             ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             ViewBag.NeedsApproval = _db.SubMinutes.Count(i => i.BadgeNumber == badgeNumber && i.IsApproved == null);  // tells teacher how many entries need approval
@@ -74,7 +74,7 @@ namespace PEMinutes.Controllers
             var end = _db.EnteredPeMinutes.Where(x => x.InstructionTime <= now).Select(x => x.InstructionTime).DistinctBy(x => x.Value.Date).OrderByDescending(x => x).Take(60).LastOrDefault().Value.Date;
             ViewBag.ThisMonth = thisMonth;
             var enteredBadgeString = User.Identity.Name;
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var enteredBadgeNumber = int.Parse(enteredBadgeString);  // convert string to int
             ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
 
@@ -88,7 +88,7 @@ namespace PEMinutes.Controllers
         public ActionResult Details(int? id)
         {
             var enteredBadgeString = User.Identity.Name;
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             if (id == null)
             {
@@ -119,7 +119,7 @@ namespace PEMinutes.Controllers
             var badgeNumber = int.Parse(enteredBadgeString);  // convert string to int
 
             // Associate Badge => Staff
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
 
             // Build variable with information not gathered from user.
             var teacherNameVariable = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
@@ -139,7 +139,7 @@ namespace PEMinutes.Controllers
         public ActionResult Approve()
         {
             var enteredBadgeString = User.Identity.Name;
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var teacherBadgeNumber = int.Parse(enteredBadgeString);  // convert string to int
             ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             ViewBag.School = selectedTeacher.Organization_Name;
@@ -154,7 +154,7 @@ namespace PEMinutes.Controllers
         public ActionResult Approve(int selectedId)
         {
             var enteredBadgeString = User.Identity.Name;
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var teacherNameVariable = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             var minute = _db.SubMinutes.FirstOrDefault(x => x.ID == selectedId);
             minute.IsApproved = 1;
@@ -171,7 +171,7 @@ namespace PEMinutes.Controllers
         public ActionResult MoveSubToTeacher(string selectedSubstituteName, int selectedMinutes, string selectedActivity, DateTime selectedInstructionTime, EnteredPeMinute enteredPeMinute)
         {
             var enteredBadgeString = User.Identity.Name;
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             var teacherNameVariable = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             enteredPeMinute.TeacherName = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             enteredPeMinute.Minutes = selectedMinutes;
@@ -196,7 +196,7 @@ namespace PEMinutes.Controllers
         public ActionResult Edit(int? id)
         {
             var enteredBadgeString = User.Identity.Name;
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
             if (id == null)
             {

@@ -23,6 +23,48 @@
           <Property Name="ApproveTime" Type="datetime" />
           <Property Name="InstructionTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="MinutesAdmins">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FIRST_NAME" Type="varchar" MaxLength="255" />
+          <Property Name="LAST_NAME" Type="varchar" MaxLength="255" />
+          <Property Name="BADGE_NUM" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="SchoolTeachersWithADLogin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JOB_TITLE" Type="varchar" MaxLength="255" />
+          <Property Name="Organization_Name" Type="varchar" MaxLength="255" />
+          <Property Name="TYPE" Type="varchar" MaxLength="255" />
+          <Property Name="ABBREV_NAME" Type="varchar" MaxLength="255" />
+          <Property Name="SCHOOL_YEAR" Type="varchar" MaxLength="255" />
+          <Property Name="COURSE_TITLE" Type="varchar" MaxLength="255" />
+          <Property Name="PERIOD_BEGIN" Type="varchar" MaxLength="255" />
+          <Property Name="MAX_STUDENTS" Type="varchar" MaxLength="255" />
+          <Property Name="SECTION_GU" Type="varchar" MaxLength="255" />
+          <Property Name="TeacherLastName" Type="varchar" MaxLength="255" />
+          <Property Name="TeacherFirstName" Type="varchar" MaxLength="255" />
+          <Property Name="BADGE_NUM" Type="varchar" MaxLength="255" />
+          <Property Name="PERSON_GU" Type="varchar" MaxLength="255" />
+          <Property Name="rn" Type="varchar" MaxLength="255" />
+          <Property Name="LOGIN_NAME" Type="varchar" MaxLength="255" />
+          <Property Name="aId" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="SchoolToPrincipal">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ORGANIZATION_NAME" Type="varchar" MaxLength="255" />
+          <Property Name="SchoolAddress" Type="varchar" MaxLength="255" />
+          <Property Name="Principal" Type="varchar" MaxLength="255" />
+          <Property Name="adLoginName" Type="varchar" MaxLength="255" />
+          <Property Name="BADGE_NUM" Type="varchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="SubMinutes">
           <Key>
             <PropertyRef Name="ID" />
@@ -42,16 +84,11 @@
           <Property Name="IsLongTermSub" Type="int" />
           <Property Name="InstructionTime" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'PEMinutes.dbo.DailyTeacherMinutes' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="DailyTeacherMinutes">
-          <Property Name="DateOfInstruction" Type="varchar" MaxLength="30" />
-          <Property Name="DailyMinutes" Type="int" />
-          <Property Name="TeacherName" Type="varchar" MaxLength="255" />
-          <Property Name="BadgeNumber" Type="int" />
-        </EntityType>-->
         <EntityContainer Name="PEMinutesModelStoreContainer">
           <EntitySet Name="EnteredPeMinutes" EntityType="Self.EnteredPeMinutes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MinutesAdmins" EntityType="Self.MinutesAdmins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SchoolTeachersWithADLogin" EntityType="Self.SchoolTeachersWithADLogin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SchoolToPrincipal" EntityType="Self.SchoolToPrincipal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubMinutes" EntityType="Self.SubMinutes" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -98,7 +135,52 @@ warning 6013: The table/view 'PEMinutes.dbo.DailyTeacherMinutes' does not have a
         <EntityContainer Name="PEMinutesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="EnteredPeMinutes" EntityType="Self.EnteredPeMinute" />
           <EntitySet Name="SubMinutes" EntityType="Self.SubMinute" />
+          <EntitySet Name="SchoolTeachersWithADLogins" EntityType="PEMinutesModel.SchoolTeachersWithADLogin" />
+          <EntitySet Name="MinutesAdmins" EntityType="PEMinutesModel.MinutesAdmin" />
+          <EntitySet Name="SchoolToPrincipals" EntityType="PEMinutesModel.SchoolToPrincipal" />
         </EntityContainer>
+        <EntityType Name="SchoolTeachersWithADLogin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JOB_TITLE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Organization_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ABBREV_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SCHOOL_YEAR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="COURSE_TITLE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PERIOD_BEGIN" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MAX_STUDENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SECTION_GU" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TeacherLastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TeacherFirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BADGE_NUM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PERSON_GU" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="rn" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LOGIN_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="aId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MinutesAdmin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BADGE_NUM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SchoolToPrincipal">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ORGANIZATION_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SchoolAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Principal" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="adLoginName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BADGE_NUM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -141,6 +223,51 @@ warning 6013: The table/view 'PEMinutes.dbo.DailyTeacherMinutes' does not have a
                 <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
                 <ScalarProperty Name="ApproveTime" ColumnName="ApproveTime" />
                 <ScalarProperty Name="IsLongTermSub" ColumnName="IsLongTermSub" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolTeachersWithADLogins">
+            <EntityTypeMapping TypeName="PEMinutesModel.SchoolTeachersWithADLogin">
+              <MappingFragment StoreEntitySet="SchoolTeachersWithADLogin">
+                <ScalarProperty Name="aId" ColumnName="aId" />
+                <ScalarProperty Name="LOGIN_NAME" ColumnName="LOGIN_NAME" />
+                <ScalarProperty Name="rn" ColumnName="rn" />
+                <ScalarProperty Name="PERSON_GU" ColumnName="PERSON_GU" />
+                <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
+                <ScalarProperty Name="TeacherFirstName" ColumnName="TeacherFirstName" />
+                <ScalarProperty Name="TeacherLastName" ColumnName="TeacherLastName" />
+                <ScalarProperty Name="SECTION_GU" ColumnName="SECTION_GU" />
+                <ScalarProperty Name="MAX_STUDENTS" ColumnName="MAX_STUDENTS" />
+                <ScalarProperty Name="PERIOD_BEGIN" ColumnName="PERIOD_BEGIN" />
+                <ScalarProperty Name="COURSE_TITLE" ColumnName="COURSE_TITLE" />
+                <ScalarProperty Name="SCHOOL_YEAR" ColumnName="SCHOOL_YEAR" />
+                <ScalarProperty Name="ABBREV_NAME" ColumnName="ABBREV_NAME" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="Organization_Name" ColumnName="Organization_Name" />
+                <ScalarProperty Name="JOB_TITLE" ColumnName="JOB_TITLE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MinutesAdmins">
+            <EntityTypeMapping TypeName="PEMinutesModel.MinutesAdmin">
+              <MappingFragment StoreEntitySet="MinutesAdmins">
+                <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolToPrincipals">
+            <EntityTypeMapping TypeName="PEMinutesModel.SchoolToPrincipal">
+              <MappingFragment StoreEntitySet="SchoolToPrincipal">
+                <ScalarProperty Name="BADGE_NUM" ColumnName="BADGE_NUM" />
+                <ScalarProperty Name="adLoginName" ColumnName="adLoginName" />
+                <ScalarProperty Name="Principal" ColumnName="Principal" />
+                <ScalarProperty Name="SchoolAddress" ColumnName="SchoolAddress" />
+                <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -26,7 +26,7 @@ namespace PEMinutes.Controllers
             // Take 10 teachable days back from the startDay
             var tenEntryDaysBack = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
             var enteredBadgeString = User.Identity.Name;
-            var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedAdmin = _db.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
             var adminView = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= tenEntryDaysBack && x.InstructionTime <= startDay && x.School.Contains("Elem")).OrderBy(x => x.School); // select all minutes from the school the principal belongs to
             var avm = new AdministrationViewModel();
@@ -46,7 +46,6 @@ namespace PEMinutes.Controllers
                     if (sum >= 200)
                     {
                         count++;
-
                     }
                 }
                 tc.MeetReq = count;
@@ -73,7 +72,7 @@ namespace PEMinutes.Controllers
                 startDay = tday.FirstOrDefault(x => x.TeachableDays == date).TeachableDays;
             }
             var tenEntryDaysBack = _ren.TeachableDays.Where(x => x.TeachableDays <= startDay).OrderByDescending(x => x.TeachableDays).Take(10).ToList().Last().TeachableDays;
-            var principalView = _ren.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == schoolName && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList(); // select all minutes from the school the principal belongs to
+            var principalView = _db.SchoolTeachersWithADLogins.Where(x => x.Organization_Name == schoolName && x.COURSE_TITLE != "Kindergarten" && x.COURSE_TITLE != "PS - 6th SpEd").ToList(); // select all minutes from the school the principal belongs to
             var pivm = new PrincipalIndexViewModel();
 
             foreach (var item in principalView)
@@ -131,7 +130,7 @@ namespace PEMinutes.Controllers
 
             AdministrationViewModel avm = new AdministrationViewModel();
             var enteredBadgeString = User.Identity.Name;
-            var selectedAdmin = _ren.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
+            var selectedAdmin = _db.MinutesAdmins.FirstOrDefault(i => i.BADGE_NUM == enteredBadgeString);
             ViewBag.Name = selectedAdmin.FIRST_NAME + " " + selectedAdmin.LAST_NAME;
             var sumReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= tenEntryDaysBack && x.InstructionTime < startDay).OrderBy(x => x.School).DistinctBy(x => x.TeacherName).ToList(); // select all minutes from the school the principal belongs to
             var allReports = _db.EnteredPeMinutes.Where(x => x.InstructionTime >= tenEntryDaysBack && x.InstructionTime < startDay).OrderBy(x => x.School).ToList();

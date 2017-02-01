@@ -27,5 +27,8 @@ namespace PEMinutes.EF
     
         public virtual DbSet<EnteredPeMinute> EnteredPeMinutes { get; set; }
         public virtual DbSet<SubMinute> SubMinutes { get; set; }
+        public virtual DbSet<SchoolTeachersWithADLogin> SchoolTeachersWithADLogins { get; set; }
+        public virtual DbSet<MinutesAdmin> MinutesAdmins { get; set; }
+        public virtual DbSet<SchoolToPrincipal> SchoolToPrincipals { get; set; }
     }
 }

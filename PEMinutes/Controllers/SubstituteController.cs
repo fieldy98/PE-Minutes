@@ -27,7 +27,7 @@ namespace PEMinutes.Controllers
         {
             
             var svm = new SubstituteViewModel();
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(x => x.BADGE_NUM == selectedbadge);
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(x => x.BADGE_NUM == selectedbadge);
             svm.BadgeNumber = selectedTeacher.BADGE_NUM;
             svm.SchoolName = selectedTeacher.Organization_Name;
             return PartialView("partials/_create", svm);
@@ -37,7 +37,7 @@ namespace PEMinutes.Controllers
         public ActionResult _identifyStaff([Bind(Include = "ID,TeacherName,Minutes,BadgeNumber,School,Grade,Activity,InstructionTime,Timestamp,SubstituteName,IsApproved,ApprovedBy,ApproveTime")] SubMinute sub, string selectedbadge)
         {
             if (!ModelState.IsValid) return View(sub);
-            var selectedTeacher = _ren.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == selectedbadge); //Finding the teacher that matches the selected badge number
+            var selectedTeacher = _db.SchoolTeachersWithADLogins.FirstOrDefault(i => i.BADGE_NUM == selectedbadge); //Finding the teacher that matches the selected badge number
 
             // Build variable with information not gathered from user.
             sub.TeacherName = selectedTeacher.TeacherFirstName + " " + selectedTeacher.TeacherLastName;
@@ -54,7 +54,7 @@ namespace PEMinutes.Controllers
         public ActionResult _GetTeachers(string selectedSchool)
         {
             var svm = new SubstituteViewModel();
-            var selectedTeachers = _ren.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == selectedSchool && i.COURSE_TITLE.Contains("PS") == false && i.COURSE_TITLE.Contains("Kind") == false).OrderBy(i => i.TeacherLastName).ToList();
+            var selectedTeachers = _db.SchoolTeachersWithADLogins.Where(i => i.Organization_Name == selectedSchool && i.COURSE_TITLE.Contains("PS") == false && i.COURSE_TITLE.Contains("Kind") == false).OrderBy(i => i.TeacherLastName).ToList();
             foreach (var item in selectedTeachers)
             {
                 var tl = new TeachList

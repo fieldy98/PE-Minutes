@@ -4,27 +4,28 @@ using PEMinutes.EF;
 
 namespace PEMinutes.Models
 {
+    
     public class User
     {
+        private readonly PEMinutesEntities _db = new PEMinutesEntities();
+
         [Required]
         [Display(Name = "Badge Number")]
         public string StaffBadgeNumber { get; set; }
         //public bool IsTeacher(string badge)
         //{
-        //    var db = new RenExtractEntities().SchoolTeachersWithADLogins;
-        //    var queryDb = db.FirstOrDefault(x => x.BADGE_NUM == badge);
+        //    var queryDb = _db.SchoolTeachersWithADLogins.FirstOrDefault(x => x.BADGE_NUM == badge);
         //    return queryDb != null;
         //}
         public bool IsPrincipal(string badge)
         {
-            var db = new RenExtractEntities().SchoolToPrincipals;
-            var queryDb = db.FirstOrDefault(x => x.BADGE_NUM == badge);
+            
+            var queryDb = _db.SchoolToPrincipals.FirstOrDefault(x => x.BADGE_NUM == badge);
             return queryDb != null;
         }
         public bool IsAdmin(string badge)
         {
-            var db = new RenExtractEntities().MinutesAdmins;
-            var queryDb = db.FirstOrDefault(x => x.BADGE_NUM == badge);
+            var queryDb = _db.MinutesAdmins.FirstOrDefault(x => x.BADGE_NUM == badge);
             return queryDb != null;
         }
     }
